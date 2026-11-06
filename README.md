@@ -1,53 +1,105 @@
-# CityNexus | Smart City Traveler System
+# CityNexus
+### From "plan my day" to "keep my journey going"
 
-**Software Engineering coursework companion and implementation showcase (2026)**
+**Smart City Traveler System | Software Engineering coursework | September–November 2026**
 
-CityNexus is a research and implementation project exploring an AI-assisted urban travel system. It combines journey planning, maps, location discovery, contextual updates, agent tooling, and user-controlled changes to an itinerary.
+**React + TypeScript · Python + FastAPI · AI Agent + Hermes tools · Maps / routes / weather · Visio + Microsoft Project**
 
-> **For the professor:** The official Software Engineering Part 2 PDF was submitted separately on Moodle. This repository is supplementary development evidence, not the formal coursework submission and not a claim that the entire application was successfully demonstrated in class. The live classroom demonstration remained incomplete.
+CityNexus is an engineering project exploring an agent-assisted city journey system. Its purpose is to go beyond one-off attraction recommendations: learn the traveller's goal, discover grounded places, construct and compare an itinerary, make the journey visible, and manage changes with appropriate human authorization.
 
-## Development record: September–November 2026
+**This is an implementation and coursework portfolio, not just a concept proposal.** It contains extensive source code, API and domain models, automated tests, agent experiments, diagrams, and project planning artifacts.
 
-**Three calendar months of dated engineering artifacts** are represented here: a September domain-model baseline, subsequent frontend/backend development, October agent experiments and classroom diagrams, and the November coursework/publication snapshot.
+## For the professor: see the real work in minutes
 
-**[View the evidence-linked development timeline](docs/DEVELOPMENT_TIMELINE.md).** The GitHub commit graph starts in November **by design**: this is a fresh, sanitized public release, not the original private Git development history. The timeline documents the stages without inventing older public commits, work hours or successful production demonstrations.
+| Time | What to inspect | Open |
+| --- | --- | --- |
+| **2 min** | The user experience, the Agent, and the end-to-end *design* | **[Guided Product Tour](docs/START_HERE_FOR_REVIEWER.md)** |
+| **3 min** | Actual features with direct links to frontend, backend and test files | **[Feature Atlas](docs/FEATURE_ATLAS.md)** |
+| **3 min** | Ten concrete lab studies, including a real walking route, model-driven strategy and mobile tests | **[Experimental Results](docs/EXPERIMENT_RESULTS.md)** |
+| **2 min** | Visio architecture, user–Agent flow, Gantt chart and WBS | **[Teacher Materials](teacher-materials/README.md)** |
+| **2 min** | How the project evolved over three calendar months | **[Development Timeline](docs/DEVELOPMENT_TIMELINE.md)** |
 
-## Five-minute project tour
+## What is the product supposed to do?
 
-| Review order | Start here |
+A traveller asks: **"Plan a relaxed cultural trip. Avoid too much walking, and help if the day changes."** The product was designed around this continuing interaction:
+
+```mermaid
+flowchart LR
+    A["Describe a goal"] --> B["Discover city places"]
+    B --> C["Compare itinerary choices"]
+    C --> D["View map, route and budget"]
+    D --> E["Follow the journey"]
+    E --> F{"New information?"}
+    F -->|No| E
+    F -->|Yes| G["Agent evaluates options"]
+    G --> H["Human reviews consequential changes"]
+    H --> E
+```
+
+These steps describe the **intended connected product journey** and corresponding implementation modules, not a fresh claim that the complete flow passed a production-grade live demo.
+
+## A substantial implementation, not a handful of mockups
+
+| Product area | What the source contains | Evidence |
+| --- | --- | --- |
+| **Traveller experience** | Journey setup, preferences, itinerary, spending, hotels and checklists | [Main UI](frontend/src/app/V8Experience.tsx) · [Trip screens](frontend/src/features/trip/) |
+| **Maps and places** | Map panels, venue discovery, provider attribution, routing and contextual weather | [Map](frontend/src/components/JourneyMap.tsx) · [Discovery](frontend/src/features/discovery/) · [Integrations](backend/app/integrations/) |
+| **AI Agent** | Conversation, what-if intents, missions, tool calls, runtime status, approval and Guardian signals | [Agent UI](frontend/src/features/agent/) · [Agent runtime](backend/app/agent/) · [MCP tools](agent-mcp/) |
+| **Planning engine** | Candidate plans, comparisons, optimisation adapters and preserved commitments | [Planning UI](frontend/src/features/planning/) · [Planning engine](backend/app/planning/) |
+| **Adaptation** | Live journey execution, disruption and recovery, replanning and plan-version history | [Execution](frontend/src/features/execution/) · [Replanning](backend/app/replanning/) |
+| **Shared journeys** | Sharing, private member states and group-recovery research | [Shared UI](frontend/src/features/shared/) · [Revolution Lab](experiments/revolution/) |
+| **Classroom testing** | Simulation stage controls, browser test scenarios and server-side tests | [Simulation](frontend/src/features/simulation/SimulationPanel.tsx) · [E2E tests](frontend/e2e/) |
+
+**[Explore the entire feature-by-feature source map](docs/FEATURE_ATLAS.md).**
+
+## Experiments: what actually happened?
+
+These were different engineering investigations, not merely feature names. [Read the full case studies and their boundaries](docs/EXPERIMENT_RESULTS.md).
+
+| Scenario | Dated reported outcome |
 | --- | --- |
-| 1. System idea | [System overview diagram (PDF)](teacher-materials/system-overview.pdf) |
-| 2. Human and Agent responsibilities | [Agent-user interaction (PDF)](teacher-materials/agent-user-flow.pdf) |
-| 3. Requirements | [138 formal candidate requirements](requirements/README.md) and [use cases](use-cases/) |
-| 4. Planning | [Gantt](teacher-materials/gantt.pdf), [WBS](teacher-materials/wbs.pdf), [network diagram](teacher-materials/network-diagram.pdf), [editable Microsoft Project file](teacher-materials/project-overview.mpp) |
-| 5. Implementation | [React frontend](frontend/src), [FastAPI backend](backend/app), [Agent tools](agent-mcp/), [API contracts](contracts/) |
-| 6. Experimental research | [Revolution Lab overview](docs/REVOLUTION_LAB.md) and [separate experimental code](experiments/revolution/) |
+| **Chongqing: model-guided itinerary** | An external model and real OSM place discovery produced a plan; an opening-hours conflict blocked the first option, and the local run adapted. |
+| **Nara: real routing** | One Valhalla walking route returned a **22-minute** provider-backed mobility fact. |
+| **Nara: Guardian observation** | A real-source context check returned **NO_MATERIAL_CHANGE** rather than inventing a disruption. |
+| **Disruption and recovery** | An isolated Agent run selected a compatible standby option, required approval, and finished a local Journey. |
+| **Group recovery** | Member-by-member authenticated reports and one-time group closure were exercised in focused tests, without claiming GPS-proven presence. |
+| **Pocket Walk GO MODE** | Mobile Chromium exercised stop progression, pause, resume and undo with signed accounts and controlled provider fixtures. |
 
-## What is in the repository?
+The separate Revolution Lab has many dated experiment records; the public version contains its **separate code snapshot plus curated research explanations**, not the entire raw private archive.
 
-**Frontend:** React 19, TypeScript, Vite, MapLibre, user-facing journey and map components, agent activity views and automated browser test sources.
+## Formal Software Engineering deliverables
 
-**Backend:** Python 3.12+, FastAPI, SQLAlchemy, API services, journey operations, planning, integrations, agent orchestration and test sources.
+| Deliverable | Open |
+| --- | --- |
+| **138 candidate requirements** with acceptance criteria | [Requirements](requirements/README.md) · [Traceability](requirements/traceability.yaml) |
+| **18-entity domain model** | [Domain-model baseline](domain-model/BASELINE.md) |
+| **13 main use cases** | [Use cases](use-cases/BASELINE.md) · [Use-case diagram](teacher-materials/use-cases.pdf) |
+| System architecture and Agent/user decision flow | [Architecture PDF](teacher-materials/system-overview.pdf) · [Agent-flow PDF](teacher-materials/agent-user-flow.pdf) |
+| Work planning, dates and dependencies | [Gantt PDF](teacher-materials/gantt.pdf) · [WBS](teacher-materials/wbs.pdf) · [Network diagram](teacher-materials/network-diagram.pdf) |
+| Editable engineering artifacts | [Visio and Microsoft Project files](teacher-materials/README.md) |
+| Test suites | [Mainline backend tests](backend/tests/) · [Browser tests](frontend/e2e/) · [Lab tests](experiments/revolution/backend/tests/) |
 
-**Formal software engineering:** 138 requirements (8 business goals, 61 functional requirements, 24 business rules, 16 non-functional requirements, 14 security requirements, 15 integration requirements), traceability records, domain model, use cases, diagrams, and project planning artifacts.
+## Under the hood
 
-**Revolution Lab:** separate experimental work on proactive monitoring, recovery proposals, multi-person journeys and short city walks. A laboratory test is not automatically proof of real-world deployment.
+```mermaid
+flowchart TB
+    UX["React / TypeScript: Journey, map and Agent"]
+    API["FastAPI: API, authorization and domain"]
+    STATE["Journey / PlanVersion / Traveler Twin"]
+    TOOLS["Agent runtime, tools and Hermes adapters"]
+    PLAN["Planning, solvers and recovery"]
+    WORLD["Place, routing and weather providers"]
+    UX <--> API
+    API <--> STATE
+    API <--> TOOLS
+    API <--> PLAN
+    API <--> WORLD
+```
 
-## Read before assessing the implementation
+## Publication and evidence notes
 
-- [Architecture and directory map](docs/PROJECT_OVERVIEW.md)
-- [Evidence and honest limitations](docs/EVIDENCE_AND_LIMITATIONS.md)
-- [Revolution Lab scope and status](docs/REVOLUTION_LAB.md)
-- [Local developer setup](docs/RUNNING_LOCALLY.md)
-- [Editable artifacts and PDFs](teacher-materials/README.md)
-- [Publication / privacy / provenance](docs/PUBLICATION_AND_PROVENANCE.md)
+The underlying project has **dated artifacts from September through November 2026**. The public GitHub commit graph starts on 6 November because we deliberately created a separate, sanitized, history-free release instead of exposing the original private development branches.
 
-## Evidence boundaries
+The **formal requirements remain candidate requirements**. Some research outcomes used live external providers; others used local browser fixtures or recorded a legitimate blocker. The full classroom demo was **not successfully presented**, and the sanitized published copy **has not been freshly tested as one integrated application**. These boundaries are explained in [Evidence and Limitations](docs/EVIDENCE_AND_LIMITATIONS.md).
 
-- The 138-requirement v0.3 baseline is **candidate**, not confirmed by the teacher/customer.
-- The snapshot contains code and test sources; **a fresh end-to-end test of this export was not performed**.
-- Controlled test-provider fixtures and traveler self-reports do **not** prove physical arrival or reliable operation with every live provider.
-- The mainline code and Revolution Lab code are **two separate snapshots**, not one proven combined build.
-- The original private source history, secrets, local data, duplicate experiments and review logs are intentionally **not part of this candidate public release**.
-
-**Academic disclosure:** AI-assisted coding and writing tools were used during development. No explicit open-source software license is granted by this publication.
+**Coursework submission:** The required Part 2 PDF was submitted separately through Moodle; this repository is supplementary development evidence. AI-assisted coding and documentation tools were used. No explicit open-source software license is granted by this publication.
