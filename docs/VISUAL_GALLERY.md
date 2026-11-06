@@ -2,6 +2,8 @@
 
 These are **real screenshots captured from the project's development and test interfaces** and historical classroom assets. They were copied from the original development snapshots (now in the publicly accessible CityNexus repository) without redrawing them. Some scenes use recorded/replayed/demo data; they **do not** imply a currently deployed production app or successful real-world travel.
 
+**The project also has a later October human-first V3 interface and a separate classroom time/location simulator.** Start with [the V3 six-image walkthrough](CLASSROOM_AND_V3.md) for newer goal entry, Agent tool timeline, actual map, ACTIVE journey and Presenter captures. The gallery below preserves the earlier UI stream and engineering diagrams.
+
 ## 1. City discovery and conversational Agent
 
 | City discovery, desktop | Copilot interaction, mobile |
