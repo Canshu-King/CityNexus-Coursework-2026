@@ -9,10 +9,21 @@ CityNexus is an engineering project exploring an agent-assisted city journey sys
 
 **This is an implementation and coursework portfolio, not just a concept proposal.** It contains extensive source code, API and domain models, automated tests, agent experiments, diagrams, and project planning artifacts.
 
+## See the actual application screens
+
+These are **real captured CityNexus development/test screenshots**, not newly invented mockups. Some display controlled replay data.
+
+| City discovery and grounded candidates | Agent conversation on a phone |
+| --- | --- |
+| <img src="screenshots/discovery-desktop.png" alt="Captured desktop City Discovery interface" width="620" /> | <img src="screenshots/copilot-mobile.png" alt="Captured mobile CityNexus Copilot dialogue" width="240" /> |
+
+**[View the full illustrated gallery: maps, journey, mobility, recovery, trip export, diagrams and Gantt](docs/VISUAL_GALLERY.md)**
+
 ## For the professor: see the real work in minutes
 
 | Time | What to inspect | Open |
 | --- | --- | --- |
+| **2 min** | Actual captured UI screens, Agent and city discovery | **[Visual Gallery](docs/VISUAL_GALLERY.md)** |
 | **2 min** | The user experience, the Agent, and the end-to-end *design* | **[Guided Product Tour](docs/START_HERE_FOR_REVIEWER.md)** |
 | **3 min** | Actual features with direct links to frontend, backend and test files | **[Feature Atlas](docs/FEATURE_ATLAS.md)** |
 | **3 min** | Ten concrete lab studies, including a real walking route, model-driven strategy and mobile tests | **[Experimental Results](docs/EXPERIMENT_RESULTS.md)** |
