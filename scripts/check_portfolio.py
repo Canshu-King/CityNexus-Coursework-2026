@@ -114,7 +114,7 @@ def main() -> int:
         elif asset.stat().st_size < 1000:
             fail(f"Unexpectedly small image asset: {asset.relative_to(ROOT)}")
 
-    link_pattern = re.compile(r"!?\\[[^\\]]*\\]\\(([^)]+)\\)")
+    link_pattern = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
     img_pattern = re.compile(r'<img[^>]+src="([^"]+)"', re.IGNORECASE)
     for name in CHECKED_MARKDOWN:
         source = ROOT / name
