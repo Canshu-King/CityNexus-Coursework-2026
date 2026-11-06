@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CityNexus: a source-linked visual walkthrough of AI-assisted city journey research, real UI captures, and Software Engineering coursework.">
+  <meta name="theme-color" content="#103f35">
+  <title>CityNexus | Experience & Engineering Portfolio</title>
+  <style>
+    :root{--forest:#113f35;--dark:#09271f;--pine:#1b5b49;--lime:#c7f779;--cream:#f6f7f0;--white:#fff;--ink:#172820;--gray:#607067;--line:#dce5d9;--soft:#eaf1e8;--serif:Georgia,'Times New Roman',serif}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.55 'Segoe UI',Inter,system-ui,-apple-system,sans-serif}
+    a{color:inherit}
+    a:focus-visible,button:focus-visible{outline:3px solid #e09d30;outline-offset:3px}
+    .wrap{max-width:1200px;margin:auto;padding:0 34px}
+    .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800}
+    nav{background:var(--dark);color:#e8f6e8;border-bottom:1px solid #30634c}
+    nav .wrap{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:22px;font-weight:850;letter-spacing:-.05em}
+    .brandmark{width:34px;height:34px;border-radius:11px 4px 11px 4px;background:var(--lime);color:var(--forest);display:grid;place-items:center;font-size:16px;font-weight:900;transform:rotate(-7deg)}
+    nav .links{display:flex;align-items:center;gap:22px;font-size:13px;font-weight:650}
+    nav .links a{text-decoration:none;color:#d5e8df}
+    nav .links a:hover{text-decoration:underline}
+    .navout{border:1px solid #6e9c80;border-radius:100px;padding:8px 14px}
+    header.hero{background:var(--dark);color:var(--white);position:relative;overflow:hidden}
+    .hero::before{content:"";position:absolute;right:-160px;top:-70px;width:700px;height:700px;border:1px solid #2e5946;border-radius:50%;box-shadow:0 0 0 80px #143c302b,0 0 0 170px #143c301c;pointer-events:none}
+    .hero::after{content:"";position:absolute;right:22%;bottom:-150px;width:380px;height:380px;background:#327b5434;border-radius:50%;filter:blur(70px)}
+    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(330px,.9fr);gap:58px;align-items:center;padding-top:90px;padding-bottom:102px}
+    .hero .eyebrow{color:var(--lime)}
+    h1{font-family:var(--serif);font-size:clamp(44px,5.25vw,78px);font-weight:400;line-height:1.02;letter-spacing:-.046em;margin:20px 0 25px;max-width:720px}
+    .lime{color:var(--lime)}
+    .hero p{max-width:620px;color:#c4d8ce;line-height:1.75;font-size:17px;margin:0 0 31px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:100px;padding:10px 20px;text-decoration:none;font-weight:750;border:1px solid transparent;cursor:pointer;font:inherit;font-size:14px;transition:background .2s,transform .2s}
+    .btn:hover{transform:translateY(-2px)}
+    .primary{background:var(--lime);color:var(--dark)}
+    .primary:hover{background:#d8ffa1}
+    .outline{border-color:#5b8a73;color:#ecf6ef;background:transparent}
+    .dark-btn{background:var(--forest);color:white}
+    .hero-cta{display:flex;flex-wrap:wrap;gap:10px}
+    .journey-card{border:1px solid #4b7864;border-radius:22px;padding:27px;background:#1c4a3a91;backdrop-filter:blur(7px)}
+    .journey-title{display:flex;justify-content:space-between;gap:12px;align-items:center;font-weight:800;font-size:14px;border-bottom:1px solid #3d725a;padding-bottom:16px;margin-bottom:12px}
+    .status-dot{width:9px;height:9px;background:var(--lime);border-radius:50%;display:inline-block;margin-right:7px}
+    .journey-steps{list-style:none;padding:0;margin:0}
+    .journey-steps li{display:grid;grid-template-columns:27px 1fr;gap:15px;padding:12px 0;align-items:start}
+    .step-icon{border:1px solid #719d83;background:#123e2d;border-radius:9px;width:28px;height:28px;display:grid;place-items:center;color:var(--lime);font-size:11px;font-weight:800}
+    .journey-steps strong{display:block;color:#eaf6e9;font-size:14px}
+    .journey-steps span{color:#acc4b7;font-size:12px}
+    .note-pill{margin-top:17px;background:#0d31277d;border:1px solid #547e66;color:#c3dac9;border-radius:12px;padding:12px 14px;font-size:12px}
+    .numbers{border-bottom:1px solid var(--line);background:#fff}
+    .number-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+    .num{padding:25px 16px 25px 0;border-right:1px solid var(--line)}
+    .num:not(:first-child){padding-left:22px}
+    .num:last-child{border-right:0}
+    .num big{display:block;color:var(--forest);font-family:var(--serif);font-size:34px;line-height:1.1}
+    .num span{font-size:12px;color:var(--gray);letter-spacing:.03em;font-weight:700}
+    section{scroll-margin-top:24px}
+    .section-head{padding-top:82px;margin-bottom:28px}
+    .section-head .eyebrow{color:#347252}
+    h2{font-family:var(--serif);font-size:clamp(30px,3.5vw,50px);font-weight:400;line-height:1.15;letter-spacing:-.03em;margin:9px 0 10px}
+    .section-head p{color:var(--gray);max-width:770px;margin:0;line-height:1.65}
+    .disclaimer{margin-bottom:20px;background:#e9f1e3;border:1px solid #c4d9c5;border-left:5px solid #317c4c;padding:14px 18px;font-size:13px;color:#3f5f4e;border-radius:10px}
+    .showcase{display:grid;grid-template-columns:340px 1fr;border:1px solid var(--line);border-radius:24px;background:white;overflow:hidden;box-shadow:0 24px 70px #0b2d1b13}
+    .chapters{background:#f5f8f2;border-right:1px solid var(--line);padding:24px 14px}
+    .chapters-label{font-size:11px;color:#638070;font-weight:800;letter-spacing:.15em;text-transform:uppercase;padding:0 13px 15px}
+    .chapter{width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:13px;cursor:pointer;margin:2px 0;color:var(--ink);font:inherit}
+    .chapter:hover{background:#e9f1e6}
+    .chapter[aria-selected="true"]{background:var(--forest);color:white;border-color:var(--forest)}
+    .chapter .index{font-size:11px;font-weight:800;color:#748d79;flex:0 0 22px}
+    .chapter[aria-selected="true"] .index{color:var(--lime)}
+    .chapter .name{font-size:14px;font-weight:700;line-height:1.3}
+    .viewer{padding:27px;min-width:0}
+    .viewer-top{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:19px}
+    .viewer-top strong{color:var(--forest);font-size:12px;letter-spacing:.14em}
+    .progress{height:5px;border-radius:30px;background:#e3ecdc;overflow:hidden;margin-bottom:22px}
+    .progress>div{width:11%;height:100%;background:var(--pine);transition:width .25s}
+    .image-stage{height:410px;background:radial-gradient(circle at 50% 32%,#eaf0e7,#dfe9df);border-radius:19px;display:flex;justify-content:center;align-items:center;overflow:hidden;position:relative;padding:18px;border:1px solid #d9e6d8}
+    .image-stage:before{content:"HISTORICAL DEVELOPMENT CAPTURE";position:absolute;top:14px;left:17px;letter-spacing:.15em;font-size:9px;font-weight:800;color:#507d67;z-index:1}
+    .image-stage img{display:block;max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;filter:drop-shadow(0 12px 18px #1b452d20)}
+    .image-stage.landscape img{max-width:100%;max-height:88%}
+    .viewer-copy{padding-top:21px}
+    .evidence-grade{display:inline-block;background:#e6f0df;border:1px solid #bbd4b9;color:#325e3c;font-size:10px;font-weight:850;padding:4px 9px;border-radius:100px;letter-spacing:.07em;text-transform:uppercase}
+    h3{font-size:23px;line-height:1.25;margin:9px 0}
+    .viewer-copy p{color:#50675c;font-size:14px;line-height:1.65;margin:0 0 13px}
+    .viewer-bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+    .source-link{font-size:13px;font-weight:750;color:#176d53;text-decoration-thickness:1px;text-underline-offset:3px}
+    .pager{display:flex;gap:8px}
+    .pager button{background:#edf3ed;color:var(--forest);border:1px solid #d2e1d0;border-radius:30px;padding:9px 14px;cursor:pointer;font-weight:750}
+    .pager button:hover{background:#dbead6}
+    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+    .evidence-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:23px;min-height:244px}
+    .evidence-card .code{font-size:11px;font-weight:800;color:#3c7455;letter-spacing:.1em}
+    .evidence-card h3{font-family:var(--serif);font-size:27px;font-weight:400;line-height:1.17;margin:12px 0}
+    .evidence-card p{font-size:13px;color:#5d6d62;line-height:1.65}
+    .evidence-card a{color:#1d684f;font-size:13px;font-weight:800;text-underline-offset:3px}
+    .academic{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;background:var(--forest);color:#e6f4ea;border-radius:25px;padding:35px}
+    .academic h2{margin-top:0}
+    .academic p{color:#c3d9c9}
+    .academic dl{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0 0}
+    .academic dt{font-family:var(--serif);font-size:36px;color:var(--lime)}
+    .academic dd{font-size:11px;color:#cbded0;margin:0}
+    .academic img{max-width:100%;border-radius:10px;display:block;border:1px solid #66917b}
+    .academic a{color:var(--lime);font-weight:750}
+    .repos{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+    .repo{padding:18px 20px;border:1px solid var(--line);border-radius:12px;background:#fff;text-decoration:none;transition:transform .2s,box-shadow .2s}
+    .repo:hover{transform:translateY(-2px);box-shadow:0 12px 32px #123f2015}
+    .repo strong{display:block;font-size:14px;color:var(--forest);word-break:break-word}
+    .repo span{font-size:12px;color:var(--gray)}
+    footer{background:var(--dark);color:#d1e0d7;margin-top:90px;padding:41px 0}
+    footer p{color:#a1c0ad;max-width:910px;line-height:1.65;font-size:13px}
+    footer a{color:var(--lime)}
+    .footerline{border-top:1px solid #365c48;padding-top:14px;display:flex;justify-content:space-between;gap:15px;font-size:11px;color:#7fab8c}
+    @media(max-width:1020px){.hero-grid{grid-template-columns:1fr;gap:28px;padding-top:62px;padding-bottom:64px}.journey-card{max-width:700px}.showcase{grid-template-columns:270px 1fr}.cards{grid-template-columns:1fr 1fr}}
+    @media(max-width:760px){.wrap{padding:0 18px}nav .wrap{min-height:64px}nav .links a:not(.navout){display:none}.hero-grid{padding-top:44px}.hero h1{font-size:47px}.number-grid{grid-template-columns:repeat(2,1fr)}.num{padding:14px 12px}.num:nth-child(2){border-right:0}.num:nth-child(3){border-top:1px solid var(--line)}.num:nth-child(4){border-top:1px solid var(--line)}.showcase{grid-template-columns:1fr}.chapters{border-right:0;border-bottom:1px solid var(--line);padding:12px;display:flex;overflow-x:auto;gap:5px;scroll-snap-type:x proximity}.chapters-label{display:none}.chapter{flex:0 0 178px;scroll-snap-align:start}.viewer{padding:17px}.image-stage{height:350px}.cards{grid-template-columns:1fr}.academic{grid-template-columns:1fr;padding:24px}.repos{grid-template-columns:1fr}.footerline{flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <a class="brand" href="#top" aria-label="CityNexus home"><span class="brandmark">C</span> CityNexus</a>
+      <div class="links">
+        <a href="#tour">Visual tour</a><a href="#research">Experiments</a><a href="#engineering">Coursework</a>
+        <a class="navout" href="https://github.com/Canshu-King/CityNexus-Coursework-2026" target="_blank" rel="noopener noreferrer">GitHub portfolio ↗</a>
+      </div>
+    </div>
+  </nav>
+  <header class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Software Engineering · 2026 · Evidence-led project showcase</div>
+        <h1>A city trip that <span class="lime">doesn't stop</span> at planning.</h1>
+        <p>What if a travel assistant could understand your goal, research the city, show its work, and help you adapt when a journey changes? CityNexus explores that idea through full-stack engineering, AI Agent research and controlled multi-day simulations.</p>
+        <div class="hero-cta">
+          <a class="btn primary" href="#tour">Explore the captured product →</a>
+          <a class="btn outline" href="https://github.com/Canshu-King/CityNexus-Coursework-2026/blob/main/docs/PROJECT_PORTAL.md" target="_blank" rel="noopener noreferrer">Read the full project history ↗</a>
+        </div>
+      </div>
+      <aside class="journey-card" aria-label="Project experience overview">
+        <div class="journey-title"><span>ONE TRAVELLER'S JOURNEY</span><span><span class="status-dot"></span>PROJECT CONCEPT</span></div>
+        <ol class="journey-steps">
+          <li><span class="step-icon">01</span><div><strong>Tell the Agent your goal</strong><span>Natural-language needs, dates, preferences</span></div></li>
+          <li><span class="step-icon">02</span><div><strong>Research a real city</strong><span>Place identities, source attribution, routes</span></div></li>
+          <li><span class="step-icon">03</span><div><strong>Choose and follow a plan</strong><span>Itinerary, map, budget and travel stages</span></div></li>
+          <li><span class="step-icon">04</span><div><strong>Respond to change</strong><span>Context checks, recovery, human approval</span></div></li>
+        </ol>
+        <div class="note-pill">This page is an interactive review of genuine screenshots and code evidence. It is <strong>not a live connected application</strong>.</div>
+      </aside>
+    </div>
+  </header>
+  <div class="numbers"><div class="wrap number-grid">
+    <div class="num"><big>2026</big><span>September–November work</span></div>
+    <div class="num"><big>5</big><span>Public GitHub repositories</span></div>
+    <div class="num"><big>16</big><span>Original screen captures</span></div>
+    <div class="num"><big>103</big><span>Linked research result notes</span></div>
+  </div></div>
+  <main>
+    <section class="wrap" id="tour">
+      <div class="section-head">
+        <span class="eyebrow">01 · The product experience</span>
+        <h2>See what we actually built and tested.</h2>
+        <p>Step through the historical development screens in a guided sequence. The explanatory text is in English, with original screenshots preserved in their source language. Each stage links to its real engineering evidence.</p>
+      </div>
+      <div class="disclaimer"><strong>Evidence boundary:</strong> The viewer changes which historical image is shown. It is not a running frontend or a simulated backend, and does not claim physical arrival, a working public AI service or a successful complete classroom presentation.</div>
+      <div class="showcase">
+        <div class="chapters" id="chapters" role="tablist" aria-label="Choose a captured project stage"><div class="chapters-label">Nine stages of the project</div></div>
+        <div class="viewer">
+          <div class="viewer-top"><strong id="chapterCategory">PRODUCT CAPTURE</strong><span id="stageCount" style="font-size:12px;color:#6c8575">01 / 09</span></div>
+          <div class="progress" aria-hidden="true"><div id="stageProgress"></div></div>
+          <div class="image-stage" id="stageFrame"><img id="stageImage" alt="" src="assets/v3-first-trip-goal-mobile.png"></div>
+          <div class="viewer-copy" aria-live="polite">
+            <span class="evidence-grade" id="stageGrade">Browser screenshot</span>
+            <h3 id="stageTitle">Describe your trip in ordinary language</h3>
+            <p id="stageDescription">A traveller begins from a clear goal entry page rather than a complex technical dashboard.</p>
+          </div>
+          <div class="viewer-bottom">
+            <a class="source-link" id="stageSource" href="https://github.com/Canshu-King/CityNexus" target="_blank" rel="noopener noreferrer">Inspect original evidence ↗</a>
+            <div class="pager"><button id="prevStage" type="button" aria-label="Previous stage">← Back</button><button id="nextStage" type="button" aria-label="Next stage">Next →</button></div>
+          </div>
+        </div>
+      </div>
+      <p style="color:#68796d;font-size:13px;margin-top:15px">Tip: use the step buttons or left/right arrow keys. Screenshots are copied from original development and controlled-test records; <a href="https://github.com/Canshu-King/CityNexus-Coursework-2026/blob/main/screenshots/README.md" style="font-weight:700">file-level provenance is documented on GitHub</a>.</p>
+    </section>
+    <section class="wrap" id="research">
+      <div class="section-head">
+        <span class="eyebrow">02 · Engineering results</span>
+        <h2>Not just a list of features.</h2>
+        <p>These three selected results show how we confronted actual reasoning, route-data and classroom-execution problems. Their evidence grades are deliberately different.</p>
+      </div>
+      <div class="cards">
+        <article class="evidence-card">
+          <div class="code">R41 · LIVE ROUTING PROVIDER</div>
+          <h3>22-minute walking route</h3>
+          <p>A fresh local Journey requested one Valhalla walking route between two Nara places. A real provider returned a 22-minute source-bound mobility fact. This was not a physical trip.</p>
+          <a href="https://github.com/Canshu-King/CityNexus/blob/gpt/revolution-r33-open-world-journey-adaptation/REVOLUTION_R41_ROUTE_SESSION_RESULT.md" target="_blank" rel="noopener noreferrer">Read the original R41 result ↗</a>
+        </article>
+        <article class="evidence-card">
+          <div class="code">R20 · LOCAL AGENT EXECUTION</div>
+          <h3>Recovery with human approval</h3>
+          <p>An Agent responded to a simulated mobility disruption by selecting a compatible standby plan. Human approval was required before the local state machine continued to completion.</p>
+          <a href="https://github.com/Canshu-King/CityNexus/blob/gpt/revolution-r33-open-world-journey-adaptation/REVOLUTION_R20_AUTONOMOUS_BRANCH_ARBITRATION_RESULT.md" target="_blank" rel="noopener noreferrer">Read the original R20 result ↗</a>
+        </article>
+        <article class="evidence-card">
+          <div class="code">OCTOBER V3 · TWO VIRTUAL DAYS</div>
+          <h3>Four Suzhou stops, one run</h3>
+          <p>One controlled simulation persisted four visits across two virtual dates, an authenticated change acceptance, and an external AgentRun marked PARTIAL with tool errors. Time and arrivals were simulated.</p>
+          <a href="https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/trial/results/20261026_SUZHOU_FOUR_STOP_LIVE_CHAIN.md" target="_blank" rel="noopener noreferrer">Read the original Suzhou result ↗</a>
+        </article>
+      </div>
+      <p style="margin:18px 0 0;font-size:14px"><a href="https://github.com/Canshu-King/CityNexus-Coursework-2026/blob/main/docs/EXPERIMENT_RESULTS.md" style="font-weight:800;color:var(--pine)">Read 10 sourced case studies</a> · <a href="https://github.com/Canshu-King/CityNexus-Coursework-2026/blob/main/docs/RESEARCH_ARCHIVE_INDEX.md" style="color:var(--pine)">Browse 103 linked historical reports</a></p>
+    </section>
+    <section class="wrap" id="engineering">
+      <div class="section-head">
+        <span class="eyebrow">03 · Formal software engineering</span>
+        <h2>Architecture, requirements and delivery planning.</h2>
+        <p>The project combined application code with formal academic engineering: candidate requirements, domain modeling, traceability, use cases, system/Agent diagrams, a Gantt plan and WBS.</p>
+      </div>
+      <div class="academic">
+        <div>
+          <h2 style="font-size:38px">From requirement to implementation.</h2>
+          <p>The public evidence includes editable Visio and Microsoft Project files as well as PDF previews. These are engineering and planning artifacts; a requirement or planned milestone is not automatically a completed feature.</p>
+          <dl><div><dt>138</dt><dd>Candidate requirements</dd></div><div><dt>18</dt><dd>Core domain entities</dd></div><div><dt>13</dt><dd>Main use cases</dd></div></dl>
+          <p style="margin-bottom:0"><a href="https://github.com/Canshu-King/CityNexus-Coursework-2026/tree/main/teacher-materials" target="_blank" rel="noopener noreferrer">Open diagrams, Gantt, WBS and editable artifacts ↗</a></p>
+        </div>
+        <div><a href="https://github.com/Canshu-King/CityNexus-Coursework-2026/blob/main/teacher-materials/system-overview.pdf" target="_blank" rel="noopener noreferrer"><img src="assets/system-overview.png" alt="Original English CityNexus system architecture from classroom engineering material" loading="lazy"></a></div>
+      </div>
+    </section>
+    <section class="wrap" id="history">
+      <div class="section-head">
+        <span class="eyebrow">04 · Original development history</span>
+        <h2>Five repositories. Several real development tracks.</h2>
+        <p>The original CityNexus source default branch is a September snapshot. Newer October V3, separate autonomous-Agent research, coordination and November coursework work live on their own branches. The curated portal lets reviewers find them.</p>
+      </div>
+      <div class="repos">
+        <a class="repo" href="https://github.com/Canshu-King/CityNexus-Coursework-2026" target="_blank" rel="noopener noreferrer"><strong>CityNexus-Coursework-2026 ↗</strong><span>Teacher-facing portal, original screenshots, code map and engineering artifacts</span></a>
+        <a class="repo" href="https://github.com/Canshu-King/CityNexus" target="_blank" rel="noopener noreferrer"><strong>CityNexus ↗</strong><span>Original full-stack source, Qoder V3, Codex Revolution Lab and true commit history</span></a>
+        <a class="repo" href="https://github.com/Canshu-King/CityNexus-Workspace" target="_blank" rel="noopener noreferrer"><strong>CityNexus-Workspace ↗</strong><span>Early academic research, original assignment brief and project handoffs</span></a>
+        <a class="repo" href="https://github.com/Canshu-King/CityNexus-Lab-Archive" target="_blank" rel="noopener noreferrer"><strong>CityNexus-Lab-Archive ↗</strong><span>Earlier WorkBuddy / developer-agent exploration and test archives</span></a>
+        <a class="repo" href="https://github.com/Canshu-King/CityNexus-History" target="_blank" rel="noopener noreferrer"><strong>CityNexus-History ↗</strong><span>Historical V14/V15 release staging and engineering snapshots</span></a>
+        <a class="repo" href="https://github.com/Canshu-King/CityNexus-Coursework-2026/blob/main/docs/DEVELOPMENT_STREAMS.md" target="_blank" rel="noopener noreferrer"><strong>Branch-by-branch development map ↗</strong><span>Which branch contains which achievement, and where original evidence lives</span></a>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <div class="eyebrow" style="color:var(--lime)">CityNexus · Source-linked coursework showcase</div>
+      <p><strong>Academic disclosure:</strong> The official Software Engineering Part 2 PDF was submitted separately through Moodle. This review page is supplementary evidence. Screens and results span distinct development branches. Some use real providers; others use controlled fixtures or simulated time and position. No fully deployed combined system, physical attendance or completed classroom live demo is claimed. AI-assisted development tools were used.</p>
+      <div class="footerline"><span>Made from genuine development screenshots · September–November 2026</span><span><a href="#top">Back to top ↑</a> · <a href="https://github.com/Canshu-King/CityNexus-Coursework-2026/blob/main/docs/PUBLICATION_AND_PROVENANCE.md">Provenance and limitations</a></span></div>
+    </div>
+  </footer>
+  <script>
+  (function(){
+    "use strict";
+    var stem="https://github.com/Canshu-King/CityNexus/";
+    var v3=stem+"tree/rescue/v3-final-departure-20261022";
+    var stages=[
+      {key:"goal",tab:"Enter a travel goal",category:"REVOLUTION V3 · USER ENTRY",grade:"Real mobile browser capture",title:"Start with a simple human request.",description:"The human-first V3 replaced a confusing entry experience with a clear form for the traveller's goal, destination and dates. The original interface is Chinese; its intent is translated here for the reviewer.",img:"v3-first-trip-goal-mobile.png",alt:"Original V3 Chinese mobile input screen asking where the traveller wants to go",source:stem+"blob/rescue/v3-final-departure-20261022/trial/results/20261027_GO_FROM_BLANK_DELIVERY.md",orientation:"portrait"},
+      {key:"agent",tab:"See the Agent work",category:"REVOLUTION V3 · AGENT TIMELINE",grade:"Captured controlled run",title:"An Agent should show what it is doing.",description:"This recorded V3 screen has an expandable timeline of actual tool-step statuses. It shows what the system recorded, including failed or unavailable steps, instead of fabricating private model reasoning.",img:"v3-agent-tool-timeline-mobile.png",alt:"V3 mobile Agent tool timeline with event statuses",source:stem+"blob/rescue/v3-final-departure-20261022/trial/results/20261027_GO_FROM_BLANK_DELIVERY.md",orientation:"portrait"},
+      {key:"discovery",tab:"Discover city places",category:"EARLIER PRODUCT · CITY DISCOVERY",grade:"Sealed replay screenshot",title:"Find places, with context and provenance.",description:"The discovery view shows candidate places and information sources. This exact development capture was made under a labelled sealed replay, not through a fresh public provider search.",img:"discovery-desktop.png",alt:"Captured desktop CityNexus discovery interface showing candidate places and evidence fields",source:"https://github.com/Canshu-King/CityNexus-Coursework-2026/blob/main/frontend/src/features/discovery/RealCityDiscoveryPanel.tsx",orientation:"landscape"},
+      {key:"map",tab:"See the real map",category:"REVOLUTION V3 · PLACE MAP",grade:"Browser map capture",title:"Turn a plan into visible places.",description:"An October V3 Chrome capture shows rendered OpenStreetMap tiles and markers linked to planned places. It does not represent a person physically arriving at the map position.",img:"v3-real-map-mobile.png",alt:"Mobile map showing actual map tiles and stored place markers",source:stem+"blob/rescue/v3-final-departure-20261022/trial/results/20261027_GO_FROM_BLANK_DELIVERY.md",orientation:"portrait"},
+      {key:"execute",tab:"Start the journey",category:"REVOLUTION V3 · EXECUTION",grade:"Local ACTIVE journey capture",title:"The journey has a life after planning.",description:"A local signed trip reached an ACTIVE execution state in browser testing. The captured UI explicitly reports that the AI had no active task at this moment, which is why this is honest evidence rather than a staged autonomous run.",img:"v3-active-journey-mobile.png",alt:"V3 mobile active trip dashboard with trip assistant and no currently active AI task",source:stem+"blob/rescue/v3-final-departure-20261022/trial/results/20261027_GO_FROM_BLANK_DELIVERY.md",orientation:"portrait"},
+      {key:"simulate",tab:"Inject a classroom event",category:"REVOLUTION V3 · CLASSROOM",grade:"Simulation, not physical travel",title:"Observe a two-day journey in minutes.",description:"A presenter can advance virtual time, jump between simulated stops and inject a labelled scenario such as a venue closure. The proposal shown here needs explicit human approval.",img:"v3-classroom-simulation-control.png",alt:"Desktop classroom simulation dashboard with virtual clock and approval controls",source:stem+"blob/rescue/v3-final-departure-20261022/trial/results/20261025_CLASSROOM_QUICK_CARD.md",orientation:"landscape"},
+      {key:"recover",tab:"Approve a plan change",category:"REVOLUTION V3 · PLAN RECOVERY",grade:"Controlled classroom capture",title:"Changes are governed by a human choice.",description:"After a prepared recovery proposal is accepted, the displayed journey changes. The screenshot is an actual controlled classroom-state capture; its virtual location and time must not be misrepresented as physical movement.",img:"v3-classroom-approved-change.png",alt:"Desktop browser view after simulated user-approved plan adjustment",source:stem+"blob/rescue/v3-final-departure-20261022/trial/results/20261025_CLASSROOM_DEMO_RUNBOOK.md",orientation:"landscape"},
+      {key:"architecture",tab:"Inspect the architecture",category:"SOFTWARE ENGINEERING · SYSTEM MODEL",grade:"Formal design artifact",title:"The engineering behind the interface.",description:"The coursework contains system boundaries, Agent/user decisions, source adapters and a persistent domain model. Formal diagrams describe the architecture and must be read alongside actual implementation and tests.",img:"system-overview.png",alt:"English system architecture diagram from Software Engineering coursework",source:"https://github.com/Canshu-King/CityNexus-Coursework-2026/tree/main/teacher-materials",orientation:"landscape"},
+      {key:"planning",tab:"Review the project plan",category:"SOFTWARE ENGINEERING · GANTT",grade:"Historical project plan",title:"Plan, decompose and document the work.",description:"Microsoft Project and Visio artifacts support the academic assessment. The Gantt image records a historical plan, not an assertion that every milestone was completed on schedule.",img:"gantt-english.png",alt:"English project Gantt chart from November coursework preparation",source:"https://github.com/Canshu-King/CityNexus-Coursework-2026/tree/main/teacher-materials",orientation:"landscape"}
+    ];
+    var tabs=document.getElementById("chapters");
+    var image=document.getElementById("stageImage");
+    var frame=document.getElementById("stageFrame");
+    var grade=document.getElementById("stageGrade");
+    var title=document.getElementById("stageTitle");
+    var description=document.getElementById("stageDescription");
+    var source=document.getElementById("stageSource");
+    var count=document.getElementById("stageCount");
+    var category=document.getElementById("chapterCategory");
+    var progress=document.getElementById("stageProgress");
+    var current=0,buttons=[];
+    stages.forEach(function(s,i){
+      var b=document.createElement("button");
+      b.className="chapter";b.type="button";b.setAttribute("role","tab");
+      b.setAttribute("aria-label","Stage "+(i+1)+": "+s.tab);
+      var n=document.createElement("span");n.className="index";n.textContent=String(i+1).padStart(2,"0");
+      var label=document.createElement("span");label.className="name";label.textContent=s.tab;
+      b.appendChild(n);b.appendChild(label);
+      b.addEventListener("click",function(){show(i,true)});
+      tabs.appendChild(b);buttons.push(b);
+    });
+    function show(i,setHash){
+      current=Math.max(0,Math.min(stages.length-1,i));
+      var s=stages[current];
+      image.src="assets/"+s.img;image.alt=s.alt;
+      frame.classList.toggle("landscape",s.orientation==="landscape");
+      grade.textContent=s.grade;title.textContent=s.title;description.textContent=s.description;
+      category.textContent=s.category;source.href=s.source;
+      count.textContent=String(current+1).padStart(2,"0")+" / "+String(stages.length).padStart(2,"0");
+      progress.style.width=((current+1)/stages.length*100)+"%";
+      buttons.forEach(function(b,k){b.setAttribute("aria-selected",String(k===current));b.tabIndex=k===current?0:-1;});
+      if(setHash){history.replaceState(null,"","#tour-"+s.key)}
+    }
+    document.getElementById("prevStage").addEventListener("click",function(){show((current+stages.length-1)%stages.length,true)});
+    document.getElementById("nextStage").addEventListener("click",function(){show((current+1)%stages.length,true)});
+    document.addEventListener("keydown",function(e){
+      if(e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;
+      if(e.key==="ArrowRight"){show((current+1)%stages.length,true)}
+      if(e.key==="ArrowLeft"){show((current+stages.length-1)%stages.length,true)}
+    });
+    var fragment=location.hash.replace("#tour-","");
+    var match=stages.findIndex(function(s){return s.key===fragment});
+    show(match>=0?match:0,false);
+  })();
+  </script>
+</body>
+</html>
