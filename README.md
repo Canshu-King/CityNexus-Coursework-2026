@@ -6,6 +6,12 @@ CityNexus is a research and implementation project exploring an AI-assisted urba
 
 > **For the professor:** The official Software Engineering Part 2 PDF was submitted separately on Moodle. This repository is supplementary development evidence, not the formal coursework submission and not a claim that the entire application was successfully demonstrated in class. The live classroom demonstration remained incomplete.
 
+## Development record: September–November 2026
+
+**Three calendar months of dated engineering artifacts** are represented here: a September domain-model baseline, subsequent frontend/backend development, October agent experiments and classroom diagrams, and the November coursework/publication snapshot.
+
+**[View the evidence-linked development timeline](docs/DEVELOPMENT_TIMELINE.md).** The GitHub commit graph starts in November **by design**: this is a fresh, sanitized public release, not the original private Git development history. The timeline documents the stages without inventing older public commits, work hours or successful production demonstrations.
+
 ## Five-minute project tour
 
 | Review order | Start here |
