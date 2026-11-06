@@ -2,6 +2,22 @@
 
 Rather than an abstract list of proposed features, this catalogue points to **specific files already present in the published repository**. Their existence is evidence of implemented modules, but is not by itself proof that every integration works in a live deployment.
 
+## Important: this atlas is the curated source snapshot, not the newest V3 branch
+
+The internal links below describe the **November coursework source snapshot** included in this portfolio. The original source repository also contains a **later Qoder-led human-first V3 product line** at [rescue/v3-final-departure-20261022](https://github.com/Canshu-King/CityNexus/tree/rescue/v3-final-departure-20261022), with actual browser captures and product work up to **29 October**.
+
+| V3 product capability | Live source from the original public repository |
+| --- | --- |
+| Natural-language entry and goal editing | [GoalDraftEditor.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/GoalDraftEditor.tsx) |
+| Place discovery and city selection | [CityPicker.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/CityPicker.tsx) · [NamedPlaceSearch.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/NamedPlaceSearch.tsx) |
+| Conversational Agent, tool timeline and clear availability | [MobileHermesRun.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/MobileHermesRun.tsx) · [WorkspaceActions.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/WorkspaceActions.tsx) |
+| Plan workbench, candidate selection and departure | [MobilePlanWorkbench.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/MobilePlanWorkbench.tsx) · [DraftDepartureCard.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/DraftDepartureCard.tsx) |
+| Mobile map and persisted place identities | [WorkspaceMap.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/WorkspaceMap.tsx) |
+| Guardian decision and simulation | [GuardianRealityPanel.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/GuardianRealityPanel.tsx) · [ClassroomPresenterPanel.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/ClassroomPresenterPanel.tsx) |
+| Simulated time and place | [ClassroomClockStrip.tsx](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/ClassroomClockStrip.tsx) · [simulationClient.ts](https://github.com/Canshu-King/CityNexus/blob/rescue/v3-final-departure-20261022/frontend/src/trial/mobile/simulationClient.ts) |
+
+**[See authentic V3 screenshots and the classroom walk-through](CLASSROOM_AND_V3.md)**. A source module and a documented controlled test are valuable evidence, but do not guarantee complete live provider configuration, a physically verified trip, or a successful final classroom demo.
+
 ## 1. Traveller experience
 
 | Feature / engineering scope | Inspect the implementation |
