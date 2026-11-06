@@ -1,0 +1,56 @@
+/* ORD-0520 中止 -- the trip's abort block and the notice 实时行程 shows for a trip the server has
+   decided is not live.  Its own file, for the reason every lane here gives: the shared token sheet
+   is edited by other lanes on the same night, and every value below is read from it, never redefined. */
+.cn-abort {
+  display: grid;
+  gap: var(--cn-s-10);
+  margin-top: var(--cn-s-16);
+  padding: var(--cn-s-16);
+  border: var(--cn-divider-w) solid var(--cn-hairline);
+  border-radius: var(--cn-r-card);
+  background: var(--v8-panel);
+}
+.cn-abort__explains {
+  margin: 0;
+  color: var(--cn-ink);
+  font-size: var(--cn-fs-secondary);
+  line-height: var(--cn-lh-tight);
+  overflow-wrap: anywhere;
+}
+.cn-abort__summary {
+  color: var(--cn-accent-text);
+  font-size: var(--cn-fs-body);
+  cursor: pointer;
+}
+.cn-abort__form { display: grid; gap: var(--cn-s-10); }
+.cn-abort__label { color: var(--cn-ink-secondary); font-size: var(--cn-fs-caption); }
+.cn-abort__input {
+  min-height: 56px;
+  padding: var(--cn-s-10);
+  color: var(--cn-ink);
+  background: var(--v8-panel);
+  border: var(--cn-divider-w) solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  font-size: var(--cn-fs-body);
+}
+.cn-abort__state,
+.cn-abort__done,
+.cn-abort__refusal { display: grid; gap: var(--cn-s-10); }
+.cn-abort__badge {
+  margin: 0;
+  color: var(--cn-ink);
+  font-size: var(--cn-fs-caption);
+}
+.cn-abort__facts { display: grid; gap: 4px; }
+/* A reason is whatever the traveller typed, and the abort moment is a full ISO instant; both can be
+   one unbroken token, so the block wraps anywhere rather than clipping either. */
+.cn-abort__reason,
+.cn-abort__when,
+.cn-abort__missing {
+  margin: 0;
+  font-size: var(--cn-fs-meta);
+  color: var(--cn-ink-secondary);
+  overflow-wrap: anywhere;
+}
+.cn-abort__missing { color: var(--cn-danger); }
+.cn-abort__details { margin-top: 4px; }

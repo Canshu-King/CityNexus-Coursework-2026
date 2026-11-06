@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-09-22T01:00:32+0800",
+  "url": "https://photon.komoot.io/api/?q=%E4%BA%91%E5%92%8C%E5%8E%BF&limit=10",
+  "request_user_agent": "CityNexus/7.0 (+https://citynexus.local/discovery)",
+  "request_post_data": null,
+  "elapsed_ms": 6750.0,
+  "status": 200,
+  "error": null,
+  "response_headers": {
+    "Server": "nginx",
+    "Date": "Mon, 21 Sep 2026 17:00:32 GMT",
+    "Content-Type": "application/json",
+    "Content-Length": "1540",
+    "Connection": "close",
+    "Expires": "Mon, 21 Sep 2026 18:00:32 GMT",
+    "Cache-Control": "max-age=3600"
+  },
+  "body_text": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"osm_type\":\"R\",\"osm_id\":3289208,\"osm_key\":\"place\",\"osm_value\":\"city\",\"type\":\"district\",\"name\":\"云和县\",\"city\":\"丽水市\",\"state\":\"浙江省\",\"country\":\"中国\",\"countrycode\":\"CN\",\"extra\":{\"admin_level\":\"6\"},\"extent\":[119.3492164,28.3036554,119.7450328,27.9105414]},\"geometry\":{\"type\":\"Point\",\"coordinates\":[119.5684002,28.1185318]}},{\"type\":\"Feature\",\"properties\":{\"osm_type\":\"N\",\"osm_id\":244082768,\"osm_key\":\"place\",\"osm_value\":\"county\",\"type\":\"county\",\"name\":\"云和县\",\"state\":\"浙江省\",\"country\":\"中国\",\"countrycode\":\"CN\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[119.5779441,28.1096051]}},{\"type\":\"Feature\",\"properties\":{\"osm_type\":\"W\",\"osm_id\":1425572455,\"osm_key\":\"amenity\",\"osm_value\":\"school\",\"type\":\"house\",\"name\":\"云和县中等职业技术学校\",\"street\":\"复兴街\",\"district\":\"云和县\",\"city\":\"丽水市\",\"county\":\"云和县\",\"state\":\"浙江省\",\"country\":\"中国\",\"countrycode\":\"CN\",\"extent\":[119.559987,28.1066622,119.5648064,28.1022594]},\"geometry\":{\"type\":\"Point\",\"coordinates\":[119.5620254,28.1043785]}},{\"type\":\"Feature\",\"properties\":{\"osm_type\":\"W\",\"osm_id\":1273098417,\"osm_key\":\"amenity\",\"osm_value\":\"school\",\"type\":\"house\",\"name\":\"云和县文元育英中学\",\"street\":\"长深高速\",\"district\":\"云和县\",\"city\":\"丽水市\",\"county\":\"云和县\",\"state\":\"浙江省\",\"country\":\"中国\",\"countrycode\":\"CN\",\"extent\":[119.5741411,28.0965047,119.5769682,28.0942474]},\"geometry\":{\"type\":\"Point\",\"coordinates\":[119.575523,28.0951513]}}]}"
+}

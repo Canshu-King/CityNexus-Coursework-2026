@@ -1,0 +1,73 @@
+/* ORD-0440 - the sheet in front of stopping a preparation. Its own file because the shared token
+   sheet is edited by other lanes; every value here is read from it, never redefined. Sizes are
+   deliberately tight: the exit has to stay inside the first screen, which the gate measures. */
+.cn-prep-survey {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 12px 14px 14px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--v8-panel);
+  /* The shell's header re-measures by ~10 px while the page polls (probe: 20 samples, 3 distinct
+     boxes for one checkbox), and a survey whose rows move under a finger is a survey people mis-tap.
+     Pinning the sheet to the viewport keeps its own geometry stable without touching the shell. */
+  position: sticky;
+  top: 8px;
+}
+.cn-prep-survey-title {
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  font-weight: 600;
+  margin: 0;
+}
+.cn-prep-survey-sub,
+.cn-prep-survey-count,
+.cn-prep-survey-where,
+.cn-prep-survey-door {
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+  margin: 0;
+}
+.cn-prep-survey-over {
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  margin: 0;
+}
+.cn-prep-survey-reasons {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cn-prep-survey-reasons label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--cn-touch-min);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+}
+.cn-prep-survey-note-label {
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+  margin-top: 4px;
+}
+.cn-prep-survey-note {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--v8-panel);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  resize: vertical;
+}
+.cn-prep-survey-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}

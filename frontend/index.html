@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- viewport-fit=cover is only safe because .v8-mobile-nav / .v8-topbar /
+         .v8-product-shell now carry real env(safe-area-inset-*) padding; adding
+         this meta without that chrome would put content under the home indicator. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <!-- theme-color follows the design tokens; the old #172945 matched no surface in the
+         app. The last *matching* declaration wins, so the always-matching light value is
+         declared first and the dark one after it. -->
+    <meta name="theme-color" content="#f5f5f7" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
+    <title>CityNexus Trip Operations</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "captured_at": "2026-09-22T01:01:04+0800",
+  "url": "https://photon.komoot.io/api/?q=%E8%B4%A1%E5%B1%B1%E7%8B%AC%E9%BE%99%E6%97%8F%E6%80%92%E6%97%8F%E8%87%AA%E6%B2%BB%E5%8E%BF&limit=10",
+  "request_user_agent": "python-httpx/0.28.1",
+  "request_post_data": null,
+  "elapsed_ms": 938.0,
+  "status": 403,
+  "error": "HTTP 403",
+  "response_headers": {
+    "Server": "nginx",
+    "Date": "Mon, 21 Sep 2026 17:01:04 GMT",
+    "Content-Type": "text/html",
+    "Content-Length": "146",
+    "Connection": "close"
+  },
+  "body_text": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+}

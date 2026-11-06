@@ -1,0 +1,54 @@
+metadata:
+  name: CityNexus Visio QA Rules
+  version: 1.0.0-candidate
+buildFailRules:
+- id: VQA-001
+  rule: No overlapping semantic shapes.
+- id: VQA-002
+  rule: No connector may pass through an unrelated semantic shape.
+- id: VQA-003
+  rule: All connectors must be glued to their source and target shapes.
+- id: VQA-004
+  rule: Use Case actors must remain outside the CityNexus system boundary and use
+    cases inside it.
+- id: VQA-005
+  rule: Include and extend arrow direction must point toward the included/base use
+    case respectively.
+- id: VQA-006
+  rule: Composition diamond must be placed on the owner/source side.
+- id: VQA-007
+  rule: Association multiplicity labels must be placed near endpoints; dependency
+    connectors must not show multiplicity.
+- id: VQA-008
+  rule: All referenced shape IDs and master references must resolve.
+- id: VQA-009
+  rule: JourneyTwin must carry <<projection>> and ScoreBreakdown <<value object>>
+    where drawn.
+- id: VQA-010
+  rule: Native Visio UML masters/connectors must be used when available; do not substitute
+    ordinary rectangles/ellipses.
+routingRules:
+- id: VQA-R01
+  rule: Default routing is right-angle.
+- id: VQA-R02
+  rule: Target <= 2 connector crossings per page.
+- id: VQA-R03
+  rule: If crossings exceed 2, reroute once automatically and flag for manual review
+    if still exceeded.
+contentRules:
+- id: VQA-C01
+  rule: Operations compartment hidden unless a later diagram explicitly requires operations.
+- id: VQA-C02
+  rule: Displayed diagram text is English.
+- id: VQA-C03
+  rule: Do not draw obsolete TravelerPreference, JourneyPreference, AIInsight, or
+    Transaction classes.
+- id: VQA-C04
+  rule: Use PaymentTransaction, unified Preference, Domain v0.4.2 multiplicities,
+    and current use-case names.
+exportRules:
+- id: VQA-E01
+  rule: Save master VSDX as CityNexus_Visio_Model_Baseline_v1.0.vsdx.
+- id: VQA-E02
+  rule: Export each submitted page as SVG; PNG fallback must be at least 1920x1080
+    for 16:9 pages.

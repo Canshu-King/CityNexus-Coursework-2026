@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-09-22T01:01:01+0800",
+  "url": "https://photon.komoot.io/api/?q=zzz%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8E%BFxq&limit=10",
+  "request_user_agent": "CityNexus/7.0 (+https://citynexus.local/discovery)",
+  "request_post_data": null,
+  "elapsed_ms": 6203.0,
+  "status": 200,
+  "error": null,
+  "response_headers": {
+    "Server": "nginx",
+    "Date": "Mon, 21 Sep 2026 17:01:02 GMT",
+    "Content-Type": "application/json",
+    "Content-Length": "42",
+    "Connection": "close",
+    "Expires": "Mon, 21 Sep 2026 18:01:02 GMT",
+    "Cache-Control": "max-age=3600"
+  },
+  "body_text": "{\"type\":\"FeatureCollection\",\"features\":[]}"
+}

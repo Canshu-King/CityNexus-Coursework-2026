@@ -1,0 +1,27 @@
+{
+  "total": 4,
+  "passed": 4,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "duplicate YAML key rejected",
+      "pass": true,
+      "returnCode": 1
+    },
+    {
+      "name": "missing top-level UC rejected",
+      "pass": true,
+      "returnCode": 1
+    },
+    {
+      "name": "wrong domain kind rejected",
+      "pass": true,
+      "returnCode": 1
+    },
+    {
+      "name": "bad relationship endpoint rejected",
+      "pass": true,
+      "returnCode": 1
+    }
+  ]
+}

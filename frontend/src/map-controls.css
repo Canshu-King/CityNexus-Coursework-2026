@@ -1,0 +1,78 @@
+/*
+ * ORD-0403 — the one named map control, and the two states it can be in.
+ *
+ * The glyph is drawn from borders and one pseudo-element: a ring for "the journey's frame" and a
+ * dot for "you are inside it". Nothing here is a copied icon, font or image — the project's own
+ * geometry tokens do the work, so the control follows the same light/dark binding as the rest of
+ * the surface.
+ *
+ * State is expressed three ways on purpose, because colour alone is not a state and this control
+ * sits on a photographic basemap where contrast is not guaranteed:
+ *   - `data-viewport-state` on the button (what the gate reads),
+ *   - the glyph's own shape (ring filled vs ring hollow),
+ *   - and the label text, which is a different sentence in each state.
+ */
+
+.v8-map-panel .v8-map-viewport-controls {
+  position: absolute;
+  top: var(--cn-s-12);
+  right: var(--cn-s-12);
+  z-index: 4;
+  display: flex;
+}
+
+.v8-map-panel .v8-map-viewport-control {
+  display: flex;
+  align-items: center;
+  gap: var(--cn-s-8);
+  min-height: 32px;
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-surface);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: var(--cn-shadow-card);
+}
+
+.v8-map-panel .v8-map-viewport-control:focus-visible {
+  outline: 2px solid var(--v8-indigo);
+  outline-offset: 2px;
+}
+
+/* the frame: a ring, always present, so the control does not change size between states */
+.v8-map-panel .v8-map-viewport-control-glyph {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-radius: var(--cn-r-circle);
+}
+
+/* on target: the ring is filled — "you are inside the frame" */
+.v8-map-panel .v8-map-viewport-control[data-viewport-state="on-target"] .v8-map-viewport-control-glyph::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: var(--cn-r-circle);
+  background: currentColor;
+}
+
+/* off target: the ring is hollow and carries a crosshair — "the frame is elsewhere, go back" */
+.v8-map-panel .v8-map-viewport-control[data-viewport-state="off-target"] .v8-map-viewport-control-glyph::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+}
+
+.v8-map-panel .v8-map-viewport-control-label {
+  overflow-wrap: anywhere;
+}

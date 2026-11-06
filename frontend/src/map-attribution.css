@@ -1,0 +1,81 @@
+/*
+ * ORD-A — the basemap provider line has to be *readable*, not merely present in the style document.
+ *
+ * Both map surfaces construct maplibre with `attributionControl:false`
+ * (`components/v8/MapPanel.tsx`, `components/JourneyMap.tsx`), so the library never draws
+ * the notice and `mapComp.attribution` only ever reached the tile source's metadata.
+ *
+ * Two rules, deliberately small:
+ *  - `.v8-map-attribution` lives INSIDE the existing `.v8-map-caption`, whose height the camera
+ *    already reserves space for (`MapPanel.tsx` measures it before `fitBounds`). A separate bottom
+ *    overlay would have needed its own padding arithmetic, and the last time something floated over
+ *    the canvas without being counted the last marker ended up hidden under it (pass-9 blocker #1).
+ *    It inherits the caption's colour, so light/dark needs no rule of its own here.
+ *  - `.maplibre-attribution` sits on bare tiles in the evidence map, so it carries its own themed
+ *    surface. `--cn-surface` / `--v8-ink` are the same tokens `.v8-map-tile-notice` uses, which is
+ *    what keeps it legible under `data-theme="dark"` without inventing a second palette.
+ *
+ * Both are read-only text and pass gestures through, per the ownership rule at `styles.css`
+ * (ORD-0134): an overlay that swallows a drag is how the panel went dead under a finger before.
+ */
+
+/* The two bottom overlays used to be positioned independently, which only stayed readable while
+   the caption was a single line. Anchoring them as one stack means the camera is told about the
+   whole band (see `.v8-map-overlay-stack` in MapPanel's fitBounds padding) and neither element can
+   land on top of the other at any width. Selectors are deliberately deeper than
+   `styles.css` (.v8-map-caption) and `design-tokens.css` (.v8-map-gesture-hint) so they
+   win on specificity, not on import order. */
+.v8-map-panel .v8-map-overlay-stack {
+  position: absolute;
+  right: var(--cn-s-12);
+  bottom: calc(var(--cn-s-12) + env(safe-area-inset-bottom, 0px));
+  left: var(--cn-s-12);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cn-s-8);
+  pointer-events: none;
+}
+
+.v8-map-panel .v8-map-overlay-stack .v8-map-caption,
+.v8-map-panel .v8-map-overlay-stack .v8-map-gesture-hint {
+  position: static;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  width: 100%;
+  max-width: 100%;
+  transform: none;
+}
+
+.v8-map-attribution {
+  display: block;
+  margin: var(--cn-s-8) 0 0;
+  font-size: var(--cn-fs-caption);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.maplibre-attribution {
+  position: absolute;
+  right: var(--cn-s-8);
+  bottom: var(--cn-s-8);
+  left: var(--cn-s-8);
+  z-index: 3;
+  margin: 0;
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-surface);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  line-height: 1.35;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.v8-map-attribution,
+.maplibre-attribution {
+  pointer-events: none;
+}

@@ -1,0 +1,37 @@
+/*
+ * ORD-0512 — the stop's own word on the glass.
+ *
+ * Its own marker element, not a child of the pin, for the same reason ORD-0497 gave for the date
+ * badge (`src/map-selection.css`, the `.v8-map-stamp-date` note):
+ * `e2e/qoder-map-ord0403-named-control-and-labels.spec.ts` asserts a pin paints nothing but its
+ * stop number, and a child node would break that with the text it adds. The label sits to the right
+ * of the pin so it cannot land on the date badge underneath.
+ *
+ * Colours come only from the tokens `.v8-map-stamp-date` already uses, so the dark-scheme audit has
+ * nothing new to fail on; the chip is legible on a pale raster because it carries the same surface
+ * fill the badge does.
+ *
+ * `.label-hidden` is `visibility`, never removal: the node stays in the document so the gates that
+ * count labels can tell "no room for this word at this zoom" apart from "this stop has no name", and
+ * `data-hidden-reason` on the element says which of the two it is.
+ */
+
+.v8-map-panel .v8-map-stop-label {
+  padding: 1px 6px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-surface);
+  color: var(--v8-ink);
+  box-shadow: 0 2px 6px #17294533;
+  font-size: var(--cn-fs-caption);
+  font-weight: 700;
+  line-height: 1.35;
+  white-space: nowrap;
+  /* The pin owns the tap. A label that swallowed one would take the marker's hit test with it, which
+     is what `e2e/qoder-ord0417-tap-names-the-stop.spec.ts` measures at four widths. */
+  pointer-events: none;
+}
+
+.v8-map-panel .v8-map-stop-label.label-hidden {
+  visibility: hidden;
+}

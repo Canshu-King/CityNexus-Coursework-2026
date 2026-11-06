@@ -1,0 +1,1243 @@
+model:
+  id: CN-DM-004
+  name: CityNexus Core Domain Model
+  version: 0.4
+  status: release-candidate
+  official_project: Smart City Traveler System
+  product: CityNexus
+  purpose:
+    Define the domain objects, lifecycle states, constraints, contextual evidence
+    and replanning decisions that keep one urban journey feasible, explainable and
+    auditable.
+  bounded_contexts:
+    - Journey Management
+    - City Discovery
+    - Booking and Commerce
+    - Journey Intelligence
+value_objects:
+  Money:
+    fields:
+      amount: decimal
+      currency: ISO-4217
+    used_by:
+      - Journey
+      - Commitment
+      - Order
+      - PaymentTransaction
+  GeoPoint:
+    fields:
+      latitude: decimal
+      longitude: decimal
+    used_by:
+      - Place
+      - JourneyTwin
+      - ContextSnapshot
+  TimeWindow:
+    fields:
+      start: datetime
+      end: datetime
+      timezone: IANA timezone
+    used_by:
+      - Activity
+      - Commitment
+      - Booking
+      - Order
+  TravelEstimate:
+    fields:
+      durationMinutes: integer
+      distanceMeters: integer
+      mode: enum[walk,transit,cycle,car]
+    used_by:
+      - Activity
+  ScoreBreakdown:
+    fields:
+      commitmentPreservation: decimal
+      stability: decimal
+      timeReliability: decimal
+      preferenceFit: decimal
+      mobilityFit: decimal
+      budgetFit: decimal
+      robustness: decimal
+      opportunityValue: decimal
+      riskPenalty: decimal
+      finalScore: decimal
+    used_by:
+      - ReplanProposal
+      - CandidatePlan
+entities:
+  Traveler:
+    identity: travelerId
+    fields:
+      displayName:
+        type: string
+        required: true
+      homeTimezone:
+        type: string
+        required: true
+      walkingTolerance:
+        type: integer
+        required: false
+      budgetPreference:
+        type: valueObjectRef
+        required: false
+        ref: Money
+    relationships:
+      - type: association
+        target: Journey
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: owns
+      - type: association
+        target: Preference
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: expresses
+  Journey:
+    identity: journeyId
+    fields:
+      destinationCity:
+        type: string
+        required: true
+      startAt:
+        type: datetime
+        required: true
+      endAt:
+        type: datetime
+        required: true
+      budgetLimit:
+        type: valueObjectRef
+        required: true
+        ref: Money
+      status:
+        type: enumRef
+        required: true
+        enumRef: journey_status
+      activePlanVersionId:
+        type: entityRef
+        required: false
+        ref: PlanVersion
+      healthStatus:
+        type: enumRef
+        required: true
+        enumRef: journey_health
+    invariants:
+      - endAt > startAt
+      - budgetLimit.amount >= 0
+      - active_plan_lifecycle:
+          draft: zero_active_plan_versions
+          planned: exactly_one_current_plan
+          active: exactly_one_current_plan
+          paused: exactly_one_current_plan
+    relationships:
+      - type: composition
+        target: PlanVersion
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: versions
+      - type: composition
+        target: Commitment
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: commitments
+      - type: composition
+        target: Constraint
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: constraints
+      - type: composition
+        target: Event
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: events
+      - type: composition
+        target: ReplanProposal
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: proposals
+      - type: composition
+        target: ContextSnapshot
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: context_snapshots
+      - type: association
+        target: Booking
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: bookings
+      - type: association
+        target: Order
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: orders
+  JourneyTwin:
+    identity: journeyTwinId
+    stereotype: <<projection>>
+    fields:
+      journeyId:
+        type: entityRef
+        required: true
+        ref: Journey
+      generatedAt:
+        type: datetime
+        required: true
+      dataFreshness:
+        type: duration
+        required: true
+      currentLocation:
+        type: valueObjectRef
+        required: false
+        ref: GeoPoint
+      currentTime:
+        type: datetime
+        required: true
+      healthStatus:
+        type: enumRef
+        required: true
+        enumRef: journey_health
+      remainingBudget:
+        type: valueObjectRef
+        required: false
+        ref: Money
+    purpose:
+      Read-optimised projection of the journey's current plan, commitments,
+      constraints, events and latest context snapshot; it is not an independent source
+      of truth.
+    relationships:
+      - type: dependency
+        target: Journey
+        role: projects_from
+        label: <<projects from>>
+      - type: dependency
+        target: PlanVersion
+        role: projects_from
+        label: <<projects from>>
+      - type: dependency
+        target: Commitment
+        role: projects_from
+        label: <<projects from>>
+      - type: dependency
+        target: Event
+        role: projects_from
+        label: <<projects from>>
+      - type: dependency
+        target: ContextSnapshot
+        role: projects_from
+        label: <<projects from>>
+  PlanVersion:
+    identity: planVersionId
+    fields:
+      versionNumber:
+        type: integer
+        required: true
+      createdAt:
+        type: datetime
+        required: true
+      createdBy:
+        type: string
+        required: true
+      score:
+        type: decimal
+        required: true
+      feasibility:
+        type: boolean
+        required: true
+      status:
+        type: enumRef
+        required: true
+        enumRef: plan_version_status
+      supersedesPlanVersionId:
+        type: entityRef
+        required: false
+        ref: PlanVersion
+    invariants:
+      - score is calculated after hard-constraint validation
+      - only one version can be active for a Journey
+    relationships:
+      - type: composition
+        target: Activity
+        multiplicity:
+          source: "1"
+          target: 1..*
+        role: contains
+      - type: association
+        target: ReplanProposal
+        multiplicity:
+          source: 0..*
+          target: 0..1
+        role: proposed_by_or_for
+  Activity:
+    identity: activityId
+    fields:
+      title:
+        type: string
+        required: true
+      category:
+        type: string
+        required: true
+      sequence:
+        type: integer
+        required: true
+      plannedWindow:
+        type: valueObjectRef
+        required: true
+        ref: TimeWindow
+      flexible:
+        type: boolean
+        required: true
+      priority:
+        type: integer
+        required: true
+      status:
+        type: enumRef
+        required: true
+        enumRef: activity_status
+      travelFromPrevious:
+        type: valueObjectRef
+        required: false
+        ref: TravelEstimate
+    relationships:
+      - type: association
+        target: Place
+        multiplicity:
+          source: 0..*
+          target: 0..1
+        role: occurs_at
+      - type: association
+        target: CityService
+        multiplicity:
+          source: 0..*
+          target: 0..1
+        role: uses
+      - type: association
+        target: Commitment
+        multiplicity:
+          source: 0..*
+          target: 0..1
+        role: may_create
+      - type: association
+        target: Constraint
+        multiplicity:
+          source: 0..*
+          target: 0..*
+        role: affected_by
+  Place:
+    identity: placeId
+    fields:
+      name:
+        type: string
+        required: true
+      address:
+        type: string
+        required: false
+      location:
+        type: valueObjectRef
+        required: true
+        ref: GeoPoint
+      openingHours:
+        type: string
+        required: false
+      liveStatus:
+        type: string
+        required: false
+      qualityScore:
+        type: decimal
+        required: false
+      provider:
+        type: string
+        required: true
+      providerPlaceId:
+        type: string
+        required: true
+      observedAt:
+        type: datetime
+        required: true
+      expiresAt:
+        type: datetime
+        required: false
+    relationships:
+      - type: association
+        target: CityService
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: hosts
+  CityService:
+    identity: serviceId
+    fields:
+      providerId:
+        type: string
+        required: true
+      providerServiceId:
+        type: string
+        required: true
+      name:
+        type: string
+        required: true
+      category:
+        type: string
+        required: true
+      priceRange:
+        type: valueObjectRef
+        required: false
+        ref: Money
+      reservationRequired:
+        type: boolean
+        required: true
+      cancellationPolicy:
+        type: string
+        required: false
+      availabilityStatus:
+        type: enumRef
+        required: true
+        enumRef: service_availability_status
+      observedAt:
+        type: datetime
+        required: true
+      expiresAt:
+        type: datetime
+        required: false
+    relationships:
+      - type: association
+        target: Booking
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: accepts
+      - type: association
+        target: Order
+        multiplicity:
+          source: "1"
+          target: 0..*
+        role: fulfils
+  Commitment:
+    identity: commitmentId
+    fields:
+      strength:
+        type: enumRef
+        required: true
+        enumRef: commitment_strength
+      kind:
+        type: string
+        required: true
+      lockedWindow:
+        type: valueObjectRef
+        required: false
+        ref: TimeWindow
+      cancellationCost:
+        type: valueObjectRef
+        required: false
+        ref: Money
+      status:
+        type: enumRef
+        required: true
+        enumRef: commitment_status
+      sourceType:
+        type: enumRef
+        required: true
+        enumRef: commitment_source_type
+      sourceReference:
+        type: string
+        required: false
+    purpose:
+      A real-world obligation that valid replanning should preserve unless
+      explicit override policy is satisfied.
+    relationships:
+      - type: association
+        target: Booking
+        multiplicity:
+          source: 0..*
+          target: 0..1
+        role: realised_by
+      - type: association
+        target: PaymentTransaction
+        multiplicity:
+          source: 0..*
+          target: 0..*
+        role: paid_by
+  Constraint:
+    identity: constraintId
+    fields:
+      kind:
+        type: string
+        required: true
+      severity:
+        type: enumRef
+        required: true
+        enumRef: constraint_severity
+      expression:
+        type: string
+        required: true
+      priority:
+        type: integer
+        required: true
+      source:
+        type: string
+        required: true
+      active:
+        type: boolean
+        required: true
+      relaxationPolicy:
+        type: string
+        required: false
+      validFrom:
+        type: datetime
+        required: false
+      validUntil:
+        type: datetime
+        required: false
+      scopeType:
+        type: enumRef
+        required: true
+        enumRef: constraint_scope_type
+      scopeReferenceId:
+        type: string
+        required: false
+    purpose:
+      A condition evaluated by the deterministic feasibility layer before preference
+      scoring.
+    relationships: []
+  Event:
+    identity: eventId
+    fields:
+      kind:
+        type: enumRef
+        required: true
+        enumRef: event_kind
+      occurredAt:
+        type: datetime
+        required: true
+      observedAt:
+        type: datetime
+        required: true
+      expiresAt:
+        type: datetime
+        required: false
+      severity:
+        type: string
+        required: false
+      impactLevel:
+        type: enumRef
+        required: true
+        enumRef: event_impact_level
+      source:
+        type: string
+        required: true
+      payload:
+        type: object
+        required: false
+      confidence:
+        type: decimal
+        required: false
+      processingStatus:
+        type: enumRef
+        required: true
+        enumRef: event_processing_status
+      acknowledged:
+        type: boolean
+        required: true
+    relationships:
+      - type: association
+        target: ReplanProposal
+        multiplicity:
+          source: 0..*
+          target: 0..*
+        role: may_trigger
+  ContextSnapshot:
+    identity: contextSnapshotId
+    fields:
+      journeyId:
+        type: entityRef
+        required: true
+        ref: Journey
+      capturedAt:
+        type: datetime
+        required: true
+      currentLocation:
+        type: valueObjectRef
+        required: false
+        ref: GeoPoint
+      weather:
+        type: string
+        required: false
+      traffic:
+        type: string
+        required: false
+      delays:
+        type: string
+        required: false
+      remainingBudget:
+        type: valueObjectRef
+        required: false
+        ref: Money
+      dataFreshness:
+        type: duration
+        required: true
+      sourceReferences:
+        type: array
+        required: false
+    purpose:
+      Immutable observation of external and traveler context used to project
+      JourneyTwin and evaluate replanning.
+  ReplanProposal:
+    identity: proposalId
+    fields:
+      replanScope:
+        type: enumRef
+        required: true
+        enumRef: replan_scope
+      triggerEventIds:
+        type: array
+        required: true
+      basePlanVersionId:
+        type: entityRef
+        required: true
+        ref: PlanVersion
+      selectedCandidatePlanId:
+        type: entityRef
+        required: false
+        ref: CandidatePlan
+      summaryRationale:
+        type: string
+        required: true
+      createdAt:
+        type: datetime
+        required: true
+      affectedCommitmentIds:
+        type: array
+        required: false
+      status:
+        type: enumRef
+        required: true
+        enumRef: proposal_status
+    relationships:
+      - type: association
+        target: PlanVersion
+        multiplicity:
+          source: 0..*
+          target: 0..1
+        role: base_plan
+      - type: composition
+        target: CandidatePlan
+        multiplicity:
+          source: "1"
+          target: 1..*
+        role: candidates
+  CandidatePlan:
+    identity: candidatePlanId
+    fields:
+      rank:
+        type: integer
+        required: true
+      feasibility:
+        type: boolean
+        required: true
+      finalScore:
+        type: decimal
+        required: true
+      scoreDelta:
+        type: decimal
+        required: true
+      changeCount:
+        type: integer
+        required: true
+      rationale:
+        type: string
+        required: true
+      selectionStatus:
+        type: enumRef
+        required: true
+        enumRef: selection_status
+      planVersion:
+        type: entityRef
+        required: true
+        ref: PlanVersion
+      scoreBreakdown:
+        type: valueObjectRef
+        required: true
+        ref: ScoreBreakdown
+    relationships:
+      - type: association
+        target: PlanVersion
+        multiplicity:
+          source: 0..*
+          target: "1"
+        role: references
+  Booking:
+    identity: bookingId
+    fields:
+      providerBookingRef:
+        type: string
+        required: true
+      reservedWindow:
+        type: valueObjectRef
+        required: true
+        ref: TimeWindow
+      status:
+        type: enumRef
+        required: true
+        enumRef: booking_status
+      cancellationDeadline:
+        type: datetime
+        required: false
+    relationships:
+      - type: association
+        target: PaymentTransaction
+        multiplicity:
+          source: 0..*
+          target: 0..*
+        role: settled_by
+  Order:
+    identity: orderId
+    fields:
+      items:
+        type: array
+        required: true
+      total:
+        type: valueObjectRef
+        required: true
+        ref: Money
+      fulfilmentWindow:
+        type: valueObjectRef
+        required: true
+        ref: TimeWindow
+      status:
+        type: enumRef
+        required: true
+        enumRef: order_status
+    relationships:
+      - type: association
+        target: PaymentTransaction
+        multiplicity:
+          source: 0..*
+          target: 0..*
+        role: settled_by
+  PaymentTransaction:
+    identity: paymentTransactionId
+    fields:
+      amount:
+        type: valueObjectRef
+        required: true
+        ref: Money
+      provider:
+        type: string
+        required: true
+      status:
+        type: enumRef
+        required: true
+        enumRef: payment_transaction_status
+      authorisedAt:
+        type: datetime
+        required: false
+      receiptReference:
+        type: string
+        required: false
+    relationships:
+      - type: association
+        target: Booking
+        multiplicity:
+          source: 0..*
+          target: 0..1
+        role: subject_booking
+      - type: association
+        target: Order
+        multiplicity:
+          source: 0..*
+          target: 0..1
+        role: subject_order
+    invariants:
+      - "exactly_one_payment_subject: booking_xor_order"
+  Recommendation:
+    identity: recommendationId
+    fields:
+      placeId:
+        type: entityRef
+        required: true
+        ref: Place
+      serviceId:
+        type: entityRef
+        required: false
+        ref: CityService
+      reason:
+        type: string
+        required: true
+      evidence:
+        type: array
+        required: true
+      contextualScore:
+        type: decimal
+        required: true
+      expiresAt:
+        type: datetime
+        required: false
+    purpose:
+      A contextual suggestion, never a commitment; it becomes part of a plan
+      only after feasibility checks and Traveler confirmation.
+    relationships:
+      - type: association
+        target: JourneyTwin
+        multiplicity:
+          source: 0..*
+          target: "1"
+        role: for_twin
+      - type: association
+        target: Place
+        multiplicity:
+          source: 0..*
+          target: "1"
+        role: for_place
+      - type: association
+        target: CityService
+        multiplicity:
+          source: 0..*
+          target: 0..1
+        role: for_service
+  Preference:
+    identity: preferenceId
+    fields:
+      dimension:
+        type: string
+        required: true
+      value:
+        type: string
+        required: true
+      weight:
+        type: decimal
+        required: true
+      confidence:
+        type: decimal
+        required: true
+      source:
+        type: string
+        required: true
+      scope:
+        type: enumRef
+        required: true
+        enumRef: preference_scope
+      journeyId:
+        type: entityRef
+        required: false
+        ref: Journey
+      validFrom:
+        type: datetime
+        required: true
+      validUntil:
+        type: datetime
+        required: false
+    relationships: []
+enums:
+  journey_status:
+    - draft
+    - planned
+    - active
+    - paused
+    - completed
+    - cancelled
+  commitment_strength:
+    - C0_Flexible
+    - C1_Preferred
+    - C2_Reserved
+    - C3_Guaranteed
+    - C4_Anchored
+  commitment_status:
+    - pending
+    - confirmed
+    - fulfilled
+    - cancelled
+    - broken
+  commitment_source_type:
+    - user_lock
+    - booking
+    - payment
+    - external_schedule
+  constraint_severity:
+    - system_hard
+    - commitment_hard
+    - soft
+  activity_status:
+    - proposed
+    - scheduled
+    - in_progress
+    - completed
+    - skipped
+    - cancelled
+  plan_version_status:
+    - draft
+    - candidate
+    - active
+    - superseded
+    - rejected
+    - archived
+  event_kind:
+    - weather_change
+    - place_closed
+    - service_unavailable
+    - transit_delay
+    - activity_overrun
+    - location_deviation
+    - booking_change
+    - payment_failed
+    - preference_changed
+    - budget_risk
+    - opportunity_window_opened
+  event_processing_status:
+    - received
+    - validated
+    - processed
+    - ignored
+    - expired
+  proposal_status:
+    - draft
+    - awaiting_confirmation
+    - accepted
+    - rejected
+    - superseded
+    - expired
+  selection_status:
+    - unselected
+    - selected
+    - rejected
+  preference_scope:
+    - traveler
+    - journey
+    - temporary
+  constraint_scope_type:
+    - journey
+    - activity
+    - commitment
+    - city_service
+    - global
+  replan_scope:
+    - local
+    - window
+    - global
+    - exception
+  journey_health:
+    - healthy
+    - at_risk
+    - disrupted
+    - replanning
+  event_impact_level:
+    - update_only
+    - suggest_replan
+    - critical_replan
+  service_availability_status:
+    - available
+    - limited
+    - unavailable
+    - unknown
+  booking_status:
+    - pending
+    - confirmed
+    - cancelled
+    - fulfilled
+    - expired
+  order_status:
+    - pending
+    - confirmed
+    - preparing
+    - ready
+    - completed
+    - cancelled
+  payment_transaction_status:
+    - initiated
+    - authorised
+    - failed
+    - refunded
+state_machines:
+  Journey:
+    initial: draft
+    transitions:
+      - from: draft
+        event: plan_created
+        to: planned
+      - from: planned
+        event: journey_started
+        to: active
+      - from: active
+        event: pause_requested
+        to: paused
+      - from: paused
+        event: resume_requested
+        to: active
+      - from: active
+        event: end_time_reached
+        to: completed
+      - from:
+          - draft
+          - planned
+          - active
+          - paused
+        event: cancel_requested
+        to: cancelled
+  Commitment:
+    initial: pending
+    transitions:
+      - from: pending
+        event: confirm
+        to: confirmed
+      - from: confirmed
+        event: fulfil
+        to: fulfilled
+      - from:
+          - pending
+          - confirmed
+        event: cancel
+        to: cancelled
+      - from:
+          - pending
+          - confirmed
+        event: breach
+        to: broken
+  PlanVersion:
+    initial: draft
+    transitions:
+      - from: draft
+        event: candidate_generated
+        to: candidate
+      - from: candidate
+        event: activated
+        to: active
+      - from: active
+        event: replaced
+        to: superseded
+      - from:
+          - candidate
+          - draft
+        event: reject
+        to: rejected
+      - from:
+          - superseded
+          - rejected
+        event: archive
+        to: archived
+  ReplanProposal:
+    initial: draft
+    transitions:
+      - from: draft
+        event: feasibility_passed
+        to: awaiting_confirmation
+      - from: awaiting_confirmation
+        event: traveler_accepts
+        to: accepted
+      - from: awaiting_confirmation
+        event: traveler_rejects
+        to: rejected
+      - from: awaiting_confirmation
+        event: expires
+        to: expired
+  Booking:
+    initial: pending
+    transitions:
+      - from: pending
+        event: confirm
+        to: confirmed
+      - from: confirmed
+        event: fulfil
+        to: fulfilled
+      - from:
+          - pending
+          - confirmed
+        event: cancel
+        to: cancelled
+      - from: pending
+        event: expire
+        to: expired
+  Order:
+    initial: pending
+    transitions:
+      - from: pending
+        event: confirm
+        to: confirmed
+      - from: confirmed
+        event: start_preparation
+        to: preparing
+      - from: preparing
+        event: mark_ready
+        to: ready
+      - from: ready
+        event: complete
+        to: completed
+      - from:
+          - pending
+          - confirmed
+          - preparing
+        event: cancel
+        to: cancelled
+  PaymentTransaction:
+    initial: initiated
+    transitions:
+      - from: initiated
+        event: authorise
+        to: authorised
+      - from: initiated
+        event: fail
+        to: failed
+      - from: authorised
+        event: refund
+        to: refunded
+business_rules:
+  - id: DR-001
+    name: Hard constraints and Exception Mode
+    rule:
+      system_hard constraints are never relaxed; commitment_hard constraints may
+      be relaxed only in Exception Mode under relaxationPolicy and after explicit Traveler
+      confirmation; Exception Mode is entered only when no normal feasible candidate
+      exists.
+  - id: DR-002
+    name: Commitment preservation
+    rule:
+      Replanning must preserve C3_Guaranteed and C4_Anchored commitments; lower
+      strengths require explicit impact and cancellation handling when changed.
+  - id: DR-003
+    name: Reality before recommendation
+    rule:
+      Candidates must come from verified city data before semantic personalisation
+      is applied.
+  - id: DR-004
+    name: User confirmation
+    rule: A ReplanProposal never changes the active plan without Traveler confirmation.
+  - id: DR-005
+    name: Explainability
+    rule:
+      Every accepted Recommendation and ReplanProposal retains evidence, ScoreBreakdown
+      and a human-readable rationale.
+  - id: DR-006
+    name: Graceful degradation
+    rule:
+      If AI is unavailable, deterministic planning and constraint validation remain
+      available.
+  - id: DR-007
+    name: Context freshness
+    rule: JourneyTwin projects real-time context from the newest non-expired ContextSnapshot.
+replanning_score:
+  name: Contextual Journey Utility Score
+  scale: 0..100
+  dimensions:
+    - commitmentPreservation
+    - stability
+    - timeReliability
+    - preferenceFit
+    - mobilityFit
+    - budgetFit
+    - robustness
+    - opportunityValue
+  prerequisites:
+    - hard_constraint_validation_passed
+    - locked_commitments_preserved
+  formula:
+    commitmentPreservation:
+      weight: 0.24
+      description: "preserve reserved, paid and anchored items"
+    stability:
+      weight: 0.18
+      description: "minimise unnecessary changes from active plan"
+    timeReliability:
+      weight: 0.15
+      description: "preserve arrival buffers and opening windows"
+    preferenceFit:
+      weight: 0.12
+      description: "match explicit and semantic preferences"
+    mobilityFit:
+      weight: 0.1
+      description: "walking, transfers and travel burden"
+    budgetFit:
+      weight: 0.08
+      description: "remain within or close to budget policy"
+    robustness:
+      weight: 0.07
+      description: "tolerate small delays and stale data"
+    opportunityValue:
+      weight: 0.06
+      description: "use safe free time for valuable additions"
+  penalty_terms:
+    - stale_data
+    - unknown_opening_status
+    - excessive_risk
+    - commitment_cancellation_cost
+  decision_policy:
+    - If the active plan remains feasible, compare scoreDelta and modify only when worthwhile
+      under the configured threshold.
+    - If the active plan is infeasible, rank all feasible CandidatePlan instances by
+      finalScore.
+    - Enter Exception Mode only when no normal constraint-satisfying candidate exists.
+traceability:
+  use_cases:
+    UC-01:
+      - Traveler
+      - Journey
+      - Preference
+    UC-02:
+      - Traveler
+      - Journey
+      - Preference
+      - Constraint
+    UC-03:
+      - Traveler
+      - Journey
+      - Activity
+      - Commitment
+      - Booking
+      - PaymentTransaction
+    UC-04:
+      - Journey
+      - PlanVersion
+      - Activity
+      - Constraint
+      - Recommendation
+      - TravelEstimate
+    UC-05:
+      - Place
+      - CityService
+      - Recommendation
+      - Preference
+    UC-06:
+      - Activity
+      - CityService
+      - Booking
+      - Order
+      - Commitment
+    UC-07:
+      - PaymentTransaction
+      - Booking
+      - Order
+      - Commitment
+    UC-08:
+      - Journey
+      - JourneyTwin
+      - Activity
+      - Event
+      - ContextSnapshot
+    UC-09:
+      - Event
+      - JourneyTwin
+      - ContextSnapshot
+    UC-10:
+      - Event
+      - Constraint
+      - Commitment
+      - ReplanProposal
+      - CandidatePlan
+      - PlanVersion
+      - ScoreBreakdown
+    UC-11:
+      - Traveler
+      - Preference
+      - Recommendation
+      - ReplanProposal
+    UC-12:
+      - Journey
+      - PlanVersion
+      - Event
+      - PaymentTransaction
+    UC-13:
+      - Traveler

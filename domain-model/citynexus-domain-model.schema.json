@@ -1,0 +1,730 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://citynexus.local/schema/domain-model-v0.4.2.json",
+  "title": "CityNexus Core Domain Model v0.4.2 RC3",
+  "type": "object",
+  "required": [
+    "model",
+    "value_objects",
+    "entities",
+    "enums",
+    "state_machines",
+    "domain_rules",
+    "replanning_score",
+    "traceability"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "model": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "official_project",
+        "product",
+        "purpose",
+        "bounded_contexts"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "const": "CN-DM-0042"
+        },
+        "name": {
+          "const": "CityNexus Core Domain Model"
+        },
+        "version": {
+          "const": "0.4.2"
+        },
+        "status": {
+          "const": "release-candidate"
+        },
+        "official_project": {
+          "const": "Smart City Traveler System"
+        },
+        "product": {
+          "const": "CityNexus"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bounded_contexts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "value_objects": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/valueObject"
+      }
+    },
+    "entities": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/entity"
+      }
+    },
+    "enums": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "state_machines": {
+      "type": "object",
+      "required": [
+        "Journey",
+        "Commitment",
+        "PlanVersion",
+        "Activity",
+        "ReplanProposal",
+        "Booking",
+        "Order",
+        "PaymentTransaction"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/stateMachine"
+      }
+    },
+    "domain_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "rule"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^DR-[0-9]{3}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rule": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "replanning_score": {
+      "type": "object",
+      "required": [
+        "name",
+        "scale",
+        "dimensions",
+        "prerequisites",
+        "formula",
+        "penalty_terms",
+        "decision_policy",
+        "component_scale",
+        "final_score_expression"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scale": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.\\.[0-9]+$"
+        },
+        "dimensions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "prerequisites": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "formula": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "weight",
+              "description"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "weight": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "penalty_terms": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "decision_policy": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "component_scale": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.\\.[0-9]+$"
+        },
+        "final_score_expression": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "traceability": {
+      "type": "object",
+      "required": [
+        "use_cases"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "use_cases": {
+          "type": "object",
+          "required": [
+            "UC-01",
+            "UC-02",
+            "UC-03",
+            "UC-04",
+            "UC-05",
+            "UC-06",
+            "UC-07",
+            "UC-08",
+            "UC-09",
+            "UC-10",
+            "UC-11",
+            "UC-12",
+            "UC-13"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "UC-01": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-02": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-03": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-04": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-05": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-06": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-07": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-08": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-09": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-10": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-11": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-12": {
+              "$ref": "#/$defs/useCaseTrace"
+            },
+            "UC-13": {
+              "$ref": "#/$defs/useCaseTrace"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "valueObject": {
+      "type": "object",
+      "required": [
+        "fields"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "itemSpec": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "string",
+            "integer",
+            "decimal",
+            "boolean",
+            "datetime",
+            "duration",
+            "object",
+            "entityRef",
+            "valueObjectRef",
+            "enumRef"
+          ]
+        },
+        "ref": {
+          "type": "string"
+        },
+        "enumRef": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "entityRef"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "valueObjectRef"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "enumRef"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "enumRef"
+            ]
+          }
+        }
+      ]
+    },
+    "typedField": {
+      "type": "object",
+      "required": [
+        "type",
+        "required"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "string",
+            "integer",
+            "decimal",
+            "boolean",
+            "datetime",
+            "duration",
+            "array",
+            "object",
+            "entityRef",
+            "valueObjectRef",
+            "enumRef"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "enumRef": {
+          "type": "string"
+        },
+        "items": {
+          "$ref": "#/$defs/itemSpec"
+        },
+        "relationshipRole": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "entityRef"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "valueObjectRef"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "enumRef"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "enumRef"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "array"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "items"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "not": {
+                  "const": "array"
+                }
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "items"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "entity": {
+      "type": "object",
+      "required": [
+        "identity",
+        "fields"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stereotype": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/typedField"
+          }
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "invariants": {
+          "type": "array",
+          "items": {}
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relationship"
+          }
+        }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "required": [
+        "type",
+        "target",
+        "role"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "association",
+            "composition",
+            "aggregation",
+            "dependency",
+            "projection",
+            "generalization"
+          ]
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string"
+        },
+        "multiplicity": {
+          "$ref": "#/$defs/multiplicity"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "association",
+                  "aggregation",
+                  "composition"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "multiplicity"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "multiplicity"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "multiplicity": {
+      "type": "object",
+      "required": [
+        "source",
+        "target"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "pattern": "^(0|1|0\\.\\.1|0\\.\\.\\*|1\\.\\.\\*)$"
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^(0|1|0\\.\\.1|0\\.\\.\\*|1\\.\\.\\*)$"
+        }
+      }
+    },
+    "stateMachine": {
+      "type": "object",
+      "required": [
+        "initial",
+        "transitions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "initial": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "from",
+              "event",
+              "to"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "from": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                ]
+              },
+              "event": {
+                "type": "string",
+                "minLength": 1
+              },
+              "to": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "useCaseTrace": {
+      "type": "object",
+      "required": [
+        "domain_elements",
+        "layer"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "domain_elements": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "layer": {
+          "type": "string",
+          "enum": [
+            "core_domain",
+            "application_infrastructure"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

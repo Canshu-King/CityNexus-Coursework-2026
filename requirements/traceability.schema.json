@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://citynexus.local/schema/traceability-v0.3.json",
+  "title": "CityNexus Requirements Traceability Baseline v0.3",
+  "type": "object",
+  "required": [
+    "metadata",
+    "mappings"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": [
+        "name",
+        "version",
+        "status",
+        "requirementsFile",
+        "domainModel"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "const": "CityNexus Requirements Traceability Baseline"
+        },
+        "version": {
+          "const": "0.3.0"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "infrastructure-only",
+            "baseline-candidate",
+            "approved"
+          ]
+        },
+        "requirementsFile": {
+          "const": "requirements.yaml"
+        },
+        "domainModel": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mapping"
+      }
+    }
+  },
+  "$defs": {
+    "requirementId": {
+      "type": "string",
+      "pattern": "^(BG|FR|BR|NFR|SR|IR)-[0-9]{3}$"
+    },
+    "useCaseId": {
+      "type": "string",
+      "pattern": "^UC-(0[1-9]|1[0-3])$"
+    },
+    "domainRef": {
+      "type": "object",
+      "required": [
+        "name",
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "entity",
+            "value_object",
+            "enum",
+            "state_machine",
+            "rule"
+          ]
+        }
+      }
+    },
+    "diagramRef": {
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "system_context",
+            "use_case",
+            "domain_model",
+            "class",
+            "sequence",
+            "state_machine",
+            "component",
+            "data_flow",
+            "trust_boundary"
+          ]
+        },
+        "path": {
+          "type": "string"
+        }
+      }
+    },
+    "mapping": {
+      "type": "object",
+      "required": [
+        "requirementId",
+        "useCases",
+        "domainElements",
+        "diagrams",
+        "testCases"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "requirementId": {
+          "$ref": "#/$defs/requirementId"
+        },
+        "useCases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/useCaseId"
+          }
+        },
+        "domainElements": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/domainRef"
+          }
+        },
+        "diagrams": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/diagramRef"
+          }
+        },
+        "testCases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^TC-[0-9]{3}$"
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "metadata": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "baseline-candidate",
+                  "approved"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "mappings": {
+            "minItems": 138,
+            "maxItems": 138
+          }
+        }
+      }
+    }
+  ]
+}

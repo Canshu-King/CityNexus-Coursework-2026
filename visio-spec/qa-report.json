@@ -1,0 +1,56 @@
+{
+  "passed": 10,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "exact seven pages",
+      "status": "PASS",
+      "detail": "['00_Style_Guide', 'P1_Domain_Overview', 'P1_UC_Overview', 'P2_DM_Discovery_Commerce', 'P2_DM_Journey_Planning', 'P2_UC_Core', 'P2_UC_Planning_Replan']"
+    },
+    {
+      "name": "page names match master list",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "shape ids unique per page",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "connector endpoints resolve",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "dependencies have no multiplicity",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "P1 intended use cases exact",
+      "status": "PASS",
+      "detail": "{'UC-02', 'UC-07', 'UC-12', 'UC-06', 'UC-04', 'UC-10', 'UC-11', 'UC-08', 'UC-05', 'UC-09'}"
+    },
+    {
+      "name": "P2 top-level use cases exact",
+      "status": "PASS",
+      "detail": "{'UC-02', 'UC-07', 'UC-12', 'UC-13', 'UC-06', 'UC-03', 'UC-04', 'UC-10', 'UC-11', 'UC-01', 'UC-08', 'UC-05', 'UC-09'}"
+    },
+    {
+      "name": "obsolete class names absent",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "JourneyTwin projection present",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "ScoreBreakdown value object present",
+      "status": "PASS",
+      "detail": ""
+    }
+  ]
+}

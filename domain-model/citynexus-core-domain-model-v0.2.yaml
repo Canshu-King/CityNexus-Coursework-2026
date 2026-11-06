@@ -1,0 +1,460 @@
+model:
+  id: CN-DM-002
+  name: CityNexus Core Domain Model
+  version: 0.2
+  status: working-baseline
+  official_project: Smart City Traveler System
+  product: CityNexus
+  purpose: >-
+    Define the domain objects, lifecycle states, constraints, events and
+    replanning decisions that keep one urban journey feasible and explainable.
+  bounded_contexts:
+    - Journey Management
+    - City Discovery
+    - Booking and Commerce
+    - Journey Intelligence
+
+value_objects:
+  Money:
+    fields: { amount: decimal, currency: ISO-4217 }
+  GeoPoint:
+    fields: { latitude: decimal, longitude: decimal }
+  TimeWindow:
+    fields: { start: datetime, end: datetime, timezone: IANA timezone }
+  TravelEstimate:
+    fields:
+      {
+        durationMinutes: integer,
+        distanceMeters: integer,
+        mode: "enum[walk,transit,cycle,car]",
+      }
+
+entities:
+  Traveler:
+    identity: travelerId
+    fields: [displayName, homeTimezone, walkingTolerance, budgetPreference]
+    relationships:
+      - {
+          type: association,
+          target: Journey,
+          cardinality: "1 to 0..*",
+          role: owns,
+        }
+      - {
+          type: association,
+          target: Preference,
+          cardinality: "1 to 0..*",
+          role: expresses,
+        }
+
+  Journey:
+    identity: journeyId
+    fields:
+      [
+        destinationCity,
+        startAt,
+        endAt,
+        budgetLimit,
+        status,
+        activePlanVersionId,
+      ]
+    invariants:
+      - endAt > startAt
+      - budgetLimit.amount >= 0
+      - exactly_one_active_plan_version
+    relationships:
+      - {
+          type: composition,
+          target: PlanVersion,
+          cardinality: "1 to 1..*",
+          role: versions,
+        }
+      - {
+          type: composition,
+          target: Activity,
+          cardinality: "1 to 0..*",
+          role: activities_via_plan,
+        }
+      - {
+          type: composition,
+          target: Commitment,
+          cardinality: "1 to 0..*",
+          role: commitments,
+        }
+      - {
+          type: composition,
+          target: Constraint,
+          cardinality: "1 to 0..*",
+          role: constraints,
+        }
+      - {
+          type: composition,
+          target: Event,
+          cardinality: "1 to 0..*",
+          role: events,
+        }
+      - {
+          type: composition,
+          target: ReplanProposal,
+          cardinality: "1 to 0..*",
+          role: proposals,
+        }
+      - {
+          type: projection,
+          target: JourneyTwin,
+          cardinality: "1 to 1",
+          role: projected_as,
+        }
+
+  JourneyTwin:
+    identity: journeyTwinId
+    stereotype: "<<projection>>"
+    fields:
+      [
+        journeyId,
+        generatedAt,
+        dataFreshness,
+        currentLocation,
+        currentTime,
+        healthStatus,
+      ]
+    purpose: >-
+      Read-optimised projection of the journey's current commitments, plan,
+      constraints and events; it is not an independent source of truth.
+    relationships:
+      - {
+          type: dependency,
+          target: Journey,
+          cardinality: "0..*",
+          label: "<<projects from>>",
+        }
+      - {
+          type: dependency,
+          target: PlanVersion,
+          cardinality: "0..*",
+          label: "<<projects from>>",
+        }
+      - {
+          type: dependency,
+          target: Commitment,
+          cardinality: "0..*",
+          label: "<<projects from>>",
+        }
+      - {
+          type: dependency,
+          target: Event,
+          cardinality: "0..*",
+          label: "<<projects from>>",
+        }
+
+  PlanVersion:
+    identity: planVersionId
+    fields:
+      [
+        versionNumber,
+        createdAt,
+        createdBy,
+        score,
+        feasibility,
+        supersedesPlanVersionId,
+      ]
+    invariants:
+      - score is calculated after hard-constraint validation
+      - only one version can be active for a Journey
+    relationships:
+      - {
+          type: composition,
+          target: Activity,
+          cardinality: "1 to 1..*",
+          role: contains,
+        }
+      - {
+          type: association,
+          target: ReplanProposal,
+          cardinality: "0..*",
+          role: proposed_by_or_for,
+        }
+
+  Activity:
+    identity: activityId
+    fields:
+      [title, category, sequence, plannedWindow, flexible, priority, status]
+    relationships:
+      - {
+          type: association,
+          target: Place,
+          cardinality: "0..* to 0..1",
+          role: occurs_at,
+        }
+      - {
+          type: association,
+          target: CityService,
+          cardinality: "0..* to 0..1",
+          role: uses,
+        }
+      - {
+          type: association,
+          target: Commitment,
+          cardinality: "0..* to 0..1",
+          role: may_create,
+        }
+      - {
+          type: association,
+          target: Constraint,
+          cardinality: "0..* to 0..*",
+          role: affected_by,
+        }
+
+  Place:
+    identity: placeId
+    fields: [name, address, location, openingHours, liveStatus, qualityScore]
+    relationships:
+      - {
+          type: association,
+          target: CityService,
+          cardinality: "1 to 0..*",
+          role: hosts,
+        }
+
+  CityService:
+    identity: serviceId
+    fields:
+      [
+        providerId,
+        name,
+        category,
+        priceRange,
+        reservationRequired,
+        cancellationPolicy,
+      ]
+    relationships:
+      - {
+          type: association,
+          target: Booking,
+          cardinality: "1 to 0..*",
+          role: accepts,
+        }
+      - {
+          type: association,
+          target: Order,
+          cardinality: "1 to 0..*",
+          role: fulfils,
+        }
+
+  Commitment:
+    identity: commitmentId
+    fields:
+      [level, kind, lockedWindow, cancellationCost, status, sourceReference]
+    purpose: >-
+      A real-world obligation that a valid replanning proposal should preserve
+      unless an explicit override policy is satisfied.
+    relationships:
+      - {
+          type: composition,
+          target: Booking,
+          cardinality: "0..1",
+          role: realised_by,
+        }
+      - {
+          type: association,
+          target: Transaction,
+          cardinality: "0..1",
+          role: paid_by,
+        }
+
+  Constraint:
+    identity: constraintId
+    fields: [kind, hardness, expression, priority, source, active]
+    purpose: >-
+      A condition evaluated by the deterministic feasibility layer before
+      preference scoring.
+
+  Event:
+    identity: eventId
+    fields: [kind, occurredAt, severity, source, payload, acknowledged]
+    relationships:
+      - {
+          type: association,
+          target: ReplanProposal,
+          cardinality: "0..*",
+          role: may_trigger,
+        }
+
+  ReplanProposal:
+    identity: proposalId
+    fields:
+      [
+        triggerEventId,
+        createdAt,
+        rationale,
+        scoreDelta,
+        affectedCommitmentIds,
+        status,
+      ]
+    relationships:
+      - {
+          type: association,
+          target: PlanVersion,
+          cardinality: "1 to 1",
+          role: replaces_or_preserves,
+        }
+
+  Booking:
+    identity: bookingId
+    fields: [providerBookingRef, reservedWindow, status, cancellationDeadline]
+    relationships:
+      - {
+          type: association,
+          target: Transaction,
+          cardinality: "0..1",
+          role: settled_by,
+        }
+
+  Order:
+    identity: orderId
+    fields: [items, total, fulfilmentWindow, status]
+    relationships:
+      - {
+          type: association,
+          target: Transaction,
+          cardinality: "0..1",
+          role: settled_by,
+        }
+
+  Transaction:
+    identity: transactionId
+    fields: [amount, provider, status, authorisedAt, receiptReference]
+
+  Recommendation:
+    identity: recommendationId
+    fields: [candidateId, reason, evidence, contextualScore, expiresAt]
+    purpose: >-
+      A contextual suggestion, never a commitment; it becomes part of a plan
+      only after deterministic feasibility checks and Traveler confirmation.
+
+  Preference:
+    identity: preferenceId
+    fields: [dimension, value, weight, confidence, source, validUntil]
+
+enums:
+  journey_status: [draft, planned, active, paused, completed, cancelled]
+  commitment_level: [idea, planned, reserved, paid, locked]
+  constraint_hardness: [hard, soft]
+  activity_status:
+    [proposed, scheduled, in_progress, completed, skipped, cancelled]
+  event_kind:
+    [
+      weather_change,
+      place_closed,
+      transit_delay,
+      user_fatigue,
+      budget_change,
+      booking_change,
+      missed_activity,
+    ]
+  proposal_status:
+    [draft, awaiting_confirmation, accepted, rejected, superseded, expired]
+
+state_machines:
+  Journey:
+    initial: draft
+    transitions:
+      - { from: draft, event: plan_created, to: planned }
+      - { from: planned, event: journey_started, to: active }
+      - { from: active, event: pause_requested, to: paused }
+      - { from: paused, event: resume_requested, to: active }
+      - { from: active, event: end_time_reached, to: completed }
+      - {
+          from: [draft, planned, active, paused],
+          event: cancel_requested,
+          to: cancelled,
+        }
+  Commitment:
+    initial: idea
+    transitions:
+      - { from: idea, event: added_to_plan, to: planned }
+      - { from: planned, event: reservation_confirmed, to: reserved }
+      - { from: reserved, event: payment_authorised, to: paid }
+      - { from: paid, event: lock_policy_applied, to: locked }
+      - { from: [reserved, paid], event: cancelled, to: planned }
+  ReplanProposal:
+    initial: draft
+    transitions:
+      - { from: draft, event: feasibility_passed, to: awaiting_confirmation }
+      - { from: awaiting_confirmation, event: traveler_accepts, to: accepted }
+      - { from: awaiting_confirmation, event: traveler_rejects, to: rejected }
+      - { from: awaiting_confirmation, event: expires, to: expired }
+
+business_rules:
+  - id: BR-001
+    name: Hard constraints are non-negotiable
+    rule: A plan violating any active hard constraint is infeasible and cannot become active.
+  - id: BR-002
+    name: Commitment preservation
+    rule: Replanning must preserve locked commitments; paid or reserved commitments require explicit impact and cancellation handling.
+  - id: BR-003
+    name: Reality before recommendation
+    rule: Candidates must come from verified city data before AI semantic personalisation is applied.
+  - id: BR-004
+    name: User confirmation
+    rule: A ReplanProposal never changes the active plan without Traveler confirmation.
+  - id: BR-005
+    name: Explainability
+    rule: Every accepted Recommendation and ReplanProposal must retain evidence and a human-readable rationale.
+  - id: BR-006
+    name: Graceful degradation
+    rule: If AI is unavailable, deterministic planning and hard-constraint validation remain available; semantic explanation may be unavailable.
+
+replanning_score:
+  name: Contextual Journey Utility Score
+  scale: 0..100
+  prerequisites:
+    - hard_constraint_validation_passed
+    - locked_commitments_preserved
+  formula:
+    commitment_preservation:
+      { weight: 0.24, description: preserve reserved, paid and locked items }
+    stability:
+      {
+        weight: 0.18,
+        description: minimise unnecessary changes from active plan,
+      }
+    time_reliability:
+      {
+        weight: 0.15,
+        description: preserve arrival buffers and opening windows,
+      }
+    preference_fit:
+      { weight: 0.12, description: match explicit and semantic preferences }
+    mobility_fit:
+      { weight: 0.10, description: walking, transfers and travel burden }
+    budget_fit:
+      { weight: 0.08, description: remain within or close to budget policy }
+    robustness:
+      { weight: 0.07, description: tolerate small delays and stale data }
+    opportunity_value:
+      { weight: 0.06, description: use safe free time for valuable additions }
+  penalty_terms:
+    [
+      stale_data,
+      unknown_opening_status,
+      excessive_risk,
+      commitment_cancellation_cost,
+    ]
+  decision_policy:
+    - If infeasible: reject proposal.
+    - If feasible and scoreDelta < 0: present as warning, never auto-accept.
+    - If feasible and scoreDelta >= 0: present rationale and request Traveler confirmation.
+
+traceability:
+  use_cases:
+    UC-02: [Traveler, Journey, Preference, Constraint]
+    UC-04: [Journey, PlanVersion, Activity, Constraint, Recommendation]
+    UC-05: [Place, CityService, Recommendation, Preference]
+    UC-06: [Activity, CityService, Booking, Order, Commitment]
+    UC-07: [Transaction, Booking, Order, Commitment]
+    UC-08: [Journey, JourneyTwin, Activity, Event]
+    UC-09: [Event, JourneyTwin]
+    UC-10: [Event, Constraint, Commitment, ReplanProposal, PlanVersion]
+    UC-11: [Traveler, Preference, Recommendation, ReplanProposal]
+    UC-12: [Journey, PlanVersion, Event, Transaction]

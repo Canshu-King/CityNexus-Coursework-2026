@@ -1,0 +1,42 @@
+/* ORD-0402 slice 2 -- the recycle bin. Its own file, same reason as ORD-0384's band: the shared
+   token sheet is edited by other lanes, and every value here is read from it, never redefined. */
+.cn-trash {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 16px 18px 18px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-card);
+  background: var(--v8-panel);
+}
+.cn-trash-head { display: grid; gap: 6px; }
+.cn-trash-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.cn-trash-row {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--v8-panel);
+}
+.cn-trash-row-title { color: var(--v8-ink); font-size: var(--cn-fs-body); overflow-wrap: anywhere; }
+/* A trip title is whatever the traveller typed, and the discard stamp is a full ISO instant; both
+   can be one unbroken token, so the row wraps anywhere rather than clipping either. */
+.cn-trash-row-state,
+.cn-trash-row-when {
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+.cn-trash-action { width: fit-content; margin-top: 2px; }
+.cn-trash-notice { display: grid; gap: 8px; }
+.cn-trash-outcome { margin: 0; color: var(--v8-ink); font-size: var(--cn-fs-body); overflow-wrap: anywhere; }
+.cn-trash-details { margin-top: 6px; }
+.cn-trash-details summary { color: var(--cn-ink-tertiary); font-size: var(--cn-fs-caption); }
+@media (max-width: 680px) {
+  .cn-trash { padding: 14px; }
+  /* Amendment F-2: the >=44px contract belongs to the touch layer, and 找回 is the row's primary
+     action on a phone screen. */
+  .cn-trash-action,
+  .cn-trash-notice .v8-quiet-button { min-height: var(--cn-touch-min); }
+}

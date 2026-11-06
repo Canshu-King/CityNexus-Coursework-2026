@@ -1,0 +1,294 @@
+/* --------------------------------------------------------------------------
+ * The stage's floating widget (the traveller's own words: "点一下会展开，里面有
+ * 各种功能，但是别把屏幕挡住").
+ *
+ * `.cn-sim-float` is portalled to `document.body`, so these `position: fixed`
+ * boxes are anchored to the viewport instead of to a transformed ancestor --
+ * the last attempt that stayed inside the page parked the sheet at top -374.
+ *
+ * The bottom offsets are measured, not derived: on a phone the app reserves
+ * `124px + safe-area` of bottom band for the fixed nav (`--cn-nav-h` 80px plus
+ * the safe area) and the Copilot pill resting on top of it
+ * (`styles.css:405` `bottom: 72px`, `.cn-copilot-edge` `min-height: 50px`), so
+ * anything parked below ~122px is on top of somebody else's control. Desktop's
+ * pill sits at `bottom: 22px` with `min-height: 56px`. Both numbers get a gate:
+ * `sim-stage-actions-are-reachable-and-never-in-the-nav-band` asserts the ball
+ * and the open window overlap neither overlay, and that every row is still
+ * centre-hittable with the window open.
+ * -------------------------------------------------------------------------- */
+:root {
+  --cn-sim-float-clearance: calc(22px + 56px + 12px);
+}
+.cn-sim-float {
+  position: fixed;
+  right: 12px;
+  bottom: var(--cn-sim-float-clearance);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--cn-s-8, 8px);
+}
+.cn-sim-ball {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--cn-hairline, rgba(0, 0, 0, 0.16));
+  border-radius: 50%;
+  color: var(--v8-ink);
+  background: var(--cn-surface);
+  /* Translucent by request, but not see-through enough to lose its own edge:
+     the ring keeps the ball readable over both a photo-free map and a dark card. */
+  opacity: 0.94;
+  box-shadow: 0 10px 26px rgba(20, 35, 59, 0.18);
+  cursor: pointer;
+}
+.cn-sim-ball-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #62b58a;
+}
+/* Two colours, one truth: the dot only answers "is there a scenario on stage".
+   Everything else -- which clock, which deployment -- is text, in the window and
+   in the ball's accessible name, never in a colour a traveller has to decode. */
+.cn-sim-ball-dot[data-state="STAGE_LIVE"] {
+  background: #62b58a;
+}
+.cn-sim-ball-dot[data-state="CHECKING"],
+.cn-sim-ball-dot[data-state="UNREADABLE"],
+.cn-sim-ball-dot[data-state="NO_STAGE"] {
+  background: #8b93a1;
+}
+/* `v8-page` on this element is not decoration: the dark content-surface group (`design-tokens.css:534`)
+   and the AA outline border (`:666`) are both keyed to that scope, and portalling the widget out of it
+   silently gave back white buttons on a dark panel and a 1.36:1 border. Re-declaring each override here
+   would leave the next portalled surface with the same bug, so the window declares itself a page
+   surface and these rules bind one step stronger to keep the card's own fill. */
+.v8-page.cn-sim-pop {
+  /* Measured, not assumed: without this the box rendered 392px inside a 390px viewport, because the
+     padding and border were added outside the declared width. The budget is about what the traveller
+     sees, so it applies to the border box. */
+  box-sizing: border-box;
+  /* The ink is stated because the widget hangs off `document.body`, outside the subtree that used to
+     hand it down: with the inheritance gone the rows measured `rgb(217,221,234)` on white, 1.36:1. */
+  color: var(--v8-ink);
+  background: var(--cn-surface);
+  width: min(360px, calc(100vw - 24px));
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cn-s-8, 8px);
+  padding: var(--cn-s-12);
+  border: 1px solid var(--cn-hairline, rgba(0, 0, 0, 0.16));
+  border-radius: var(--cn-r-card, 14px);
+  background: var(--cn-surface);
+  box-shadow: 0 18px 46px rgba(20, 35, 59, 0.24);
+}
+/* The declaration the stage owes the traveller, in full ink: this is the honest
+   sentence, not a caption about it. */
+.cn-sim-pop-decl {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+/* The scroll lives on the panel itself, not on a wrapper around it.  Two probes of this widget
+   (mine and the Commander's) each spent a round arguing about a different node, because the
+   scroller was an inner box while everyone measured `[data-testid="sim-panel"]` -- whose own
+   `maxScroll` is then always 0, no matter whether the window scrolls.  One scrollable element, and
+   it is the one the testid names: the wrapper only passes the bounded height down the flex chain. */
+.cn-sim-pop-body {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cn-sim-pop-body > .cn-sim {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Nothing hides the closed panel, because there is nothing to hide: the window is not in the
+   document while closed, so no clipped row can keep a rect inside the nav band -- the failure that
+   killed the earlier `max-height + overflow` sheet. On a phone the reserved band is taller, because
+   the nav and the Copilot pill both live there. */
+@media (max-width: 680px) {
+  :root {
+    --cn-sim-float-clearance: calc(124px + env(safe-area-inset-bottom, 0px) + 12px);
+  }
+  .v8-page.cn-sim-pop {
+    width: calc(100vw - 24px);
+  }
+}
+
+/*
+ * ORD-0059 (b) -- the Simulation entry's own sheet.
+ *
+ * Tokens only, and full ink for every sentence that carries meaning: this surface explains
+ * refusals, and a refusal written in a grey that fails contrast in one theme is a refusal the
+ * traveller did not receive.  The dark audit measures it at 390px in both themes, so nothing
+ * here may depend on a colour that only works on one of them.
+ */
+.cn-sim {
+  display: grid;
+  gap: var(--cn-s-12);
+  margin: 0;
+  padding: var(--cn-s-12);
+  border: 1px solid var(--cn-hairline, rgba(0, 0, 0, 0.16));
+  border-radius: var(--cn-r-card, 14px);
+  background: var(--cn-surface);
+  color: var(--v8-ink);
+  min-width: 0;
+}
+.cn-sim *,
+.cn-sim *::before,
+.cn-sim *::after {
+  box-sizing: border-box;
+}
+
+.cn-sim-banner {
+  margin: 0;
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border-left: 3px solid var(--cn-accent-text);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-secondary);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  font-weight: 650;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.cn-sim-retry {
+  justify-self: start;
+}
+/* The window has no summary to click shut, so the way back out lives in here. */
+.cn-sim-close {
+  justify-self: end;
+}
+/* Diagnostic, not decoration: smaller than the banner, but full ink -- a flag that only reads in
+   one theme is a flag nobody can check on a phone. */
+.cn-sim-diag {
+  margin: calc(-1 * var(--cn-s-4, 4px)) 0 0;
+  color: var(--v8-ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--cn-fs-caption);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.cn-sim-facts {
+  display: grid;
+  gap: var(--cn-s-4, 4px);
+  margin: 0;
+}
+.cn-sim-facts > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cn-s-8);
+  justify-content: space-between;
+  min-width: 0;
+}
+.cn-sim-facts dt {
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  font-weight: 700;
+}
+.cn-sim-facts dd {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.cn-sim-mismatch {
+  margin: 0;
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border-left: 3px solid var(--cn-warning);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-secondary);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.cn-sim-actions {
+  display: grid;
+  gap: var(--cn-s-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cn-sim-row {
+  display: grid;
+  gap: var(--cn-s-4, 4px);
+  min-width: 0;
+}
+.cn-sim-button {
+  justify-self: stretch;
+  text-align: left;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+/* Same wash as a real disabled control, so "cannot run" is visible and not only spoken. */
+.cn-sim-button[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.cn-sim-reason {
+  margin: 0;
+  padding-left: var(--cn-s-12);
+  border-left: 2px solid var(--cn-accent-text);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.cn-sim-outcome,
+.cn-sim-refusal {
+  margin: 0;
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-secondary);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.cn-sim-refusal {
+  border-left: 3px solid var(--cn-danger);
+}
+.cn-sim-outcome-note {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+/* The 44px floor is a mobile rule only; desktop keeps the compact density it was audited with. */
+@media (max-width: 680px) {
+  .cn-sim-actions button {
+    min-height: var(--cn-touch-min);
+  }
+  /* Nothing here reserves a band any more. The widget is portalled out of the page and parked above
+     the nav + Copilot band by `--cn-sim-float-clearance` (measured, see the top of this file), and
+     its rows scroll inside `.cn-sim-pop-body`, so no page scroll position can push a row under
+     the nav -- which is what the old `scroll-margin` on `.cn-sim-entry` was trying, and failing, to
+     do. Keeping the `sim-stage-actions-*` gate on the ball and window is what holds this now. */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cn-sim * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

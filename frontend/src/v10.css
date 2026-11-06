@@ -1,0 +1,68 @@
+/* V10 execution rail: quiet hierarchy, one primary metric, progressive evidence.
+   This surface carried its own hardcoded green palette (#17624b / #fbfdfb / #12383b)
+   that existed only in the light theme, so on the dark canvas it painted a mint
+   island and a white slab.  It now reads the shared tokens; green survives only
+   where it means something (a truth/protected marker), not as decoration. */
+.v10-execution-panel { width: min(1180px, calc(100% - 34px)); margin: 0 auto 18px; padding: var(--cn-s-20); border: 1px solid var(--cn-hairline); border-radius: var(--cn-r-card); background: var(--v8-panel); box-shadow: var(--cn-shadow-card); }
+.v10-execution-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }.v10-execution-heading h3 { margin: 5px 0 0; color: var(--v8-ink); font-size: var(--cn-fs-title); letter-spacing: -.03em; }.v10-truth-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border-radius: var(--cn-r-pill); color: var(--cn-success-text); background: var(--cn-secondary); font-size: var(--cn-fs-caption); font-weight: 800; }
+.v10-execution-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: var(--cn-s-20); }.v10-metric { display: grid; grid-template-columns: auto 1fr; gap: 3px 8px; padding: 13px; border: 1px solid var(--cn-hairline); border-radius: var(--cn-r-control); color: var(--v8-muted); background: var(--v8-panel); }.v10-metric svg { grid-row: span 3; margin-top: 2px; color: var(--v8-green); }.v10-metric span { font-size: var(--cn-fs-caption); font-weight: 800; letter-spacing: .09em; }.v10-metric strong { color: var(--v8-ink); font-size: var(--cn-fs-card); }.v10-metric small { font-size: var(--cn-fs-caption); }
+.v10-evidence-drawer { margin-top: 12px; border-top: 1px solid var(--cn-hairline); }.v10-evidence-drawer summary { display: flex; justify-content: space-between; padding: 13px 2px 1px; color: var(--v8-ink); font-size: var(--cn-fs-body); font-weight: 750; cursor: pointer; list-style: none; }.v10-evidence-drawer summary::-webkit-details-marker { display: none; }.v10-evidence-drawer summary span { color: var(--v8-muted); font-weight: 500; }.v10-evidence-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 2px; border-top: 1px solid var(--cn-hairline); color: var(--v8-ink); text-decoration: none; }.v10-evidence-row span { display: grid; gap: 3px; }.v10-evidence-row small, .v10-muted { color: var(--v8-muted); font-size: var(--cn-fs-caption); }.v10-muted { padding-bottom: 2px; line-height: 1.45; }
+@media (max-width: 680px) { .v10-execution-panel { width: auto; margin: 0 17px 18px; padding: 16px; }.v10-execution-heading { display: grid; gap: 10px; }.v10-execution-grid { grid-template-columns: 1fr; }.v10-metric { min-height: 52px; } }
+.v10-inbox-scanner { display: grid; gap: var(--cn-s-8); padding: var(--cn-s-16); border: 1px solid var(--cn-hairline); border-radius: var(--cn-r-control); background: var(--v8-panel); }.v10-inbox-scanner > div { display: grid; gap: 3px; }.v10-inbox-scanner small { color: var(--v8-muted); font-size: var(--cn-fs-caption); }.v10-inbox-scanner button { width: fit-content; padding: 8px 11px; border: 1px solid var(--cn-control-border); border-radius: var(--cn-r-button); color: var(--v8-accent); background: var(--v8-panel); cursor: pointer; font-size: var(--cn-fs-body); font-weight: 750; }.v10-scanner-video { width: 100%; max-height: 220px; border-radius: var(--cn-r-control); background: #0d282b; }.v10-inbox-scanner code { overflow-wrap: anywhere; padding: 8px; border-radius: var(--cn-r-control); color: var(--v8-ink); background: var(--cn-secondary); font-size: var(--cn-fs-caption); }
+.v10-inbox-workbench { display: grid; gap: var(--cn-s-16); padding: var(--cn-s-20); border: 1px solid var(--cn-hairline); border-radius: var(--cn-r-card); background: var(--v8-panel); box-shadow: var(--cn-shadow-card); }
+.v10-inbox-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }.v10-inbox-heading h2 { margin: 5px 0 0; color: var(--v8-ink); font-size: var(--cn-fs-title); letter-spacing: -.03em; }
+.v10-inbox-inputs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }.v10-inbox-inputs label { display: grid; gap: 7px; min-width: 0; color: var(--v8-ink); font-size: var(--cn-fs-body); font-weight: 750; }.v10-inbox-inputs textarea { min-height: 96px; resize: vertical; }.v10-inbox-inputs textarea, .v10-inbox-inputs input { min-width: 0; padding: var(--cn-s-12); border: 1px solid var(--cn-control-border); border-radius: var(--cn-r-control); color: var(--v8-ink); background: var(--v8-panel); font: inherit; }.v10-inbox-inputs input { padding: 9px; }.v10-inbox-inputs small { color: var(--v8-muted); font-size: var(--cn-fs-caption); overflow-wrap: anywhere; }.v10-inbox-inputs button, .v10-inbox-draft button { width: fit-content; padding: 9px var(--cn-s-16); border: 0; border-radius: var(--cn-r-button); color: #fff; background: var(--v8-accent); cursor: pointer; font-size: var(--cn-fs-body); font-weight: 800; }.v10-inbox-inputs button:disabled, .v10-inbox-draft button:disabled { opacity: .45; cursor: not-allowed; }
+.v10-inbox-message { margin: 0; padding: var(--cn-s-12); border-radius: var(--cn-r-control); color: var(--v8-ink); background: var(--cn-secondary); font-size: var(--cn-fs-body); }.v10-inbox-draft { display: grid; gap: 12px; padding-top: 14px; border-top: 1px solid var(--cn-hairline); }.v10-inbox-draft > div:first-child { display: grid; gap: 3px; }.v10-inbox-draft small { color: var(--v8-muted); font-size: var(--cn-fs-caption); }.v10-inbox-draft dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--cn-s-8); margin: 0; }.v10-inbox-draft dl div { padding: 9px; border: 1px solid var(--cn-hairline); border-radius: var(--cn-r-control); background: var(--v8-panel); }.v10-inbox-draft dt { color: var(--v8-muted); font-size: var(--cn-fs-caption); text-transform: uppercase; }.v10-inbox-draft dd { margin: 4px 0 0; color: var(--v8-ink); font-size: var(--cn-fs-body); overflow-wrap: anywhere; }.v10-inbox-warning { margin: 0; color: var(--cn-warning); font-size: var(--cn-fs-body); }.v10-inbox-clear { margin: 0; color: var(--cn-success-text); font-size: var(--cn-fs-body); }
+@media (max-width: 680px) { .v10-inbox-workbench { padding: var(--cn-s-16); }.v10-inbox-heading { display: grid; gap: 10px; }.v10-inbox-inputs, .v10-inbox-draft dl { grid-template-columns: 1fr; } }
+
+/* ORD-0146: the queue is the address of the sentence "需要审核".  It has to read as a list of things
+   waiting on you, with the reference -- the only word a traveller recognises -- first, and its action
+   big enough for a thumb. */
+.v13-2-queue { display: grid; gap: var(--cn-s-8); margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--cn-hairline); }
+.v13-2-queue > b { color: var(--v8-ink); font-size: var(--cn-fs-body); }
+.v13-2-queue p { margin: 0; color: var(--v8-muted); font-size: var(--cn-fs-caption); overflow-wrap: anywhere; }
+.v13-2-queue-row { display: grid; gap: 4px; padding: var(--cn-s-12); border: 1px solid var(--cn-hairline); border-radius: var(--cn-r-control); background: var(--v8-panel); }
+.v13-2-queue-row b { color: var(--v8-ink); font-size: var(--cn-fs-body); overflow-wrap: anywhere; }
+.v13-2-queue-row span, .v13-2-queue-row small { color: var(--v8-muted); font-size: var(--cn-fs-caption); overflow-wrap: anywhere; }
+.v13-2-queue-row button { width: fit-content; padding: 9px var(--cn-s-16); border: 0; border-radius: var(--cn-r-button); color: #fff; background: var(--v8-accent); cursor: pointer; font-size: var(--cn-fs-body); font-weight: 800; }
+@media (max-width: 680px) { .v13-2-queue-row button { min-height: 44px; } }
+.v8-secondary { width: fit-content; padding: 9px var(--cn-s-16); border: 1px solid var(--cn-control-border); border-radius: var(--cn-r-button); color: var(--v8-accent); background: var(--v8-panel); cursor: pointer; font-size: var(--cn-fs-body); font-weight: 800; }
+
+/* Amendment F-2: the >=44px contract belongs to the mobile/touch layer, not to every
+   pointer.  Desktop keeps the compact box these controls always had; only the existing
+   680px mobile breakpoint raises them.  pointer:coarse is deliberately not the sole gate,
+   because automated mobile-viewport runs do not always emulate it — the width breakpoint
+   is the deterministic, testable path. */
+@media (max-width: 680px) {
+  .v10-inbox-scanner button,
+  .v10-inbox-inputs input,
+  .v10-inbox-inputs button,
+  .v10-inbox-draft button,
+  .journey-link-action button,
+  .v8-secondary { min-height: var(--cn-touch-min); }
+}
+/* ORD-0357: the journey-link row.  Its own class on purpose -- `.v10-inbox-message` is the slot other
+   gates read for extraction statuses, and sharing it would put this row's sentence in their way. */
+.journey-link-action { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cn-s-12); }
+.journey-link-message { margin: 0; color: var(--v8-ink); font-size: var(--cn-fs-body); overflow-wrap: anywhere; }
+
+/* V14 trial-readiness: first-run city setup and prominent locale control. */
+.v8-trial-setup { min-height: 100vh; padding: 24px; background: var(--v8-bg, #f4f6f2); }
+.v8-trial-setup-head { max-width: 1180px; margin: 0 auto 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.v8-trial-card { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 28px; background: #fff; border: 1px solid rgba(9,46,52,.12); border-radius: var(--cn-r-24); padding: 28px; box-shadow: 0 18px 60px rgba(9,46,52,.08); }
+.v8-trial-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.v8-trial-notice { display: grid; gap: 5px; padding: 14px 16px; border-radius: var(--cn-r-16); background: rgba(9,46,52,.05); }
+.v8-trial-notice span { color: var(--v8-muted, #607174); line-height: 1.5; }
+.v8-trial-form { display: grid; gap: 14px; }
+.v8-trial-form label { display: grid; gap: 6px; font-weight: 650; color: #173d42; }
+.v8-trial-form input { width: 100%; min-width: 0; border: 1px solid rgba(9,46,52,.18); border-radius: var(--cn-r-12); padding: 11px 12px; background: #fff; color: #102f34; font: inherit; }
+.v8-trial-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.v8-trial-row.three { grid-template-columns: 1.25fr .75fr .75fr; }
+.v8-trial-actions, .v8-hub-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.v8-home-language, .v8-trial-language { min-width: 64px; font-weight: 750; }
+@media (max-width: 840px) {
+  .v8-trial-setup { padding: 14px; }
+  .v8-trial-card { grid-template-columns: 1fr; padding: 18px; }
+  .v8-trial-row, .v8-trial-row.three { grid-template-columns: 1fr; }
+  .v8-hub-actions { justify-content: flex-start; }
+}

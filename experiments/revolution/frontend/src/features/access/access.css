@@ -1,0 +1,137 @@
+/* ORD-0436 -- the 成员与权限 screen. Own file so the shell's stylesheet is not a merge point.
+ *
+ * Nothing here sizes a control from its label: the ladder rows are text, not buttons, because the
+ * doors they would act on belong to ORD-0434. The one real control is the trip picker, and it is
+ * measured in both languages by `live_checks/ord0436_*` before this file ships again. */
+
+.cn-access {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 0 18px;
+}
+
+.cn-access-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cn-access-h {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.cn-access-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid rgb(255 255 255 / 8%);
+  padding-top: 10px;
+}
+
+.cn-access-read {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cn-access-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cn-access-picker-label {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.cn-access-picker select {
+  min-height: 44px;
+  width: 100%;
+  max-width: 420px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 4%);
+  color: inherit;
+  font: inherit;
+}
+
+.cn-access-ladder,
+.cn-access-sentences,
+.cn-access-activity {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cn-access-ladder-row {
+  display: grid;
+  grid-template-columns: minmax(84px, 0.32fr) 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.cn-access-role {
+  font-weight: 600;
+}
+
+.cn-access-scope,
+.cn-access-what,
+.cn-access-when,
+.cn-access-absent {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.cn-access-activity-row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.cn-access-when {
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.cn-access-confirm-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.42fr) 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.cn-access-details {
+  font-size: 12px;
+}
+
+.cn-access-details > summary {
+  cursor: pointer;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+}
+
+.cn-access-absent {
+  border-left: 3px solid rgb(255 255 255 / 18%);
+  padding-left: 10px;
+  opacity: 0.9;
+}
+
+@media (max-width: 420px) {
+  .cn-access-ladder-row,
+  .cn-access-confirm-row,
+  .cn-access-activity-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}

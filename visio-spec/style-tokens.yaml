@@ -1,0 +1,117 @@
+metadata:
+  name: CityNexus Visio Style Tokens
+  version: 1.0.0-candidate
+  units: cm
+  font: Segoe UI
+  fontFallback: Aptos
+colors:
+  canvas: '#F8FAFC'
+  surface: '#FFFFFF'
+  text: '#0F172A'
+  muted: '#64748B'
+  line: '#94A3B8'
+  weakBorder: '#CBD5E1'
+  journeyCore: '#2563EB'
+  journeyCoreBg: '#EFF6FF'
+  planning: '#7C3AED'
+  planningBg: '#F5F3FF'
+  journeyTwin: '#0F766E'
+  journeyTwinBg: '#F0FDFA'
+  commerce: '#059669'
+  commerceBg: '#ECFDF5'
+  warning: '#D97706'
+  warningBg: '#FFFBEB'
+  critical: '#DC2626'
+  criticalBg: '#FEF2F2'
+  external: '#64748B'
+  externalBg: '#F8FAFC'
+geometry:
+  gridMm: 4
+  spacingMm:
+  - 4
+  - 8
+  - 12
+  - 16
+  - 24
+  pageMarginMm: 12
+  connectorRouting: right-angle
+  maxConnectorCrossingsPerPage: 2
+lineStyles:
+  association:
+    widthPt: 0.9
+    dash: solid
+    arrow: none
+  keyRelation:
+    widthPt: 1.1
+    dash: solid
+  dependency:
+    widthPt: 0.85
+    dash: dashed
+    arrow: open
+  includeExtend:
+    widthPt: 0.85
+    dash: dashed
+    arrow: open
+  boundary:
+    widthPt: 1.2
+    dash: solid
+forbidden:
+- gradient
+- shadow
+- 3D
+- bevel
+- glow
+- decorative-random-icons
+shapeStyles:
+  useCaseDefault:
+    fill: surface
+    stroke: journeyCore
+    strokeWidthPt: 1.1
+    text: text
+  useCasePlanning:
+    fill: planningBg
+    stroke: planning
+    strokeWidthPt: 1.6
+    text: text
+  useCaseCommerce:
+    fill: commerceBg
+    stroke: commerce
+    strokeWidthPt: 1.3
+    text: text
+  actorHuman:
+    fill: surface
+    stroke: text
+    text: text
+  actorExternal:
+    fill: externalBg
+    stroke: external
+    text: text
+  classDefault:
+    fill: surface
+    stroke: weakBorder
+    text: text
+  classJourney:
+    fill: journeyCoreBg
+    stroke: journeyCore
+    text: text
+  classProjection:
+    fill: journeyTwinBg
+    stroke: journeyTwin
+    text: text
+  classPlanning:
+    fill: planningBg
+    stroke: planning
+    text: text
+  classCommerce:
+    fill: commerceBg
+    stroke: commerce
+    text: text
+  classEvent:
+    fill: warningBg
+    stroke: warning
+    text: text
+  referenceClass:
+    fill: externalBg
+    stroke: external
+    dash: dashed
+    text: muted

@@ -1,0 +1,9 @@
+[project]
+name = "citynexus-agent-mcp"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = ["httpx>=0.27,<1"]
+
+[project.optional-dependencies]
+mcp = ["mcp>=1,<2"]
+

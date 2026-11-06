@@ -1,0 +1,178 @@
+{
+  "validator": "validate-requirements.py",
+  "version": "0.3.0",
+  "checks": [
+    {
+      "name": "strict YAML duplicate-key detection",
+      "status": "PASS"
+    },
+    {
+      "name": "JSON Schema validation",
+      "status": "PASS"
+    },
+    {
+      "name": "unique requirement IDs",
+      "status": "PASS"
+    },
+    {
+      "name": "section / ID prefix / type consistency",
+      "status": "PASS"
+    },
+    {
+      "name": "requirement IDs are continuous and ordered",
+      "status": "PASS"
+    },
+    {
+      "name": "metadata contains exactly UC-01 through UC-13",
+      "status": "PASS",
+      "details": [
+        "UC-01",
+        "UC-02",
+        "UC-03",
+        "UC-04",
+        "UC-05",
+        "UC-06",
+        "UC-07",
+        "UC-08",
+        "UC-09",
+        "UC-10",
+        "UC-11",
+        "UC-12",
+        "UC-13"
+      ]
+    },
+    {
+      "name": "domain model loads dynamically",
+      "status": "PASS"
+    },
+    {
+      "name": "use-case references resolve",
+      "status": "PASS"
+    },
+    {
+      "name": "domain references resolve by name and kind",
+      "status": "PASS"
+    },
+    {
+      "name": "source codes are valid",
+      "status": "PASS"
+    },
+    {
+      "name": "priorities are valid MoSCoW codes",
+      "status": "PASS"
+    },
+    {
+      "name": "acceptance-criterion IDs belong to their requirement",
+      "status": "PASS"
+    },
+    {
+      "name": "acceptance-criterion IDs are unique",
+      "status": "PASS"
+    },
+    {
+      "name": "no duplicate acceptance-criterion semantics",
+      "status": "PASS"
+    },
+    {
+      "name": "acceptance-criterion verification methods match their requirement",
+      "status": "PASS"
+    },
+    {
+      "name": "business goals, functional requirements and business rules have use-case mappings",
+      "status": "PASS"
+    },
+    {
+      "name": "baseline-candidate requirement statuses are proposed",
+      "status": "PASS"
+    },
+    {
+      "name": "test-case IDs are unique",
+      "status": "PASS"
+    },
+    {
+      "name": "requirement references resolve",
+      "status": "PASS"
+    },
+    {
+      "name": "no self dependency/conflict",
+      "status": "PASS"
+    },
+    {
+      "name": "dependsOn and conflictsWith do not overlap",
+      "status": "PASS"
+    },
+    {
+      "name": "dependsOn graph is acyclic",
+      "status": "PASS"
+    },
+    {
+      "name": "traceability mapping IDs are unique",
+      "status": "PASS"
+    },
+    {
+      "name": "traceability completeness and mirror consistency",
+      "status": "PASS",
+      "details": {
+        "missing": [],
+        "extra": [],
+        "mismatch": []
+      }
+    },
+    {
+      "name": "dangling trace test-case references",
+      "status": "PASS"
+    },
+    {
+      "name": "exact 138-item baseline counts",
+      "status": "PASS",
+      "details": {
+        "current": {
+          "business_goals": 8,
+          "functional_requirements": 61,
+          "business_rules": 24,
+          "non_functional_requirements": 16,
+          "security_requirements": 14,
+          "integration_requirements": 15,
+          "total": 138
+        },
+        "expected": {
+          "business_goals": 8,
+          "functional_requirements": 61,
+          "business_rules": 24,
+          "non_functional_requirements": 16,
+          "security_requirements": 14,
+          "integration_requirements": 15,
+          "total": 138
+        }
+      }
+    },
+    {
+      "name": "concrete requirements have acceptance criteria",
+      "status": "PASS"
+    },
+    {
+      "name": "baseline-candidate has no infrastructure-only skipped checks",
+      "status": "PASS"
+    }
+  ],
+  "details": {
+    "requirementCount": 138,
+    "traceabilityMappingCount": 138,
+    "counts": {
+      "business_goals": 8,
+      "functional_requirements": 61,
+      "business_rules": 24,
+      "non_functional_requirements": 16,
+      "security_requirements": 14,
+      "integration_requirements": 15,
+      "total": 138
+    },
+    "status": "baseline-candidate",
+    "domainCatalogSize": 65
+  },
+  "summary": {
+    "passed": 28,
+    "failed": 0,
+    "skipped": 0
+  }
+}

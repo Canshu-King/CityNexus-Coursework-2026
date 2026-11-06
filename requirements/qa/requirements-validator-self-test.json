@@ -1,0 +1,95 @@
+{
+  "validator": "validate-requirements.py",
+  "version": "0.3.0",
+  "tests": [
+    {
+      "name": "duplicate YAML key",
+      "expected": "reject via strict YAML duplicate-key detection",
+      "status": "PASS"
+    },
+    {
+      "name": "FR placed in business_goals",
+      "expected": "reject via section / ID prefix / type consistency",
+      "status": "PASS"
+    },
+    {
+      "name": "domain name with wrong kind",
+      "expected": "reject via domain references resolve by name and kind",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate trace mapping",
+      "expected": "reject via traceability mapping IDs are unique",
+      "status": "PASS"
+    },
+    {
+      "name": "dependsOn cycle",
+      "expected": "reject via dependsOn graph is acyclic",
+      "status": "PASS"
+    },
+    {
+      "name": "self dependency",
+      "expected": "reject via no self dependency/conflict",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate acceptance semantics",
+      "expected": "reject via no duplicate acceptance-criterion semantics",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid source code",
+      "expected": "reject via JSON Schema validation",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid priority",
+      "expected": "reject via JSON Schema validation",
+      "status": "PASS"
+    },
+    {
+      "name": "acceptance criterion owned by another requirement",
+      "expected": "reject via acceptance-criterion IDs belong to their requirement",
+      "status": "PASS"
+    },
+    {
+      "name": "missing trace mapping",
+      "expected": "reject via traceability completeness and mirror consistency",
+      "status": "PASS"
+    },
+    {
+      "name": "traceability mirror mismatch",
+      "expected": "reject via traceability completeness and mirror consistency",
+      "status": "PASS"
+    },
+    {
+      "name": "non-continuous requirement IDs",
+      "expected": "reject via requirement IDs are continuous and ordered",
+      "status": "PASS"
+    },
+    {
+      "name": "acceptance method mismatch",
+      "expected": "reject via acceptance-criterion verification methods match their requirement",
+      "status": "PASS"
+    },
+    {
+      "name": "functional requirement without use case",
+      "expected": "reject via business goals, functional requirements and business rules have use-case mappings",
+      "status": "PASS"
+    },
+    {
+      "name": "dangling trace test case",
+      "expected": "reject via dangling trace test-case references",
+      "status": "PASS"
+    },
+    {
+      "name": "baseline candidate exact-count gate",
+      "expected": "reject via exact 138-item baseline counts",
+      "status": "PASS"
+    }
+  ],
+  "summary": {
+    "passed": 17,
+    "failed": 0
+  }
+}

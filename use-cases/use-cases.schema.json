@@ -1,0 +1,315 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CityNexus Use Case Specification Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "metadata",
+    "actors",
+    "useCases",
+    "relationships",
+    "modelNotes"
+  ],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": [
+        "name",
+        "version",
+        "status",
+        "domainModel",
+        "requirementsBaseline",
+        "topLevelUseCaseCount"
+      ],
+      "additionalProperties": true
+    },
+    "actors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "stereotype"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^ACT-[A-Z0-9-]+$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "human",
+              "external_system"
+            ]
+          },
+          "stereotype": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "useCases": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 13,
+      "items": {
+        "$ref": "#/$defs/useCase"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "source",
+          "target",
+          "condition",
+          "note"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "include",
+              "extend"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "condition": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "modelNotes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "domainRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "kind"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "entity",
+            "value_object",
+            "enum",
+            "state_machine",
+            "rule"
+          ]
+        }
+      }
+    },
+    "flowStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "actor",
+        "action"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^MS-[0-9]{2}$"
+        },
+        "actor": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "branchFlow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[AE][0-9]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "detailUC": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "relationship",
+        "documentationScope"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^UC-(04|05|10)\\.[1-9][0-9]*$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "relationship": {
+          "const": "include"
+        },
+        "documentationScope": {
+          "const": "part2-focused-detail"
+        }
+      }
+    },
+    "useCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "level",
+        "primaryActor",
+        "supportingActors",
+        "goal",
+        "preconditions",
+        "trigger",
+        "mainSuccessScenario",
+        "alternateFlows",
+        "exceptionFlows",
+        "postconditions",
+        "requirementIds",
+        "domainElements",
+        "detailUseCases",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^UC-(0[1-9]|1[0-3])$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level": {
+          "const": "user_goal"
+        },
+        "primaryActor": {
+          "type": "string"
+        },
+        "supportingActors": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "preconditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "trigger": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mainSuccessScenario": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "$ref": "#/$defs/flowStep"
+          }
+        },
+        "alternateFlows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/branchFlow"
+          }
+        },
+        "exceptionFlows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/branchFlow"
+          }
+        },
+        "postconditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "requirementIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^(BG|FR|BR|NFR|SR|IR)-[0-9]{3}$"
+          }
+        },
+        "domainElements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domainRef"
+          }
+        },
+        "detailUseCases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/detailUC"
+          }
+        },
+        "status": {
+          "const": "baseline-candidate"
+        }
+      }
+    }
+  }
+}

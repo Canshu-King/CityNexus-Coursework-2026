@@ -1,0 +1,30 @@
+# Hermes Agent reads MCP servers from ~/.hermes/config.yaml under mcp_servers.
+# Merge this entry into that file; do not copy a token into this YAML.
+mcp_servers:
+  citynexus:
+    command: python
+    args:
+      - -m
+      - citynexus_mcp.server
+      - --v2
+    env:
+      PYTHONPATH: D:\moodle\CityNexus\agent-mcp
+      CITYNEXUS_API_BASE_URL: http://127.0.0.1:8000
+      # Optional for non-development deployments. Set it in the parent
+      # process/environment instead of writing the secret here.
+      # CITYNEXUS_AGENT_TOKEN: <set-in-process-environment>
+    tools:
+      include:
+        - inspect_journey
+        - inspect_twin
+        - list_replans
+        - search_city_services
+        - request_replan
+        - accept_replan
+        - replace_activity
+        - reschedule_activity
+        - create_booking
+        - cancel_refundable_booking
+        - request_commitment_change
+      prompts: false
+      resources: false

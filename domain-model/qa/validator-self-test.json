@@ -1,0 +1,29 @@
+{
+  "validator": "validate-domain-model.py",
+  "tests": [
+    {
+      "name": "duplicate YAML key",
+      "expected": "reject",
+      "status": "PASS"
+    },
+    {
+      "name": "state not declared in enum",
+      "expected": "reject",
+      "status": "PASS"
+    },
+    {
+      "name": "array without items type",
+      "expected": "reject",
+      "status": "PASS"
+    },
+    {
+      "name": "contradictory reciprocal association",
+      "expected": "reject",
+      "status": "PASS"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0
+  }
+}

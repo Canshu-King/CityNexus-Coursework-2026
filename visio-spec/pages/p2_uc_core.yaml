@@ -1,0 +1,418 @@
+pageName: P2_UC_Core
+pageWidth: 42.0
+pageHeight: 29.7
+diagramType: uml-use-case
+title: CityNexus — Core Use Case Model
+subtitle: Smart City Traveler System • Proposed Model Baseline v1.0
+statusTag: PART 2 • DETAILED
+canvasStyle: canvas
+shapes:
+- id: BOUNDARY
+  type: uml_subsystem
+  x: 21.2
+  y: 15.4
+  width: 28.8
+  height: 25.0
+  text: CityNexus
+  styleRef: classDefault
+  masterRef: umlSubsystem
+- id: ACT-TRAVELER
+  type: uml_actor
+  x: 3.1
+  y: 11.7
+  width: 2.0
+  height: 3.0
+  text: Traveler
+  styleRef: actorHuman
+  masterRef: umlActor
+- id: ACT-ADMIN
+  type: uml_actor
+  x: 3.1
+  y: 24.1
+  width: 2.0
+  height: 3.0
+  text: Administrator
+  styleRef: actorHuman
+  masterRef: umlActor
+- id: ACT-CITY-DATA
+  type: uml_actor
+  x: 39.2
+  y: 4.3
+  width: 2.2
+  height: 2.8
+  text: 'City Data Provider
+
+    <<external system>>'
+  styleRef: actorExternal
+  masterRef: umlActor
+- id: ACT-MOBILITY
+  type: uml_actor
+  x: 39.2
+  y: 7.5
+  width: 2.2
+  height: 2.8
+  text: 'Mobility Provider
+
+    <<external system>>'
+  styleRef: actorExternal
+  masterRef: umlActor
+- id: ACT-BOOKING
+  type: uml_actor
+  x: 39.2
+  y: 10.7
+  width: 2.2
+  height: 2.8
+  text: 'Booking Provider
+
+    <<external system>>'
+  styleRef: actorExternal
+  masterRef: umlActor
+- id: ACT-PAYMENT
+  type: uml_actor
+  x: 39.2
+  y: 13.9
+  width: 2.2
+  height: 2.8
+  text: 'Payment Gateway
+
+    <<external system>>'
+  styleRef: actorExternal
+  masterRef: umlActor
+- id: ACT-AUTH
+  type: uml_actor
+  x: 39.2
+  y: 17.1
+  width: 2.2
+  height: 2.8
+  text: 'Authentication Service
+
+    <<external system>>'
+  styleRef: actorExternal
+  masterRef: umlActor
+- id: ACT-AI
+  type: uml_actor
+  x: 39.2
+  y: 20.3
+  width: 2.2
+  height: 2.8
+  text: 'AI Provider
+
+    <<external system>>'
+  styleRef: actorExternal
+  masterRef: umlActor
+- id: ACT-CONTEXT
+  type: uml_actor
+  x: 39.2
+  y: 23.5
+  width: 2.2
+  height: 2.8
+  text: 'Context Event Provider
+
+    <<external system>>'
+  styleRef: actorExternal
+  masterRef: umlActor
+- id: UC-01
+  type: uml_use_case
+  x: 12.0
+  y: 5.0
+  width: 5.2
+  height: 1.45
+  text: 'UC-01
+
+    Manage Account & Preferences'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-02
+  type: uml_use_case
+  x: 21.2
+  y: 5.0
+  width: 5.2
+  height: 1.45
+  text: 'UC-02
+
+    Create & Configure Journey'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-03
+  type: uml_use_case
+  x: 30.0
+  y: 5.0
+  width: 5.2
+  height: 1.45
+  text: 'UC-03
+
+    Manage Journey Commitments'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-04
+  type: uml_use_case
+  x: 12.0
+  y: 9.0
+  width: 5.2
+  height: 1.45
+  text: 'UC-04
+
+    Generate & Select Journey Plan'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-05
+  type: uml_use_case
+  x: 21.2
+  y: 9.0
+  width: 5.2
+  height: 1.45
+  text: 'UC-05
+
+    Discover & Recommend City Services'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-06
+  type: uml_use_case
+  x: 30.0
+  y: 9.0
+  width: 5.2
+  height: 1.45
+  text: 'UC-06
+
+    Book & Order City Services'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-08
+  type: uml_use_case
+  x: 12.0
+  y: 13.2
+  width: 5.2
+  height: 1.45
+  text: 'UC-08
+
+    Execute Journey'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-09
+  type: uml_use_case
+  x: 21.2
+  y: 13.2
+  width: 5.2
+  height: 1.45
+  text: 'UC-09
+
+    Detect & Assess Journey Events'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-07
+  type: uml_use_case
+  x: 30.0
+  y: 13.2
+  width: 5.2
+  height: 1.45
+  text: 'UC-07
+
+    Make Secure Payment'
+  styleRef: useCaseCommerce
+  masterRef: umlUseCase
+- id: UC-11
+  type: uml_use_case
+  x: 12.0
+  y: 17.4
+  width: 5.2
+  height: 1.45
+  text: 'UC-11
+
+    Use AI Journey Copilot'
+  styleRef: useCasePlanning
+  masterRef: umlUseCase
+- id: UC-12
+  type: uml_use_case
+  x: 21.2
+  y: 17.4
+  width: 5.2
+  height: 1.45
+  text: 'UC-12
+
+    Review Journey History & Changes'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-10
+  type: uml_use_case
+  x: 30.0
+  y: 17.4
+  width: 5.2
+  height: 1.45
+  text: 'UC-10
+
+    Replan Disrupted Journey'
+  styleRef: useCasePlanning
+  masterRef: umlUseCase
+- id: UC-13
+  type: uml_use_case
+  x: 21.2
+  y: 23.5
+  width: 5.2
+  height: 1.45
+  text: 'UC-13
+
+    Administer Platform & Providers'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+connectors:
+- id: T-UC-01
+  type: association
+  source: ACT-TRAVELER
+  target: UC-01
+  styleRef: association
+- id: T-UC-02
+  type: association
+  source: ACT-TRAVELER
+  target: UC-02
+  styleRef: association
+- id: T-UC-03
+  type: association
+  source: ACT-TRAVELER
+  target: UC-03
+  styleRef: association
+- id: T-UC-04
+  type: association
+  source: ACT-TRAVELER
+  target: UC-04
+  styleRef: association
+- id: T-UC-05
+  type: association
+  source: ACT-TRAVELER
+  target: UC-05
+  styleRef: association
+- id: T-UC-06
+  type: association
+  source: ACT-TRAVELER
+  target: UC-06
+  styleRef: association
+- id: T-UC-07
+  type: association
+  source: ACT-TRAVELER
+  target: UC-07
+  styleRef: association
+- id: T-UC-08
+  type: association
+  source: ACT-TRAVELER
+  target: UC-08
+  styleRef: association
+- id: T-UC-10
+  type: association
+  source: ACT-TRAVELER
+  target: UC-10
+  styleRef: association
+- id: T-UC-11
+  type: association
+  source: ACT-TRAVELER
+  target: UC-11
+  styleRef: association
+- id: T-UC-12
+  type: association
+  source: ACT-TRAVELER
+  target: UC-12
+  styleRef: association
+- id: AD-13
+  type: association
+  source: ACT-ADMIN
+  target: UC-13
+  styleRef: association
+- id: CD-UC-04
+  type: association
+  source: ACT-CITY-DATA
+  target: UC-04
+  styleRef: association
+- id: CD-UC-05
+  type: association
+  source: ACT-CITY-DATA
+  target: UC-05
+  styleRef: association
+- id: CD-UC-10
+  type: association
+  source: ACT-CITY-DATA
+  target: UC-10
+  styleRef: association
+- id: M-UC-04
+  type: association
+  source: ACT-MOBILITY
+  target: UC-04
+  styleRef: association
+- id: M-UC-08
+  type: association
+  source: ACT-MOBILITY
+  target: UC-08
+  styleRef: association
+- id: M-UC-10
+  type: association
+  source: ACT-MOBILITY
+  target: UC-10
+  styleRef: association
+- id: B-06
+  type: association
+  source: ACT-BOOKING
+  target: UC-06
+  styleRef: association
+- id: P-07
+  type: association
+  source: ACT-PAYMENT
+  target: UC-07
+  styleRef: association
+- id: AU-01
+  type: association
+  source: ACT-AUTH
+  target: UC-01
+  styleRef: association
+- id: AU-07
+  type: association
+  source: ACT-AUTH
+  target: UC-07
+  styleRef: association
+- id: AI-05
+  type: association
+  source: ACT-AI
+  target: UC-05
+  styleRef: association
+- id: AI-10
+  type: association
+  source: ACT-AI
+  target: UC-10
+  styleRef: association
+- id: AI-11
+  type: association
+  source: ACT-AI
+  target: UC-11
+  styleRef: association
+- id: CE-09
+  type: association
+  source: ACT-CONTEXT
+  target: UC-09
+  styleRef: association
+- id: E-07-06
+  type: extend
+  source: UC-07
+  target: UC-06
+  styleRef: includeExtend
+  label: <<extend>>
+  condition: '[payment required]'
+- id: E-09-08
+  type: extend
+  source: UC-09
+  target: UC-08
+  styleRef: includeExtend
+  label: <<extend>>
+  condition: '[event detected]'
+- id: E-10-09
+  type: extend
+  source: UC-10
+  target: UC-09
+  styleRef: includeExtend
+  label: <<extend>>
+  condition: '[replan required]'
+legend:
+  x: 35.0
+  y: 27.7
+  width: 5.5
+  height: 1.2
+  items:
+  - Association
+  - <<extend>>
+zones: []
+notes: []

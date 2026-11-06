@@ -1,0 +1,77 @@
+metadata:
+  name: CityNexus Visio Model Specification
+  version: 1.0.0-candidate
+  product: CityNexus
+  officialProject: Smart City Traveler System
+  domainModel: ../domain-model/citynexus-core-domain-model-v0.4.2.yaml
+  requirementsBaseline: ../requirements/requirements.yaml
+  useCaseBaseline: ../use-cases/use-cases.yaml
+  coordinateSystem:
+    unit: cm
+    logicalOrigin: top-left
+    xDirection: right
+    yDirection: down
+    shapeCoordinate: center
+    visioYTransform: VisioY = PageHeight - LogicalY
+  masterCatalog:
+    umlActor:
+      kind: uml_actor
+      preferredStencil: UML Use Case
+      fallbackMasterNames:
+      - Actor
+      - 参与者
+    umlUseCase:
+      kind: uml_use_case
+      preferredStencil: UML Use Case
+      fallbackMasterNames:
+      - Use Case
+      - 用例
+    umlSubsystem:
+      kind: uml_subsystem
+      preferredStencil: UML Use Case
+      fallbackMasterNames:
+      - Subsystem
+      - System Boundary
+      - 子系统
+    umlClass:
+      kind: uml_class
+      preferredStencil: UML Class
+      fallbackMasterNames:
+      - Class
+      - 类
+    umlAssociation:
+      kind: uml_association_connector
+      preferredStencil: UML
+      fallbackMasterNames:
+      - Association
+      - 关联
+    umlDependency:
+      kind: uml_dependency_connector
+      preferredStencil: UML
+      fallbackMasterNames:
+      - Dependency
+      - 依赖
+    umlInclude:
+      kind: uml_include_connector
+      preferredStencil: UML Use Case
+      fallbackMasterNames:
+      - Include
+      - 包含
+    umlExtend:
+      kind: uml_extend_connector
+      preferredStencil: UML Use Case
+      fallbackMasterNames:
+      - Extend
+      - 扩展
+  pages:
+  - 00_Style_Guide
+  - P1_UC_Overview
+  - P1_Domain_Overview
+  - P2_UC_Core
+  - P2_UC_Planning_Replan
+  - P2_DM_Journey_Planning
+  - P2_DM_Discovery_Commerce
+  output:
+    masterVsdx: CityNexus_Visio_Model_Baseline_v1.0.vsdx
+    preferredVector: svg
+    pngFallbackMin: 1920x1080

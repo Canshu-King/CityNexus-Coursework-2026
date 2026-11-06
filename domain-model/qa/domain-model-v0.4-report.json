@@ -1,0 +1,75 @@
+{
+  "model": "CityNexus Core Domain Model",
+  "version": "0.4",
+  "status": "release-candidate",
+  "checks": [
+    {
+      "name": "YAML parse",
+      "status": "PASS"
+    },
+    {
+      "name": "JSON Schema",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate entity IDs",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate rule IDs",
+      "status": "PASS"
+    },
+    {
+      "name": "dangling relationship",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid multiplicity",
+      "status": "PASS"
+    },
+    {
+      "name": "dependency with multiplicity",
+      "status": "PASS"
+    },
+    {
+      "name": "undefined enum/type/value object",
+      "status": "PASS"
+    },
+    {
+      "name": "value object used as entity association",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid state transition",
+      "status": "PASS"
+    },
+    {
+      "name": "score weights sum == 1.0",
+      "status": "PASS",
+      "details": 1.0
+    },
+    {
+      "name": "unexpected null keys in formula objects",
+      "status": "PASS"
+    },
+    {
+      "name": "isolated core entities",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid use-case traceability reference",
+      "status": "PASS"
+    },
+    {
+      "name": "README baseline version consistency",
+      "status": "PASS"
+    }
+  ],
+  "summary": {
+    "passed": 15,
+    "failed": 0,
+    "entityCount": 18,
+    "relationshipCount": 37,
+    "valueObjectCount": 5
+  }
+}

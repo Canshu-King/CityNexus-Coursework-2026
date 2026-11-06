@@ -1,0 +1,112 @@
+pageName: 00_Style_Guide
+pageWidth: 29.7
+pageHeight: 21.0
+diagramType: style-guide
+title: CityNexus — Visio Style Guide
+subtitle: Native UML masters • Model Baseline v1.0
+statusTag: INTERNAL • NOT SUBMITTED
+canvasStyle: canvas
+shapes:
+- id: SG-ACTOR-H
+  type: uml_actor
+  x: 4.0
+  y: 5.0
+  width: 2.0
+  height: 3.0
+  text: Traveler
+  styleRef: actorHuman
+  masterRef: umlActor
+- id: SG-ACTOR-E
+  type: uml_actor
+  x: 9.0
+  y: 5.0
+  width: 2.4
+  height: 3.0
+  text: 'City Data Provider
+
+    <<external system>>'
+  styleRef: actorExternal
+  masterRef: umlActor
+- id: SG-UC
+  type: uml_use_case
+  x: 15.0
+  y: 5.0
+  width: 5.0
+  height: 1.5
+  text: 'UC-10
+
+    Replan Journey'
+  styleRef: useCasePlanning
+  masterRef: umlUseCase
+- id: SG-CLASS
+  type: uml_class
+  x: 5.5
+  y: 12.0
+  width: 5.2
+  height: 2.6
+  text: Journey
+  styleRef: classJourney
+  masterRef: umlClass
+  fields:
+  - journeyId
+  - status
+  stereotype: <<aggregate root>>
+- id: SG-PROJ
+  type: uml_class
+  x: 14.0
+  y: 12.0
+  width: 5.4
+  height: 2.8
+  text: JourneyTwin
+  styleRef: classProjection
+  masterRef: umlClass
+  fields:
+  - journeyHealth
+  - riskScore
+  stereotype: <<projection>>
+- id: SG-VO
+  type: uml_class
+  x: 23.0
+  y: 12.0
+  width: 5.2
+  height: 2.6
+  text: ScoreBreakdown
+  styleRef: classPlanning
+  masterRef: umlClass
+  fields:
+  - finalScore
+  - riskPenalty
+  stereotype: <<value object>>
+connectors:
+- id: SG-C1
+  type: association
+  source: SG-ACTOR-H
+  target: SG-UC
+  styleRef: association
+- id: SG-C2
+  type: dependency
+  source: SG-PROJ
+  target: SG-CLASS
+  styleRef: dependency
+  label: <<projects from>>
+- id: SG-C3
+  type: composition
+  source: SG-CLASS
+  target: SG-VO
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+legend:
+  x: 22.0
+  y: 18.8
+  width: 6.0
+  height: 1.6
+  items:
+  - Association
+  - Composition
+  - Dependency
+  - Multiplicity
+  - Projection
+zones: []
+notes:
+- Create/read this page first. It is the rendering contract for all later pages.

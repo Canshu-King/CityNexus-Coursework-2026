@@ -1,0 +1,24 @@
+{
+  "topLevelUseCases": 13,
+  "detailUseCases": 14,
+  "actors": 9,
+  "requirementCountsByUseCase": {
+    "UC-01": 18,
+    "UC-02": 15,
+    "UC-03": 10,
+    "UC-04": 19,
+    "UC-05": 35,
+    "UC-06": 23,
+    "UC-07": 24,
+    "UC-08": 22,
+    "UC-09": 18,
+    "UC-10": 52,
+    "UC-11": 28,
+    "UC-12": 14,
+    "UC-13": 14
+  },
+  "requirementsWithoutUseCase": [
+    "NFR-008"
+  ],
+  "sourceRequirementsTotal": 138
+}

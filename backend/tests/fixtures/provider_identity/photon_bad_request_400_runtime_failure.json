@@ -1,0 +1,17 @@
+{
+  "captured_at": "2026-09-22T01:00:54+0800",
+  "url": "https://photon.komoot.io/api/?lat=27.9458325&lon=98.5251309",
+  "request_user_agent": "CityNexus/7.0 (+https://citynexus.local/discovery)",
+  "request_post_data": null,
+  "elapsed_ms": 11515.0,
+  "status": 400,
+  "error": "HTTP 400",
+  "response_headers": {
+    "Server": "nginx",
+    "Date": "Mon, 21 Sep 2026 17:00:53 GMT",
+    "Content-Type": "application/json",
+    "Content-Length": "78",
+    "Connection": "close"
+  },
+  "body_text": "{\"message\":\"q parameter is required when no include categories are specified\"}"
+}

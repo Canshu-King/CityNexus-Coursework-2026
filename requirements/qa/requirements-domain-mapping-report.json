@@ -1,0 +1,826 @@
+{
+  "report": "CityNexus Requirements Domain Mapping Report",
+  "version": "0.3.0",
+  "domainModelVersion": "0.4.2",
+  "domainElementCount": 65,
+  "mappedDomainElementCount": 65,
+  "unmappedDomainElements": [],
+  "mappings": [
+    {
+      "name": "Activity",
+      "kind": "entity",
+      "requirementCount": 11,
+      "requirements": [
+        "BR-013",
+        "BR-019",
+        "BR-020",
+        "BR-021",
+        "FR-008",
+        "FR-012",
+        "FR-015",
+        "FR-016",
+        "FR-042",
+        "FR-045",
+        "IR-003"
+      ]
+    },
+    {
+      "name": "Booking",
+      "kind": "entity",
+      "requirementCount": 12,
+      "requirements": [
+        "BR-017",
+        "FR-029",
+        "FR-032",
+        "FR-033",
+        "FR-034",
+        "IR-006",
+        "IR-007",
+        "IR-012",
+        "IR-015",
+        "NFR-007",
+        "NFR-010",
+        "SR-008"
+      ]
+    },
+    {
+      "name": "CandidatePlan",
+      "kind": "entity",
+      "requirementCount": 8,
+      "requirements": [
+        "BG-007",
+        "BR-008",
+        "FR-048",
+        "FR-049",
+        "FR-050",
+        "IR-011",
+        "NFR-002",
+        "NFR-016"
+      ]
+    },
+    {
+      "name": "CityService",
+      "kind": "entity",
+      "requirementCount": 10,
+      "requirements": [
+        "BG-006",
+        "BR-021",
+        "FR-021",
+        "FR-022",
+        "FR-032",
+        "FR-035",
+        "FR-056",
+        "IR-006",
+        "IR-012",
+        "SR-008"
+      ]
+    },
+    {
+      "name": "Commitment",
+      "kind": "entity",
+      "requirementCount": 15,
+      "requirements": [
+        "BG-004",
+        "BG-005",
+        "BR-009",
+        "BR-010",
+        "BR-011",
+        "FR-008",
+        "FR-009",
+        "FR-016",
+        "FR-027",
+        "FR-029",
+        "FR-030",
+        "FR-031",
+        "FR-050",
+        "FR-053",
+        "SR-011"
+      ]
+    },
+    {
+      "name": "Constraint",
+      "kind": "entity",
+      "requirementCount": 18,
+      "requirements": [
+        "BG-001",
+        "BG-004",
+        "BR-008",
+        "BR-019",
+        "BR-020",
+        "BR-021",
+        "BR-022",
+        "FR-005",
+        "FR-010",
+        "FR-024",
+        "FR-025",
+        "FR-027",
+        "FR-042",
+        "FR-044",
+        "FR-053",
+        "FR-054",
+        "FR-058",
+        "IR-011"
+      ]
+    },
+    {
+      "name": "ContextSnapshot",
+      "kind": "entity",
+      "requirementCount": 4,
+      "requirements": [
+        "BR-024",
+        "FR-039",
+        "IR-005",
+        "SR-013"
+      ]
+    },
+    {
+      "name": "Event",
+      "kind": "entity",
+      "requirementCount": 15,
+      "requirements": [
+        "BG-003",
+        "BR-014",
+        "BR-016",
+        "BR-024",
+        "FR-039",
+        "FR-040",
+        "FR-041",
+        "FR-042",
+        "FR-043",
+        "FR-059",
+        "IR-005",
+        "IR-012",
+        "IR-015",
+        "NFR-015",
+        "SR-008"
+      ]
+    },
+    {
+      "name": "Journey",
+      "kind": "entity",
+      "requirementCount": 15,
+      "requirements": [
+        "BG-001",
+        "BR-001",
+        "BR-006",
+        "FR-003",
+        "FR-006",
+        "FR-007",
+        "FR-010",
+        "FR-014",
+        "FR-047",
+        "FR-054",
+        "FR-058",
+        "NFR-005",
+        "NFR-006",
+        "NFR-007",
+        "NFR-013"
+      ]
+    },
+    {
+      "name": "JourneyTwin",
+      "kind": "entity",
+      "requirementCount": 10,
+      "requirements": [
+        "BG-001",
+        "BG-003",
+        "BG-005",
+        "FR-016",
+        "FR-017",
+        "FR-023",
+        "FR-026",
+        "FR-039",
+        "FR-044",
+        "SR-014"
+      ]
+    },
+    {
+      "name": "Order",
+      "kind": "entity",
+      "requirementCount": 4,
+      "requirements": [
+        "FR-035",
+        "FR-036",
+        "IR-007",
+        "SR-008"
+      ]
+    },
+    {
+      "name": "PaymentTransaction",
+      "kind": "entity",
+      "requirementCount": 14,
+      "requirements": [
+        "BR-018",
+        "FR-029",
+        "FR-036",
+        "FR-037",
+        "FR-038",
+        "IR-007",
+        "IR-012",
+        "IR-015",
+        "NFR-007",
+        "NFR-010",
+        "SR-003",
+        "SR-005",
+        "SR-008",
+        "SR-011"
+      ]
+    },
+    {
+      "name": "Place",
+      "kind": "entity",
+      "requirementCount": 12,
+      "requirements": [
+        "BG-006",
+        "BR-005",
+        "FR-007",
+        "FR-018",
+        "FR-019",
+        "FR-020",
+        "FR-021",
+        "FR-056",
+        "IR-001",
+        "IR-002",
+        "IR-012",
+        "SR-008"
+      ]
+    },
+    {
+      "name": "PlanVersion",
+      "kind": "entity",
+      "requirementCount": 23,
+      "requirements": [
+        "BG-001",
+        "BR-001",
+        "BR-002",
+        "BR-003",
+        "BR-004",
+        "BR-013",
+        "BR-023",
+        "FR-010",
+        "FR-011",
+        "FR-012",
+        "FR-013",
+        "FR-014",
+        "FR-015",
+        "FR-044",
+        "FR-048",
+        "FR-050",
+        "FR-051",
+        "FR-052",
+        "FR-058",
+        "FR-059",
+        "NFR-003",
+        "NFR-006",
+        "NFR-013"
+      ]
+    },
+    {
+      "name": "Preference",
+      "kind": "entity",
+      "requirementCount": 15,
+      "requirements": [
+        "BG-005",
+        "BR-007",
+        "BR-012",
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-025",
+        "FR-054",
+        "FR-055",
+        "IR-009",
+        "SR-008",
+        "SR-009",
+        "SR-013",
+        "SR-014"
+      ]
+    },
+    {
+      "name": "Recommendation",
+      "kind": "entity",
+      "requirementCount": 13,
+      "requirements": [
+        "BG-005",
+        "BG-007",
+        "BR-007",
+        "FR-023",
+        "FR-024",
+        "FR-025",
+        "FR-027",
+        "FR-028",
+        "FR-056",
+        "FR-057",
+        "IR-009",
+        "NFR-016",
+        "SR-009"
+      ]
+    },
+    {
+      "name": "ReplanProposal",
+      "kind": "entity",
+      "requirementCount": 27,
+      "requirements": [
+        "BG-001",
+        "BG-003",
+        "BG-004",
+        "BG-007",
+        "BR-003",
+        "BR-007",
+        "BR-015",
+        "BR-016",
+        "BR-022",
+        "BR-023",
+        "FR-045",
+        "FR-046",
+        "FR-047",
+        "FR-048",
+        "FR-051",
+        "FR-052",
+        "FR-053",
+        "FR-057",
+        "FR-059",
+        "IR-009",
+        "IR-011",
+        "IR-015",
+        "NFR-002",
+        "NFR-010",
+        "NFR-015",
+        "NFR-016",
+        "SR-009"
+      ]
+    },
+    {
+      "name": "Traveler",
+      "kind": "entity",
+      "requirementCount": 5,
+      "requirements": [
+        "FR-001",
+        "FR-002",
+        "NFR-013",
+        "SR-006",
+        "SR-013"
+      ]
+    },
+    {
+      "name": "activity_status",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-012"
+      ]
+    },
+    {
+      "name": "booking_status",
+      "kind": "enum",
+      "requirementCount": 3,
+      "requirements": [
+        "BR-017",
+        "FR-033",
+        "FR-034"
+      ]
+    },
+    {
+      "name": "commitment_source_type",
+      "kind": "enum",
+      "requirementCount": 2,
+      "requirements": [
+        "FR-009",
+        "FR-029"
+      ]
+    },
+    {
+      "name": "commitment_status",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-029"
+      ]
+    },
+    {
+      "name": "commitment_strength",
+      "kind": "enum",
+      "requirementCount": 4,
+      "requirements": [
+        "BR-009",
+        "BR-010",
+        "FR-008",
+        "FR-030"
+      ]
+    },
+    {
+      "name": "constraint_kind",
+      "kind": "enum",
+      "requirementCount": 2,
+      "requirements": [
+        "FR-024",
+        "FR-025"
+      ]
+    },
+    {
+      "name": "constraint_relaxation_policy",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-053"
+      ]
+    },
+    {
+      "name": "constraint_scope_type",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-042"
+      ]
+    },
+    {
+      "name": "constraint_severity",
+      "kind": "enum",
+      "requirementCount": 2,
+      "requirements": [
+        "FR-024",
+        "FR-053"
+      ]
+    },
+    {
+      "name": "event_impact_level",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-043"
+      ]
+    },
+    {
+      "name": "event_kind",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-040"
+      ]
+    },
+    {
+      "name": "event_processing_status",
+      "kind": "enum",
+      "requirementCount": 2,
+      "requirements": [
+        "BR-014",
+        "FR-041"
+      ]
+    },
+    {
+      "name": "journey_health",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-017"
+      ]
+    },
+    {
+      "name": "journey_status",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-006"
+      ]
+    },
+    {
+      "name": "order_status",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-035"
+      ]
+    },
+    {
+      "name": "payment_transaction_status",
+      "kind": "enum",
+      "requirementCount": 3,
+      "requirements": [
+        "BR-018",
+        "FR-036",
+        "FR-037"
+      ]
+    },
+    {
+      "name": "plan_version_status",
+      "kind": "enum",
+      "requirementCount": 7,
+      "requirements": [
+        "BR-001",
+        "BR-002",
+        "BR-003",
+        "BR-004",
+        "FR-013",
+        "FR-014",
+        "FR-052"
+      ]
+    },
+    {
+      "name": "planning_mode",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-011"
+      ]
+    },
+    {
+      "name": "preference_scope",
+      "kind": "enum",
+      "requirementCount": 2,
+      "requirements": [
+        "FR-003",
+        "FR-004"
+      ]
+    },
+    {
+      "name": "proposal_status",
+      "kind": "enum",
+      "requirementCount": 3,
+      "requirements": [
+        "BR-023",
+        "FR-051",
+        "FR-052"
+      ]
+    },
+    {
+      "name": "replan_scope",
+      "kind": "enum",
+      "requirementCount": 4,
+      "requirements": [
+        "BR-015",
+        "FR-045",
+        "FR-046",
+        "FR-047"
+      ]
+    },
+    {
+      "name": "selection_status",
+      "kind": "enum",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-048"
+      ]
+    },
+    {
+      "name": "service_availability_status",
+      "kind": "enum",
+      "requirementCount": 2,
+      "requirements": [
+        "BR-021",
+        "FR-022"
+      ]
+    },
+    {
+      "name": "DR-001",
+      "kind": "rule",
+      "requirementCount": 2,
+      "requirements": [
+        "BR-008",
+        "BR-022"
+      ]
+    },
+    {
+      "name": "DR-002",
+      "kind": "rule",
+      "requirementCount": 3,
+      "requirements": [
+        "BR-009",
+        "BR-010",
+        "BR-011"
+      ]
+    },
+    {
+      "name": "DR-003",
+      "kind": "rule",
+      "requirementCount": 1,
+      "requirements": [
+        "BR-005"
+      ]
+    },
+    {
+      "name": "DR-004",
+      "kind": "rule",
+      "requirementCount": 1,
+      "requirements": [
+        "BR-023"
+      ]
+    },
+    {
+      "name": "DR-005",
+      "kind": "rule",
+      "requirementCount": 2,
+      "requirements": [
+        "BR-016",
+        "NFR-016"
+      ]
+    },
+    {
+      "name": "DR-006",
+      "kind": "rule",
+      "requirementCount": 4,
+      "requirements": [
+        "FR-058",
+        "IR-010",
+        "NFR-003",
+        "NFR-005"
+      ]
+    },
+    {
+      "name": "DR-007",
+      "kind": "rule",
+      "requirementCount": 2,
+      "requirements": [
+        "BR-014",
+        "BR-024"
+      ]
+    },
+    {
+      "name": "DR-008",
+      "kind": "rule",
+      "requirementCount": 3,
+      "requirements": [
+        "BR-015",
+        "BR-022",
+        "NFR-015"
+      ]
+    },
+    {
+      "name": "DR-009",
+      "kind": "rule",
+      "requirementCount": 4,
+      "requirements": [
+        "BR-001",
+        "BR-002",
+        "BR-003",
+        "BR-004"
+      ]
+    },
+    {
+      "name": "DR-010",
+      "kind": "rule",
+      "requirementCount": 2,
+      "requirements": [
+        "BR-006",
+        "BR-007"
+      ]
+    },
+    {
+      "name": "Activity",
+      "kind": "state_machine",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-012"
+      ]
+    },
+    {
+      "name": "Booking",
+      "kind": "state_machine",
+      "requirementCount": 5,
+      "requirements": [
+        "BR-017",
+        "FR-033",
+        "FR-034",
+        "IR-006",
+        "NFR-007"
+      ]
+    },
+    {
+      "name": "Commitment",
+      "kind": "state_machine",
+      "requirementCount": 3,
+      "requirements": [
+        "BR-009",
+        "BR-010",
+        "FR-029"
+      ]
+    },
+    {
+      "name": "Journey",
+      "kind": "state_machine",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-006"
+      ]
+    },
+    {
+      "name": "Order",
+      "kind": "state_machine",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-035"
+      ]
+    },
+    {
+      "name": "PaymentTransaction",
+      "kind": "state_machine",
+      "requirementCount": 5,
+      "requirements": [
+        "BR-018",
+        "FR-036",
+        "FR-037",
+        "IR-007",
+        "NFR-007"
+      ]
+    },
+    {
+      "name": "PlanVersion",
+      "kind": "state_machine",
+      "requirementCount": 8,
+      "requirements": [
+        "BR-001",
+        "BR-002",
+        "BR-003",
+        "BR-004",
+        "FR-013",
+        "FR-014",
+        "FR-052",
+        "NFR-006"
+      ]
+    },
+    {
+      "name": "ReplanProposal",
+      "kind": "state_machine",
+      "requirementCount": 3,
+      "requirements": [
+        "BR-023",
+        "FR-051",
+        "FR-052"
+      ]
+    },
+    {
+      "name": "GeoPoint",
+      "kind": "value_object",
+      "requirementCount": 1,
+      "requirements": [
+        "IR-002"
+      ]
+    },
+    {
+      "name": "Money",
+      "kind": "value_object",
+      "requirementCount": 1,
+      "requirements": [
+        "BR-013"
+      ]
+    },
+    {
+      "name": "OpportunityWindow",
+      "kind": "value_object",
+      "requirementCount": 1,
+      "requirements": [
+        "FR-026"
+      ]
+    },
+    {
+      "name": "ScoreBreakdown",
+      "kind": "value_object",
+      "requirementCount": 2,
+      "requirements": [
+        "FR-049",
+        "NFR-016"
+      ]
+    },
+    {
+      "name": "TimeWindow",
+      "kind": "value_object",
+      "requirementCount": 2,
+      "requirements": [
+        "FR-022",
+        "FR-032"
+      ]
+    },
+    {
+      "name": "TravelEstimate",
+      "kind": "value_object",
+      "requirementCount": 3,
+      "requirements": [
+        "BR-020",
+        "IR-003",
+        "IR-004"
+      ]
+    }
+  ],
+  "requirementsWithoutDomainElement": [
+    "BG-002",
+    "BG-008",
+    "FR-060",
+    "FR-061",
+    "NFR-001",
+    "NFR-004",
+    "NFR-008",
+    "NFR-009",
+    "NFR-011",
+    "NFR-012",
+    "NFR-014",
+    "SR-001",
+    "SR-002",
+    "SR-004",
+    "SR-007",
+    "SR-010",
+    "SR-012",
+    "IR-008",
+    "IR-013",
+    "IR-014"
+  ]
+}

@@ -1,0 +1,96 @@
+/*
+ * ORD-0390 — the map is a surface you can pick things on, so a marker has to look pickable and the
+ * selection has to be visible on both halves of the screen at once.
+ *
+ * Selectors are deliberately deeper than `styles.css:248` (`.v9-map-marker`) so they win on
+ * specificity rather than on import order, and colours come from the existing `--cn-*` / `--v8-*`
+ * tokens: the ring is the same accent the product already uses for "this one", so a selected pin
+ * does not introduce a fourth meaning for a colour.
+ */
+
+.v8-map-panel .v9-map-marker {
+  cursor: pointer;
+}
+
+/* Keyboard reachability: the markers are real buttons now, so focus has to be as visible as the
+   press state. `:focus-visible` keeps it off pointer clicks. */
+.v8-map-panel .v9-map-marker:focus-visible {
+  outline: 2px solid var(--v8-indigo);
+  outline-offset: 2px;
+}
+
+.v8-map-panel .v9-map-marker.selected {
+  box-shadow: 0 0 0 3px var(--cn-surface), 0 0 0 6px var(--v8-indigo);
+}
+
+/* The stop rows beside the map (the reverse half: row → camera). Name only — a duration or a price
+   here would put the two surfaces back into disagreement about what a "selected stop" shows. */
+.v8-map-page-grid .v8-map-stops {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cn-s-8);
+  margin-top: var(--cn-s-12);
+}
+
+.v8-map-page-grid .v8-map-stops .v8-kicker {
+  flex-basis: 100%;
+}
+
+.v8-map-page-grid .v8-map-stop {
+  min-height: 32px;
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-surface);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  text-align: left;
+  cursor: pointer;
+}
+
+.v8-map-page-grid .v8-map-stop.selected {
+  border-color: var(--v8-indigo);
+  color: var(--v8-indigo);
+  font-weight: 750;
+}
+
+.v8-map-page-grid .v8-map-stop:focus-visible {
+  outline: 2px solid var(--v8-indigo);
+  outline-offset: 2px;
+}
+
+.v8-map-selected-type {
+  margin: var(--cn-s-8) 0 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+}
+
+/* ORD-0417 — the selected stop's own name, on the map glass.
+
+   Inline, inside `.v8-map-caption`, and that placement is the whole design decision.
+
+   The bottom band (`.v8-map-overlay-stack`, `map-attribution.css:28`) is the box `MapPanel` measures
+   its `fitBounds` bottom padding against -- once, when the map is built, with nothing selected -- and
+   it leaves `safetyGap` 16 px between the band's top edge and the framing.  So anything that raises
+   that top edge moves it into ground the camera was promised: measured on this lane's own gate, a
+   cell added as another block in the stack covered a pin at 390x844 that the untouched tip leaves
+   clear, and a permanently reserved two-line cell did the same at every shape because the reserve
+   itself is the height increase.  Laid out as text within the line box the caption already owns, the
+   band's height moves only when the sentence needs a line of its own, which the gate measures at all
+   four shapes instead of assuming.
+
+   `.v8-map-overlay-stack` is `pointer-events: none`, so the band swallows no drag (the ORD-0134
+   failure) and blocks no hit-test -- `elementFromPoint` at a pin's centre still returns the pin,
+   which `e2e/qoder-ord0417-tap-names-the-stop.spec.ts` measures rather than assumes.
+
+   Colour follows `styles.css:169`'s own `.v8-map-caption b`, which is already `var(--v8-indigo)`
+   inside this box: no new token, and the caption's existing dark binding
+   (`design-tokens.css:592`) keeps the surrounding text legible without a rule for this span.
+   `overflow-wrap: anywhere` is the ORD-0407 C7 lesson -- a long provider name must not widen the
+   panel at 320 px. */
+.v8-map-panel .v8-map-caption .v8-map-selected-stop {
+  margin-inline-end: var(--cn-s-8);
+  color: var(--v8-indigo);
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}

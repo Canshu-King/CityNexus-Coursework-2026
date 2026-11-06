@@ -1,0 +1,69 @@
+/* The exits column of the import screen. `.v8-boundary-card` blockifies b, p and span but not small,
+   so two stacked reasons glued onto one line -- "…cannot promise a save.Create as a new plan" -- which
+   is what the 390x844 screenshot taken by the exits arm showed. */
+.poi-import-exit-why {
+  display: block;
+  margin-top: 4px;
+  color: #786d99;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ORD-0524: the destinations are a list of choices, so they stack -- one exit per row, each with its
+   own hit box. `.v8-mode-chips` was not reused because it is a right-aligned chip strip: three
+   destinations reading as three tabs would look like a filter, and this is a write decision. Colours
+   come from the `--cn-*` layer, the way ORD-0435's batch sheet does it, so the dark theme follows
+   without a second block. */
+.v8-exit-radiogroup {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+.v8-exit {
+  display: block;
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--cn-control-border);
+  border-radius: var(--cn-r-control);
+  color: var(--cn-ink-secondary);
+  background: var(--cn-surface);
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.v8-exit.chosen {
+  border-color: var(--cn-accent);
+  color: var(--cn-accent-text);
+  background: #eff1ff;
+}
+.v8-shelf-radiogroup {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+.v8-shelf-name {
+  display: block;
+}
+.v8-shelf-count {
+  display: block;
+  margin-top: 2px;
+  color: var(--cn-ink-secondary);
+  font-size: 11px;
+  font-weight: 400;
+}
+/* The 44 px tap floor the rest of this screen's controls already hold. */
+@media (max-width: 680px) {
+  .v8-exit {
+    min-height: var(--cn-touch-min);
+  }
+}
+/* The select-all row is a `.v8-pick-box`, so ORD-0435's sheet already gives it its box, its tick and
+   its 44 px height; only its place in the list is this screen's business -- it must not glue to the
+   first card, and it must not stretch to the column's width the way a bare `button` element rule
+   would make it. */
+.poi-import-select-all {
+  align-self: start;
+  width: auto;
+  margin: 0 0 var(--cn-s-6);
+}

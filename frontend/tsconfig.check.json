@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "noEmit": true,
+    "strict": false,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "types": []
+  },
+  "include": [
+    "src/app/V8Experience.tsx",
+    "src/features/execution/LiveRecovery.tsx",
+    "src/i18n/LocaleContext.tsx",
+    "src/lib/budgetEvidence.ts",
+    "src/lib/disruptionState.ts"
+  ]
+}

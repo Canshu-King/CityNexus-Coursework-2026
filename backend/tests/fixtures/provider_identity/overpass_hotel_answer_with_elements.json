@@ -1,0 +1,18 @@
+{
+  "captured_at": "2026-09-22T01:01:14+0800",
+  "url": "https://overpass-api.de/api/interpreter",
+  "request_user_agent": "CityNexus/7.0 (+https://citynexus.local/discovery)",
+  "request_post_data": "[out:json][timeout:25];nwr[\"tourism\"~\"hotel|hostel|guest_house\"](around:5000,27.7443567,98.6672235);out center tags;",
+  "elapsed_ms": 8672.0,
+  "status": 504,
+  "error": "HTTP 504",
+  "response_headers": {
+    "Date": "Mon, 21 Sep 2026 17:01:06 GMT",
+    "Server": "Apache/2.4.68 (Debian)",
+    "Vary": "Accept-Encoding",
+    "Connection": "close",
+    "Transfer-Encoding": "chunked",
+    "Content-Type": "text/html; charset=utf-8"
+  },
+  "body_text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n  <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" lang=\"en\"/>\n  <title>OSM3S Response</title>\n</head>\n<body>\n\n<p>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</p>\n<p><strong style=\"color:#FF0000\">Error</strong>: runtime error: open64: 0 Success /osm3s_osm_base Dispatcher_Client::request_read_and_idx::timeout. The server is probably too busy to handle your request. </p>\n\n</body>\n</html>\n"
+}

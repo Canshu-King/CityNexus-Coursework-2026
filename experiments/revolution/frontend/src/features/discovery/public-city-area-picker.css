@@ -1,0 +1,60 @@
+.public-city-area-picker {
+  position: relative;
+  min-height: 300px;
+  overflow: hidden;
+  border: 1px solid var(--v8-line, #dfe4ed);
+  border-radius: 12px;
+  background: #dfeae8;
+}
+
+.public-city-area-map {
+  position: absolute;
+  inset: 0;
+}
+
+.public-city-area-map canvas {
+  outline: none;
+}
+
+.public-city-area-attribution,
+.public-city-area-notice,
+.public-city-area-hint {
+  position: absolute;
+  right: 10px;
+  left: 10px;
+  z-index: 3;
+  margin: 0;
+  padding: 6px 8px;
+  border: 1px solid #ffffffa8;
+  border-radius: 7px;
+  color: #31465f;
+  background: #fffffff0;
+  font-size: 10px;
+  line-height: 1.35;
+  pointer-events: none;
+}
+
+.public-city-area-attribution {
+  right: 10px;
+  bottom: 10px;
+  left: auto;
+  max-width: 70%;
+}
+
+.public-city-area-notice {
+  top: 10px;
+}
+
+.public-city-area-hint {
+  bottom: 46px;
+}
+
+@media (max-width: 680px) {
+  .public-city-area-picker {
+    min-height: 270px;
+  }
+
+  .public-city-area-attribution {
+    max-width: 85%;
+  }
+}

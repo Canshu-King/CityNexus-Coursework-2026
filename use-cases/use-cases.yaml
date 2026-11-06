@@ -1,0 +1,1785 @@
+metadata:
+  name: CityNexus Use Case Specification
+  version: 0.1.0
+  status: baseline-candidate
+  officialProject: Smart City Traveler System
+  product: CityNexus
+  domainModel: ../domain-model/citynexus-core-domain-model-v0.4.2.yaml
+  requirementsBaseline: ../requirements/requirements.yaml
+  requirementsVersion: 0.3.0
+  topLevelUseCaseCount: 13
+actors:
+- id: ACT-TRAVELER
+  name: Traveler
+  kind: human
+  stereotype: null
+- id: ACT-ADMIN
+  name: Administrator
+  kind: human
+  stereotype: null
+- id: ACT-CITY-DATA
+  name: City Data Provider
+  kind: external_system
+  stereotype: <<external system>>
+- id: ACT-MOBILITY
+  name: Mobility Provider
+  kind: external_system
+  stereotype: <<external system>>
+- id: ACT-BOOKING
+  name: Booking Provider
+  kind: external_system
+  stereotype: <<external system>>
+- id: ACT-PAYMENT
+  name: Payment Gateway
+  kind: external_system
+  stereotype: <<external system>>
+- id: ACT-AI
+  name: AI Provider
+  kind: external_system
+  stereotype: <<external system>>
+- id: ACT-AUTH
+  name: Authentication Service
+  kind: external_system
+  stereotype: <<external system>>
+- id: ACT-CONTEXT
+  name: Context Event Provider
+  kind: external_system
+  stereotype: <<external system>>
+useCases:
+- id: UC-01
+  name: Manage Account & Preferences
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors:
+  - ACT-AUTH
+  - ACT-AI
+  goal: Maintain an authenticated traveler profile and reviewable long-term, Journey-scoped, and temporary preferences.
+  preconditions:
+  - The CityNexus application is available.
+  trigger: The Traveler opens account or preference management.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: Traveler
+    action: Creates an account or signs in.
+  - id: MS-02
+    actor: System
+    action: Authenticates the Traveler through the configured authentication capability.
+  - id: MS-03
+    actor: System
+    action: Loads the Traveler profile and persisted long-term preferences.
+  - id: MS-04
+    actor: Traveler
+    action: Creates, edits, or removes reviewable preference values.
+  - id: MS-05
+    actor: System
+    action: Validates preference scope, value, weight, and expiry data.
+  - id: MS-06
+    actor: Traveler
+    action: Optionally enters free-text intent for preference extraction.
+  - id: MS-07
+    actor: System
+    action: If AI is available, presents extracted structured preference or constraint candidates without persisting
+      them automatically.
+  - id: MS-08
+    actor: Traveler
+    action: Reviews and confirms the structured changes.
+  - id: MS-09
+    actor: System
+    action: Persists confirmed preferences with their scope and validity period.
+  alternateFlows:
+  - id: A1
+    name: Existing account
+    description: At step 1, the Traveler signs in instead of registering; the flow resumes at step 2.
+  - id: A2
+    name: Manual preference entry
+    description: If AI is unavailable or not selected at step 6, the Traveler enters structured preferences manually
+      and the flow resumes at step 8.
+  - id: A3
+    name: Temporary preference expiry
+    description: When a temporary preference expires, the system stops applying it without modifying the long-term
+      profile.
+  exceptionFlows:
+  - id: E1
+    name: Authentication failure
+    description: At step 2, authentication failure leaves protected account data unavailable and returns an explicit
+      error.
+  - id: E2
+    name: Invalid preference
+    description: At step 5, invalid structured data is rejected and the Traveler is asked to correct it.
+  postconditions:
+  - Confirmed preferences are persisted with explicit scope and validity.
+  - AI output, if used, has not directly mutated persisted Journey state.
+  requirementIds:
+  - FR-001
+  - FR-002
+  - FR-003
+  - FR-004
+  - FR-005
+  - FR-055
+  - BR-007
+  - BR-012
+  - NFR-001
+  - NFR-011
+  - NFR-012
+  - NFR-013
+  - NFR-014
+  - SR-001
+  - SR-006
+  - SR-008
+  - SR-012
+  - SR-013
+  domainElements:
+  - name: Traveler
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Journey
+    kind: entity
+  - name: preference_scope
+    kind: enum
+  - name: Constraint
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: DR-010
+    kind: rule
+  - name: PlanVersion
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  detailUseCases: []
+  status: baseline-candidate
+- id: UC-02
+  name: Create & Configure Journey
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors:
+  - ACT-AI
+  goal: Create a Journey with the timing, locations, budget, preferences, must-go items, and existing commitments
+    needed for planning.
+  preconditions:
+  - The Traveler can access CityNexus.
+  trigger: The Traveler chooses to create a new Journey.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: Traveler
+    action: Starts a new Journey.
+  - id: MS-02
+    actor: System
+    action: Creates a Journey with a unique identifier and Draft lifecycle state.
+  - id: MS-03
+    actor: Traveler
+    action: Enters destination city, origin, final destination, start time, end time, and budget policy.
+  - id: MS-04
+    actor: Traveler
+    action: Adds Journey-specific interests and preferences.
+  - id: MS-05
+    actor: Traveler
+    action: Marks must-go or locked Activities where applicable.
+  - id: MS-06
+    actor: Traveler
+    action: Adds existing tickets, reservations, or fixed transport arrangements as commitments.
+  - id: MS-07
+    actor: Traveler
+    action: Optionally provides natural-language travel intent.
+  - id: MS-08
+    actor: System
+    action: If AI is used, converts the input into reviewable structured time, budget, preference, or constraint
+      proposals.
+  - id: MS-09
+    actor: Traveler
+    action: Reviews and confirms all Journey configuration.
+  - id: MS-10
+    actor: System
+    action: Validates the Journey configuration and persists the Draft Journey.
+  alternateFlows:
+  - id: A1
+    name: No existing commitments
+    description: If the Traveler has no fixed arrangements at step 6, the flow continues at step 7.
+  - id: A2
+    name: Manual structured input
+    description: If AI is unavailable at step 8, the Traveler completes structured fields manually.
+  - id: A3
+    name: Edit before planning
+    description: The Traveler may edit unlocked configuration before plan generation; affected feasibility is revalidated
+      when a plan exists.
+  exceptionFlows:
+  - id: E1
+    name: Invalid time range
+    description: If end time is not after start time, the system rejects the configuration.
+  - id: E2
+    name: Invalid budget or location
+    description: Invalid required Journey data is rejected with field-level feedback.
+  postconditions:
+  - A valid Draft Journey exists.
+  - Journey-scoped preferences and entered commitments are linked to the Journey.
+  requirementIds:
+  - BG-002
+  - FR-003
+  - FR-006
+  - FR-007
+  - FR-008
+  - FR-009
+  - FR-012
+  - FR-054
+  - NFR-001
+  - NFR-011
+  - NFR-012
+  - NFR-013
+  - NFR-014
+  - SR-008
+  - IR-002
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Journey
+    kind: entity
+  - name: preference_scope
+    kind: enum
+  - name: journey_status
+    kind: enum
+  - name: Journey
+    kind: state_machine
+  - name: Place
+    kind: entity
+  - name: Activity
+    kind: entity
+  - name: Commitment
+    kind: entity
+  - name: commitment_strength
+    kind: enum
+  - name: commitment_source_type
+    kind: enum
+  - name: PlanVersion
+    kind: entity
+  - name: activity_status
+    kind: enum
+  - name: Activity
+    kind: state_machine
+  - name: Constraint
+    kind: entity
+  - name: Traveler
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: GeoPoint
+    kind: value_object
+  detailUseCases: []
+  status: baseline-candidate
+- id: UC-03
+  name: Manage Journey Commitments
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors:
+  - ACT-BOOKING
+  - ACT-PAYMENT
+  goal: Represent and manage real-world obligations with explicit source, lifecycle status, and commitment strength.
+  preconditions:
+  - A Journey exists.
+  trigger: The Traveler locks an Activity or a booking, payment, or external schedule creates a real-world obligation.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: Traveler
+    action: Selects an Activity or real-world arrangement to manage.
+  - id: MS-02
+    actor: System
+    action: Identifies the commitment source such as user lock, booking, payment, or external schedule.
+  - id: MS-03
+    actor: System
+    action: Creates or updates a Commitment linked to the Journey and, when applicable, an Activity.
+  - id: MS-04
+    actor: System
+    action: Determines or presents commitment strength from C0 Flexible through C4 Anchored using time rigidity,
+      financial loss, external responsibility, and user lock.
+  - id: MS-05
+    actor: System
+    action: Displays the commitment strength and expected impact of changing it.
+  - id: MS-06
+    actor: Traveler
+    action: Reviews and confirms any change that materially affects a C2 or C3 commitment.
+  - id: MS-07
+    actor: System
+    action: Persists the confirmed commitment state and relevant source reference.
+  alternateFlows:
+  - id: A1
+    name: C4 anchored item
+    description: A C4 commitment remains anchored unless the Traveler explicitly changes it or an authorised exception
+      policy applies.
+  - id: A2
+    name: Cancellation
+    description: A provider-confirmed cancellation updates the relevant Booking and Commitment status without silently
+      rewriting unrelated commitments.
+  exceptionFlows:
+  - id: E1
+    name: Provider status unavailable
+    description: The system does not invent provider confirmation; the current known status is retained and the
+      uncertainty is surfaced.
+  postconditions:
+  - The Journey has an auditable commitment representation.
+  - Strength and lifecycle status remain separate concepts.
+  requirementIds:
+  - BG-004
+  - FR-008
+  - FR-009
+  - FR-029
+  - FR-030
+  - FR-031
+  - BR-009
+  - BR-010
+  - BR-011
+  - SR-011
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: Activity
+    kind: entity
+  - name: commitment_strength
+    kind: enum
+  - name: commitment_source_type
+    kind: enum
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: commitment_status
+    kind: enum
+  - name: Commitment
+    kind: state_machine
+  - name: DR-002
+    kind: rule
+  detailUseCases: []
+  status: baseline-candidate
+- id: UC-04
+  name: Generate & Select Journey Plan
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors:
+  - ACT-CITY-DATA
+  - ACT-MOBILITY
+  goal: Generate feasible, scored Journey plans from grounded city data and let the Traveler select an immutable
+    plan version.
+  preconditions:
+  - A valid Journey configuration exists.
+  trigger: The Traveler requests plan generation or regeneration.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: System
+    action: Retrieves grounded city data needed for candidate Activities.
+  - id: MS-02
+    actor: System
+    action: Obtains route distance and travel-time estimates through the mobility integration.
+  - id: MS-03
+    actor: System
+    action: Builds active System Hard, Commitment Hard, and Soft planning constraints.
+  - id: MS-04
+    actor: System
+    action: Generates candidate PlanVersions according to the selected planning mode or weighting policy.
+  - id: MS-05
+    actor: System
+    action: Rejects candidates that violate applicable hard constraints.
+  - id: MS-06
+    actor: System
+    action: Scores feasible candidates using the configured scoring policy.
+  - id: MS-07
+    actor: System
+    action: Presents one or more executable candidate plans and their relevant score information.
+  - id: MS-08
+    actor: Traveler
+    action: Reviews the candidates and selects a preferred plan.
+  - id: MS-09
+    actor: System
+    action: Marks the selected PlanVersion Accepted and makes it the Journey active PlanVersion atomically.
+  - id: MS-10
+    actor: System
+    action: Retains the accepted PlanVersion as immutable history.
+  alternateFlows:
+  - id: A1
+    name: Multiple planning modes
+    description: The Traveler may request another supported planning mode; candidates are regenerated with a reproducible
+      scoring policy.
+  - id: A2
+    name: Provider fallback
+    description: If a non-core provider fails, configured fallback or mock data may be used without bypassing grounding
+      and validation rules.
+  exceptionFlows:
+  - id: E1
+    name: No feasible plan
+    description: If mandatory constraints cannot be satisfied, the system returns an explicit no-feasible-plan result
+      instead of activating an invalid plan.
+  postconditions:
+  - At most one active PlanVersion exists for the Journey.
+  - An activated PlanVersion is immutable.
+  requirementIds:
+  - BG-001
+  - FR-010
+  - FR-011
+  - FR-012
+  - FR-013
+  - BR-001
+  - BR-002
+  - BR-008
+  - BR-019
+  - BR-020
+  - BR-021
+  - NFR-001
+  - NFR-011
+  - NFR-012
+  - NFR-013
+  - NFR-014
+  - IR-003
+  - IR-004
+  - IR-011
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: planning_mode
+    kind: enum
+  - name: Activity
+    kind: entity
+  - name: activity_status
+    kind: enum
+  - name: Activity
+    kind: state_machine
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  - name: DR-009
+    kind: rule
+  - name: CandidatePlan
+    kind: entity
+  - name: DR-001
+    kind: rule
+  - name: TravelEstimate
+    kind: value_object
+  - name: CityService
+    kind: entity
+  - name: service_availability_status
+    kind: enum
+  - name: Traveler
+    kind: entity
+  detailUseCases:
+  - id: UC-04.1
+    name: Retrieve City Data
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-04.2
+    name: Build Planning Constraints
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-04.3
+    name: Generate Candidate Plans
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-04.4
+    name: Validate & Score Plans
+    relationship: include
+    documentationScope: part2-focused-detail
+  status: baseline-candidate
+- id: UC-05
+  name: Discover & Recommend City Services
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors:
+  - ACT-CITY-DATA
+  - ACT-AI
+  goal: Recommend grounded Places and CityServices that fit the current Journey context without violating hard constraints.
+  preconditions:
+  - A Journey exists and current Journey context is available.
+  trigger: The Traveler searches for a place/service or CityNexus identifies a contextual recommendation opportunity.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: System
+    action: Reads the current JourneyTwin and relevant preference, budget, time, mobility, and commitment context.
+  - id: MS-02
+    actor: System
+    action: Retrieves real Place and CityService candidates from configured providers.
+  - id: MS-03
+    actor: System
+    action: Normalises provider data and discards candidates that cannot be grounded to a source.
+  - id: MS-04
+    actor: System
+    action: Applies active hard constraints and removes infeasible candidates.
+  - id: MS-05
+    actor: System
+    action: Computes reproducible contextual scores for feasible candidates.
+  - id: MS-06
+    actor: System
+    action: When a safe Opportunity Window exists, verifies that a recommendation cannot make the next hard commitment
+      late.
+  - id: MS-07
+    actor: System
+    action: Optionally obtains AI semantic matching or explanation using only grounded structured candidate data.
+  - id: MS-08
+    actor: System
+    action: Presents ranked recommendations with structured evidence and an understandable rationale.
+  - id: MS-09
+    actor: Traveler
+    action: Reviews a recommendation and may choose it for planning or booking.
+  alternateFlows:
+  - id: A1
+    name: AI unavailable
+    description: Deterministic filtering and scoring continue; semantic explanation may be reduced or unavailable.
+  - id: A2
+    name: No Opportunity Window
+    description: The system omits opportunistic additions and continues to show only feasible normal recommendations.
+  exceptionFlows:
+  - id: E1
+    name: No grounded candidates
+    description: The system returns an explicit empty result rather than inventing a Place or CityService.
+  - id: E2
+    name: Provider data stale
+    description: Expired or insufficiently valid provider facts are not treated as authoritative executable data.
+  postconditions:
+  - Displayed executable recommendations are grounded and feasible under applicable constraints.
+  requirementIds:
+  - BG-002
+  - BG-005
+  - BG-006
+  - BG-007
+  - FR-018
+  - FR-019
+  - FR-020
+  - FR-021
+  - FR-022
+  - FR-023
+  - FR-024
+  - FR-025
+  - FR-026
+  - FR-027
+  - FR-028
+  - FR-056
+  - BR-005
+  - BR-006
+  - BR-007
+  - BR-008
+  - BR-021
+  - NFR-001
+  - NFR-009
+  - NFR-011
+  - NFR-012
+  - NFR-014
+  - NFR-016
+  - SR-001
+  - SR-008
+  - IR-001
+  - IR-002
+  - IR-003
+  - IR-012
+  - IR-013
+  - IR-014
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Commitment
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: TimeWindow
+    kind: value_object
+  - name: service_availability_status
+    kind: enum
+  - name: Constraint
+    kind: entity
+  - name: constraint_severity
+    kind: enum
+  - name: constraint_kind
+    kind: enum
+  - name: OpportunityWindow
+    kind: value_object
+  - name: DR-003
+    kind: rule
+  - name: Journey
+    kind: entity
+  - name: DR-010
+    kind: rule
+  - name: DR-001
+    kind: rule
+  - name: Activity
+    kind: entity
+  - name: ScoreBreakdown
+    kind: value_object
+  - name: DR-005
+    kind: rule
+  - name: Event
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: GeoPoint
+    kind: value_object
+  - name: TravelEstimate
+    kind: value_object
+  detailUseCases:
+  - id: UC-05.1
+    name: Retrieve Real Places
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-05.2
+    name: Apply Context Constraints
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-05.3
+    name: Rank Candidates
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-05.4
+    name: Explain Recommendation
+    relationship: include
+    documentationScope: part2-focused-detail
+  status: baseline-candidate
+- id: UC-06
+  name: Book & Order City Services
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors:
+  - ACT-BOOKING
+  goal: Book or order a supported CityService while preserving authoritative provider outcomes and Journey commitment
+    effects.
+  preconditions:
+  - The Traveler has selected a supported CityService.
+  trigger: The Traveler chooses to book, reserve, cancel, or order a CityService.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: System
+    action: Retrieves provider-supported availability windows or slots where applicable.
+  - id: MS-02
+    actor: Traveler
+    action: Selects an available service option.
+  - id: MS-03
+    actor: System
+    action: Creates a Booking or Order request through the configured adapter.
+  - id: MS-04
+    actor: System
+    action: Receives the provider outcome and persists the authoritative Booking or Order state.
+  - id: MS-05
+    actor: System
+    action: Creates or strengthens a Journey Commitment when the confirmed commercial state produces a real-world
+      obligation.
+  - id: MS-06
+    actor: System
+    action: Shows the resulting status and any cancellation or fulfilment information.
+  - id: MS-07
+    actor: System
+    action: If payment is required, invokes UC-07 Make Secure Payment as an extension.
+  alternateFlows:
+  - id: A1
+    name: Cancellation
+    description: The Traveler requests cancellation; the Booking Adapter returns the authoritative outcome and the
+      system updates affected commitment information.
+  - id: A2
+    name: Order without reservation
+    description: A tradable CityService may create an Order directly without a Booking when supported.
+  exceptionFlows:
+  - id: E1
+    name: Provider rejection
+    description: A rejected or failed booking/order request is stored or surfaced as an explicit failure and is
+      not represented as confirmed.
+  postconditions:
+  - Booking or Order state reflects the provider outcome.
+  - Any resulting Commitment is traceable to its source.
+  requirementIds:
+  - BG-002
+  - BG-006
+  - FR-021
+  - FR-022
+  - FR-029
+  - FR-032
+  - FR-033
+  - FR-034
+  - FR-035
+  - BR-017
+  - BR-021
+  - NFR-001
+  - NFR-007
+  - NFR-009
+  - NFR-010
+  - NFR-014
+  - SR-001
+  - SR-008
+  - IR-006
+  - IR-012
+  - IR-013
+  - IR-014
+  - IR-015
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: TimeWindow
+    kind: value_object
+  - name: service_availability_status
+    kind: enum
+  - name: Commitment
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: commitment_source_type
+    kind: enum
+  - name: commitment_status
+    kind: enum
+  - name: Commitment
+    kind: state_machine
+  - name: booking_status
+    kind: enum
+  - name: Booking
+    kind: state_machine
+  - name: Order
+    kind: entity
+  - name: order_status
+    kind: enum
+  - name: Order
+    kind: state_machine
+  - name: Activity
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: Journey
+    kind: entity
+  - name: PaymentTransaction
+    kind: state_machine
+  - name: ReplanProposal
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Event
+    kind: entity
+  detailUseCases: []
+  status: baseline-candidate
+- id: UC-07
+  name: Make Secure Payment
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors:
+  - ACT-PAYMENT
+  - ACT-AUTH
+  goal: Complete or fail a payment safely, record the authoritative PaymentTransaction outcome, and provide a traceable
+    receipt reference.
+  preconditions:
+  - A payable Order or Booking context exists.
+  trigger: Payment is required while completing UC-06.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: System
+    action: Creates a PaymentTransaction in an initiated state for exactly one payment subject.
+  - id: MS-02
+    actor: System
+    action: Determines whether policy requires additional WebAuthn/passkey authentication.
+  - id: MS-03
+    actor: Traveler
+    action: Completes required authentication when prompted.
+  - id: MS-04
+    actor: System
+    action: Initiates payment through the configured Payment Adapter without exposing private provider credentials
+      to the frontend.
+  - id: MS-05
+    actor: System
+    action: Retrieves and persists the final provider-authoritative payment outcome.
+  - id: MS-06
+    actor: System
+    action: On success, stores the receipt or provider transaction reference.
+  - id: MS-07
+    actor: System
+    action: Updates related commercial and commitment information without using payment alone as the definition
+      of commitment strength.
+  - id: MS-08
+    actor: Traveler
+    action: Views the payment result.
+  alternateFlows:
+  - id: A1
+    name: No step-up authentication
+    description: If policy does not require WebAuthn at step 2, the flow continues at step 4.
+  - id: A2
+    name: Refund
+    description: A permitted refund creates an auditable refunded or partially-refunded PaymentTransaction outcome.
+  exceptionFlows:
+  - id: E1
+    name: Authentication failure
+    description: The payment is not submitted when required authentication fails.
+  - id: E2
+    name: Payment failure
+    description: The failed provider outcome is persisted and the Order/Booking is not falsely marked paid.
+  postconditions:
+  - The PaymentTransaction reflects the provider-authoritative outcome.
+  - Sensitive payment credentials are not persisted.
+  requirementIds:
+  - BG-002
+  - FR-029
+  - FR-036
+  - FR-037
+  - FR-038
+  - BR-018
+  - NFR-001
+  - NFR-007
+  - NFR-009
+  - NFR-010
+  - NFR-014
+  - SR-001
+  - SR-003
+  - SR-004
+  - SR-005
+  - SR-008
+  - SR-011
+  - SR-012
+  - IR-007
+  - IR-008
+  - IR-012
+  - IR-013
+  - IR-014
+  - IR-015
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: commitment_source_type
+    kind: enum
+  - name: commitment_status
+    kind: enum
+  - name: Commitment
+    kind: state_machine
+  - name: Order
+    kind: entity
+  - name: payment_transaction_status
+    kind: enum
+  - name: PaymentTransaction
+    kind: state_machine
+  - name: Journey
+    kind: entity
+  - name: Booking
+    kind: state_machine
+  - name: ReplanProposal
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  detailUseCases: []
+  status: baseline-candidate
+- id: UC-08
+  name: Execute Journey
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors:
+  - ACT-MOBILITY
+  goal: Present the live executable Journey state while the Traveler follows the active plan.
+  preconditions:
+  - The Journey has an active PlanVersion.
+  trigger: The Traveler enters Journey execution mode.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: System
+    action: Loads the active PlanVersion and current Activities.
+  - id: MS-02
+    actor: System
+    action: Refreshes current time, location, mobility, and available context into ContextSnapshot data.
+  - id: MS-03
+    actor: System
+    action: Projects Journey, active PlanVersion, commitments, constraints, events, and context into JourneyTwin.
+  - id: MS-04
+    actor: System
+    action: Shows current Activity, next Activity, remaining budget, delay, walking distance, and next hard commitment.
+  - id: MS-05
+    actor: System
+    action: Derives and displays Journey health as OnTrack, AtRisk, Disrupted, or Replanning.
+  - id: MS-06
+    actor: System
+    action: Identifies a safe Opportunity Window when applicable.
+  - id: MS-07
+    actor: Traveler
+    action: Uses the displayed guidance to continue the Journey.
+  - id: MS-08
+    actor: System
+    action: When a Journey-relevant event is detected, UC-09 may extend this use case.
+  alternateFlows:
+  - id: A1
+    name: Non-core provider unavailable
+    description: Existing Journey data remains accessible and execution continues with degraded live context where
+      possible.
+  exceptionFlows:
+  - id: E1
+    name: No active plan
+    description: The system does not enter normal execution mode and directs the Traveler to create or select an
+      executable plan.
+  postconditions:
+  - JourneyTwin reflects the latest valid available context and active plan state.
+  requirementIds:
+  - BG-001
+  - BG-002
+  - BG-005
+  - FR-014
+  - FR-016
+  - FR-017
+  - FR-023
+  - FR-026
+  - FR-039
+  - FR-058
+  - BR-001
+  - BR-013
+  - NFR-001
+  - NFR-005
+  - NFR-007
+  - NFR-011
+  - NFR-012
+  - NFR-014
+  - SR-001
+  - SR-013
+  - IR-003
+  - IR-004
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Commitment
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  - name: Activity
+    kind: entity
+  - name: journey_health
+    kind: enum
+  - name: OpportunityWindow
+    kind: value_object
+  - name: Event
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  - name: DR-006
+    kind: rule
+  - name: DR-009
+    kind: rule
+  - name: Money
+    kind: value_object
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: Booking
+    kind: state_machine
+  - name: PaymentTransaction
+    kind: state_machine
+  - name: Traveler
+    kind: entity
+  - name: TravelEstimate
+    kind: value_object
+  detailUseCases: []
+  status: baseline-candidate
+- id: UC-09
+  name: Detect & Assess Journey Events
+  level: user_goal
+  primaryActor: ACT-CONTEXT
+  supportingActors: []
+  goal: Validate Journey-relevant events, assess their impact, and decide whether to update, suggest replanning,
+    or trigger critical replanning.
+  preconditions:
+  - A Journey exists.
+  trigger: A user, provider, mobility, weather, or system event relevant to the Journey is received.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: System
+    action: Receives and normalises the Event with source and observation metadata.
+  - id: MS-02
+    actor: System
+    action: Validates schema, source, freshness, expiry, and confidence as applicable.
+  - id: MS-03
+    actor: System
+    action: Maps the valid Event to affected Activities or Constraints.
+  - id: MS-04
+    actor: System
+    action: Updates valid context and JourneyTwin information without allowing the Event to mutate the plan directly.
+  - id: MS-05
+    actor: System
+    action: Assesses impact on the active PlanVersion and Journey health.
+  - id: MS-06
+    actor: System
+    action: Classifies the Event as Update Only, Suggest Replan, or Critical Replan.
+  - id: MS-07
+    actor: System
+    action: Records processing status and the resulting decision.
+  - id: MS-08
+    actor: System
+    action: If replanning is required, UC-10 may extend this use case.
+  alternateFlows:
+  - id: A1
+    name: Update only
+    description: The system updates JourneyTwin and does not create a ReplanProposal.
+  - id: A2
+    name: Suggest replan
+    description: The system surfaces a recommendation to replan while preserving the current plan until the Traveler
+      proceeds.
+  exceptionFlows:
+  - id: E1
+    name: Expired event
+    description: An expired Event is marked ignored/expired and cannot automatically trigger replanning.
+  - id: E2
+    name: Invalid event
+    description: Malformed or untrusted event data is rejected or ignored and logged appropriately.
+  postconditions:
+  - The Event has a traceable processing result.
+  - Any replan decision is based only on valid, sufficiently fresh facts.
+  requirementIds:
+  - BG-003
+  - FR-017
+  - FR-039
+  - FR-040
+  - FR-041
+  - FR-042
+  - FR-043
+  - BR-014
+  - BR-024
+  - NFR-009
+  - NFR-015
+  - SR-001
+  - SR-008
+  - IR-005
+  - IR-012
+  - IR-013
+  - IR-014
+  - IR-015
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: journey_health
+    kind: enum
+  - name: ContextSnapshot
+    kind: entity
+  - name: event_kind
+    kind: enum
+  - name: event_processing_status
+    kind: enum
+  - name: Activity
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: constraint_scope_type
+    kind: enum
+  - name: event_impact_level
+    kind: enum
+  - name: DR-007
+    kind: rule
+  - name: DR-008
+    kind: rule
+  - name: Preference
+    kind: entity
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  detailUseCases: []
+  status: baseline-candidate
+- id: UC-10
+  name: Replan Disrupted Journey
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors:
+  - ACT-CITY-DATA
+  - ACT-MOBILITY
+  - ACT-AI
+  goal: Recover an affected Journey with the least disruptive feasible plan while preserving commitments and requiring
+    explicit acceptance for major changes.
+  preconditions:
+  - A Journey with an active PlanVersion exists.
+  - A relevant Event or context change has been assessed.
+  trigger: The system determines that replanning is suggested or required, or the Traveler explicitly requests recovery.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: System
+    action: Updates JourneyTwin using the validated event and latest valid context.
+  - id: MS-02
+    actor: System
+    action: Checks whether the active PlanVersion remains executable.
+  - id: MS-03
+    actor: System
+    action: Identifies affected Activities, Constraints, and Commitments.
+  - id: MS-04
+    actor: System
+    action: Freezes C4 Anchored commitments and applies normal C2/C3 confirmation rules.
+  - id: MS-05
+    actor: System
+    action: Attempts Local Repair of the affected current and near-term Activities.
+  - id: MS-06
+    actor: System
+    action: If no feasible local result exists, expands to Window Replan.
+  - id: MS-07
+    actor: System
+    action: If no feasible window result exists, expands to Global Replan for the remaining Journey.
+  - id: MS-08
+    actor: System
+    action: Retrieves any required grounded city and mobility data and builds legal candidate plans.
+  - id: MS-09
+    actor: System
+    action: Rejects hard-constraint violations and scores feasible CandidatePlans with a reproducible ScoreBreakdown.
+  - id: MS-10
+    actor: System
+    action: Ranks feasible candidates and prepares old-versus-new change summaries including Activities, time, cost,
+      travel burden, and commitments.
+  - id: MS-11
+    actor: System
+    action: Optionally obtains an AI explanation grounded only in the supplied structured plan/event facts.
+  - id: MS-12
+    actor: System
+    action: Presents the proposal and candidate comparison to the Traveler.
+  - id: MS-13
+    actor: Traveler
+    action: Accepts or rejects the proposed major change.
+  - id: MS-14
+    actor: System
+    action: If accepted, atomically activates the chosen new immutable PlanVersion and retains the prior version.
+  - id: MS-15
+    actor: System
+    action: Records trigger, reason, selected candidate, Traveler decision, and resulting Journey state.
+  alternateFlows:
+  - id: A1
+    name: Local Repair succeeds
+    description: If step 5 yields a feasible solution, Window and Global Replan are skipped and the flow resumes
+      at scoring/comparison.
+  - id: A2
+    name: Window Replan succeeds
+    description: If step 6 yields a feasible solution, Global Replan is skipped.
+  - id: A3
+    name: AI unavailable
+    description: Deterministic replanning, scoring, comparison, and acceptance continue without AI explanation.
+  - id: A4
+    name: Traveler rejects proposal
+    description: The current active plan remains unchanged; the rejection is recorded and no candidate PlanVersion
+      becomes active.
+  exceptionFlows:
+  - id: E1
+    name: No normal feasible plan
+    description: After Local, Window, and Global scopes fail, the system enters Exception Mode only according to
+      explicit relaxationPolicy and Traveler confirmation rules.
+  - id: E2
+    name: No feasible plan after Exception Mode
+    description: The ReplanProposal records no_feasible_plan with a failure reason; no invalid candidate is activated.
+  - id: E3
+    name: Provider failure
+    description: Configured fallback/mock capability may support the demo, but hard-constraint and grounding rules
+      are not bypassed.
+  postconditions:
+  - If accepted, exactly one active PlanVersion exists and previous versions remain queryable.
+  - If rejected or impossible, no invalid plan is activated.
+  - The replanning audit trail retains trigger and change reason.
+  requirementIds:
+  - BG-001
+  - BG-003
+  - BG-004
+  - BG-007
+  - FR-013
+  - FR-017
+  - FR-030
+  - FR-043
+  - FR-044
+  - FR-045
+  - FR-046
+  - FR-047
+  - FR-048
+  - FR-049
+  - FR-050
+  - FR-051
+  - FR-052
+  - FR-053
+  - FR-057
+  - FR-058
+  - BR-001
+  - BR-002
+  - BR-003
+  - BR-006
+  - BR-007
+  - BR-008
+  - BR-009
+  - BR-010
+  - BR-014
+  - BR-015
+  - BR-016
+  - BR-019
+  - BR-020
+  - BR-021
+  - BR-022
+  - BR-023
+  - BR-024
+  - NFR-001
+  - NFR-002
+  - NFR-003
+  - NFR-006
+  - NFR-010
+  - NFR-011
+  - NFR-012
+  - NFR-014
+  - NFR-015
+  - NFR-016
+  - SR-001
+  - IR-003
+  - IR-004
+  - IR-011
+  - IR-015
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: Commitment
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  - name: journey_health
+    kind: enum
+  - name: commitment_strength
+    kind: enum
+  - name: event_impact_level
+    kind: enum
+  - name: Activity
+    kind: entity
+  - name: replan_scope
+    kind: enum
+  - name: selection_status
+    kind: enum
+  - name: ScoreBreakdown
+    kind: value_object
+  - name: proposal_status
+    kind: enum
+  - name: ReplanProposal
+    kind: state_machine
+  - name: constraint_relaxation_policy
+    kind: enum
+  - name: constraint_severity
+    kind: enum
+  - name: DR-006
+    kind: rule
+  - name: DR-009
+    kind: rule
+  - name: DR-010
+    kind: rule
+  - name: Preference
+    kind: entity
+  - name: DR-001
+    kind: rule
+  - name: DR-002
+    kind: rule
+  - name: Commitment
+    kind: state_machine
+  - name: DR-007
+    kind: rule
+  - name: event_processing_status
+    kind: enum
+  - name: DR-008
+    kind: rule
+  - name: DR-005
+    kind: rule
+  - name: TravelEstimate
+    kind: value_object
+  - name: CityService
+    kind: entity
+  - name: service_availability_status
+    kind: enum
+  - name: DR-004
+    kind: rule
+  - name: ContextSnapshot
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  detailUseCases:
+  - id: UC-10.1
+    name: Analyse Impact
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-10.2
+    name: Determine Replan Scope
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-10.3
+    name: Generate Legal Plans
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-10.4
+    name: Score Candidate Plans
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-10.5
+    name: Compare Plan Versions
+    relationship: include
+    documentationScope: part2-focused-detail
+  - id: UC-10.6
+    name: Explain Replanning
+    relationship: include
+    documentationScope: part2-focused-detail
+  status: baseline-candidate
+- id: UC-11
+  name: Use AI Journey Copilot
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors:
+  - ACT-AI
+  goal: Use natural language for intent/preferences and explanations without granting AI authority over feasibility
+    or persisted Journey state.
+  preconditions:
+  - The Traveler can access a Journey or preference context.
+  trigger: The Traveler enters a natural-language request such as a preference change or asks for an explanation.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: Traveler
+    action: Enters natural-language intent or a question.
+  - id: MS-02
+    actor: System
+    action: Sends only the minimum required structured context to the configured AIProvider.
+  - id: MS-03
+    actor: AI Provider
+    action: Returns extracted intent, preference candidates, semantic scores, or explanation text depending on the
+      request.
+  - id: MS-04
+    actor: System
+    action: Validates structured AI output against application schemas and domain rules.
+  - id: MS-05
+    actor: System
+    action: Presents any extracted Preference or Constraint proposal for Traveler review.
+  - id: MS-06
+    actor: Traveler
+    action: Confirms, edits, or rejects the proposed structured change.
+  - id: MS-07
+    actor: System
+    action: Applies confirmed structured data through normal business logic and, if planning is needed, invokes
+      deterministic planner capabilities.
+  - id: MS-08
+    actor: System
+    action: Presents an explanation grounded in the actual structured recommendation, plan, score, or Event facts.
+  alternateFlows:
+  - id: A1
+    name: AI unavailable
+    description: The Traveler uses manual structured controls; deterministic Journey, planning, and constraints
+      remain functional.
+  - id: A2
+    name: Low-confidence extraction
+    description: The system asks for review/correction rather than persisting uncertain AI output automatically.
+  exceptionFlows:
+  - id: E1
+    name: Invalid AI output
+    description: Schema-invalid or business-rule-invalid AI output is rejected and does not mutate persistence.
+  - id: E2
+    name: AI timeout
+    description: The core deterministic operation returns or remains available without waiting indefinitely for
+      AI.
+  postconditions:
+  - No AI response has directly written persisted Journey state.
+  - Any applied change has passed normal validation and Traveler confirmation rules.
+  requirementIds:
+  - BG-005
+  - BG-007
+  - FR-004
+  - FR-005
+  - FR-028
+  - FR-054
+  - FR-055
+  - FR-056
+  - FR-057
+  - FR-058
+  - BR-006
+  - BR-007
+  - BR-012
+  - NFR-001
+  - NFR-003
+  - NFR-009
+  - NFR-014
+  - NFR-016
+  - SR-001
+  - SR-008
+  - SR-009
+  - SR-012
+  - SR-013
+  - SR-014
+  - IR-009
+  - IR-010
+  - IR-013
+  - IR-014
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Commitment
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: preference_scope
+    kind: enum
+  - name: Constraint
+    kind: entity
+  - name: Journey
+    kind: entity
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: DR-006
+    kind: rule
+  - name: DR-010
+    kind: rule
+  - name: ScoreBreakdown
+    kind: value_object
+  - name: DR-005
+    kind: rule
+  - name: Event
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: Traveler
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  detailUseCases: []
+  status: baseline-candidate
+- id: UC-12
+  name: Review Journey History & Changes
+  level: user_goal
+  primaryActor: ACT-TRAVELER
+  supportingActors: []
+  goal: Review immutable plan history, change reasons, and related commercial records for a Journey.
+  preconditions:
+  - The Journey has persisted history or commercial records.
+  trigger: The Traveler opens Journey history or comparison.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: System
+    action: Lists available PlanVersions for the Journey.
+  - id: MS-02
+    actor: Traveler
+    action: Selects one or two PlanVersions to inspect or compare.
+  - id: MS-03
+    actor: System
+    action: Shows Activity changes, timing, estimated/actual cost information, and commitment impacts where available.
+  - id: MS-04
+    actor: System
+    action: Shows the ReplanProposal trigger, change reason, and Traveler decision associated with revised plans.
+  - id: MS-05
+    actor: System
+    action: Shows traceable Booking, Order, PaymentTransaction, or receipt references when relevant.
+  - id: MS-06
+    actor: Traveler
+    action: Reviews the history without modifying accepted historical PlanVersions.
+  alternateFlows:
+  - id: A1
+    name: Single version
+    description: If only one PlanVersion exists, the system shows the available plan and related records without
+      a two-version diff.
+  exceptionFlows:
+  - id: E1
+    name: Record unavailable
+    description: Unavailable optional external detail is surfaced without altering retained internal history.
+  postconditions:
+  - Historical PlanVersions remain unchanged and queryable.
+  requirementIds:
+  - FR-013
+  - FR-015
+  - FR-038
+  - FR-050
+  - FR-052
+  - FR-059
+  - BR-002
+  - BR-003
+  - BR-004
+  - BR-013
+  - BR-016
+  - NFR-001
+  - NFR-011
+  - NFR-014
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  - name: Activity
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: Commitment
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: proposal_status
+    kind: enum
+  - name: ReplanProposal
+    kind: state_machine
+  - name: Event
+    kind: entity
+  - name: DR-009
+    kind: rule
+  - name: Money
+    kind: value_object
+  - name: DR-005
+    kind: rule
+  detailUseCases: []
+  status: baseline-candidate
+- id: UC-13
+  name: Administer Platform & Providers
+  level: user_goal
+  primaryActor: ACT-ADMIN
+  supportingActors: []
+  goal: Allow authorised administrators to inspect provider health and important platform audit events.
+  preconditions:
+  - The Administrator is authenticated and authorised for administrative operations.
+  trigger: The Administrator opens platform administration.
+  mainSuccessScenario:
+  - id: MS-01
+    actor: Administrator
+    action: Opens the administration interface.
+  - id: MS-02
+    actor: System
+    action: Authorises the administrative route using role-based access control.
+  - id: MS-03
+    actor: System
+    action: Displays health information for configured critical external providers.
+  - id: MS-04
+    actor: Administrator
+    action: Selects provider or audit information to inspect.
+  - id: MS-05
+    actor: System
+    action: Displays relevant provider failures, security-sensitive changes, and auditable platform events with
+      secrets redacted.
+  - id: MS-06
+    actor: Administrator
+    action: Reviews the operational information without modifying Core Domain history through this use case.
+  alternateFlows:
+  - id: A1
+    name: Provider unavailable
+    description: The provider is shown as degraded/unavailable using the latest health information rather than causing
+      the admin page to fail completely.
+  exceptionFlows:
+  - id: E1
+    name: Unauthorised access
+    description: The system denies the operation and records the security-relevant event as appropriate.
+  postconditions:
+  - Administrative inspection is auditable and sensitive fields remain redacted.
+  requirementIds:
+  - BG-008
+  - FR-060
+  - FR-061
+  - NFR-004
+  - NFR-005
+  - NFR-009
+  - NFR-010
+  - NFR-014
+  - SR-001
+  - SR-002
+  - SR-006
+  - SR-007
+  - SR-010
+  - SR-011
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: DR-006
+    kind: rule
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: Traveler
+    kind: entity
+  - name: Commitment
+    kind: entity
+  detailUseCases: []
+  status: baseline-candidate
+relationships:
+- type: extend
+  source: UC-07
+  target: UC-06
+  condition: '[payment required]'
+  note: Arrow points to base use case UC-06.
+- type: extend
+  source: UC-09
+  target: UC-08
+  condition: '[event detected]'
+  note: Arrow points to base use case UC-08.
+- type: extend
+  source: UC-10
+  target: UC-09
+  condition: '[replan required]'
+  note: Arrow points to base use case UC-09.
+- type: include
+  source: UC-04
+  target: UC-04.1
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-04
+  target: UC-04.2
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-04
+  target: UC-04.3
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-04
+  target: UC-04.4
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-05
+  target: UC-05.1
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-05
+  target: UC-05.2
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-05
+  target: UC-05.3
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-05
+  target: UC-05.4
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-10
+  target: UC-10.1
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-10
+  target: UC-10.2
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-10
+  target: UC-10.3
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-10
+  target: UC-10.4
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-10
+  target: UC-10.5
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+- type: include
+  source: UC-10
+  target: UC-10.6
+  condition: null
+  note: Focused Part 2 documentation relationship; not a separate top-level business use case.
+modelNotes:
+- Top-level UC-01..UC-13 are the authoritative business use cases.
+- UC-04.x, UC-05.x and UC-10.x are focused Part 2 documentation sub-use-cases used for UML detail, not additional
+  top-level requirements scope.
+- Temporal workflow is not represented with include/extend unless the relationship expresses optional extension
+  or reusable included capability.
+- The internal planning solver is not an actor.
+- AI Provider may suggest, extract, score semantically, or explain, but does not own feasibility or persistence
+  mutation authority.

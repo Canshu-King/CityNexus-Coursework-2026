@@ -1,0 +1,1402 @@
+/*
+ * CityNexus — Apple-inspired design tokens + motion layer (frontend track).
+ * Additive: defines CSS custom properties and restrained motion. It does NOT
+ * change component DOM or data-testids, so the existing rendered assertions keep
+ * passing. Values follow the Qoder/GPT v6 frontend design brief.
+ */
+
+:root {
+  /* Material palette (Light) */
+  --cn-canvas: #f5f5f7;
+  --cn-surface: #ffffff;
+  --cn-secondary: #f2f2f7;
+  --cn-ink: #1d1d1f;
+  --cn-ink-secondary: #6e6e73;
+  --cn-ink-tertiary: #86868b;
+  /* Declared once, on :root, so the scheme block below can beat it. The shared
+     `:root, .v8-product-shell` block used to repeat the light value, and a custom property
+     inherits from the nearest ancestor that declares one -- so every drawer and bottom bar
+     inside the shell kept #ffffff under the dark theme (ORD-0509 measurement, run 0509run6). */
+  --cn-nav-bg: var(--cn-tint-white-95);
+  --cn-accent: #0a66ff;
+  /* Fill for controls that carry white text. Kept at the deeper blue even in
+     dark so a button label clears AA (white on #0a66ff ≈ 4.8:1), unlike the
+     brighter #0a84ff link accent which only reaches ~3.6:1 against white.
+     That is a *constant*, not a theme value, so it lives in the always family
+     and this line is an alias kept for existing consumers (--v8-accent). */
+  --cn-accent-solid: var(--cn-always-accent-solid);
+  /* Accent used as *text* (eyebrow / kicker) on a light page. #0a66ff is the
+     Apple link blue, but against the #f5f5f7 canvas it only reaches 4.42:1 and
+     fails WCAG AA for 10px bold uppercase — a real axe failure, not a taste
+     call. This deeper blue clears 4.5:1 on both canvas (#f5f5f7 → 5.49:1) and
+     surface (#ffffff → 5.97:1) without changing hue. */
+  --cn-accent-text: #0a5cd6;
+  /* Success as *text*: #248a3d is a good fill/badge colour but only reaches
+     4.04:1 as 13px text on the light attention panel. */
+  --cn-success-text: #17672f;
+  --cn-success: #248a3d;
+  --cn-warning: #b06000;
+  --cn-danger: #d70015;
+
+  /* ── Alpha tier ladder ────────────────────────────────────────────────
+     A tint is drawn from this closed set instead of being written inline, so
+     "an 8% hairline" means the same number in every rule and a reviewer can
+     see at once when a ninth tier is being invented. The ladder is harvested
+     from the values this file already used (0.04 / 0.06 / 0.08 / 0.1 / 0.4 /
+     0.5 / 0.6 / 0.95) — introducing it changes no computed value anywhere.
+     Naming is the point, not the palette.                        [T1 tiers] */
+  --cn-tint-black-04: rgba(0, 0, 0, 0.04);
+  --cn-tint-black-06: rgba(0, 0, 0, 0.06);
+  --cn-tint-black-08: rgba(0, 0, 0, 0.08);
+  --cn-tint-black-10: rgba(0, 0, 0, 0.1);
+  --cn-tint-black-40: rgba(0, 0, 0, 0.4);
+  --cn-tint-black-50: rgba(0, 0, 0, 0.5);
+  --cn-tint-black-60: rgba(0, 0, 0, 0.6);
+  --cn-tint-white-10: rgba(255, 255, 255, 0.1);
+  --cn-tint-white-95: rgba(255, 255, 255, 0.95);
+  --cn-tint-surface-95: rgba(28, 28, 30, 0.95);
+
+  /* ── Constant family (never re-themed) ────────────────────────────────
+     `--cn-always-*` is the declaration "this value is identical under both
+     themes, on purpose". A colour earns it when something else is painted on
+     top of it and the pair's contrast must not move: --cn-always-accent-solid
+     below holds white button labels at ~4.8:1 in either theme, which is why
+     the brighter link accent (#0a84ff, ~3.6:1 under white) cannot be used for
+     fills.
+     Shadows deliberately do NOT join this family: dark chrome needs a heavier
+     shadow, not the same one, so they stay tiered tints. A future scrim over
+     live map imagery would be a genuine candidate.
+     The gate enforces the converse too: an `always` token that appears inside
+     :root[data-theme="dark"] is a contradiction, and a token whose light and
+     dark values are equal but which is NOT named `always` is a missed
+     declaration. Both read as red.                            [T2 constant] */
+  --cn-always-accent-solid: #0a66ff;
+
+  /* Same 8% it carried before, now named against the ladder. */
+  --cn-hairline: var(--cn-tint-black-08);
+
+  /* Boundary for controls whose only affordance is their outline (language
+     toggle, outline buttons) — must clear 3:1 vs the page. Decorative
+     separators stay on the softer --cn-hairline. #7d8797 is the light twin of
+     dark's #7c7c82: 3.63:1 on #ffffff and 3.33:1 on the #f5f5f7 canvas, where
+     the previous #b9bfca reached only 1.85:1 and an outline button with no
+     fill was effectively invisible to a low-vision user. */
+  --cn-control-border: #7d8797;
+  font-family: var(--cn-font);
+
+  /* Type scale (mobile-first) */
+  --cn-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --cn-fs-display: 34px;
+  --cn-fs-title: 28px;
+  --cn-fs-section: 22px;
+  --cn-fs-card: 16px;
+  --cn-fs-body: 16px;
+  --cn-fs-secondary: 15px;
+  --cn-fs-meta: 14px;
+  --cn-fs-caption: 13px;
+  --cn-lh-tight: 1.14;
+  --cn-lh-body: 1.45;
+
+  /* Spacing rhythm (4 base / 8 primary). The four lower tiers were added because that is where the
+     reference app's own layouts actually live: measured over 830 product layouts, 20dp is used 828
+     times, 16dp 557, 8dp 536, 12dp 535, 4dp 394, 10dp 366, 24dp 235, 6dp 194, 2dp 140 -- a system
+     that stops at 8px has no name for the value it uses most. Frequencies: review/ord0441/LADDER_R1.txt. */
+  --cn-s-2: 2px;
+  --cn-s-4: 4px;
+  --cn-s-6: 6px;
+  --cn-s-8: 8px;
+  --cn-s-10: 10px;
+  --cn-s-12: 12px;
+  --cn-s-16: 16px;
+  --cn-s-20: 20px;
+  --cn-s-24: 24px;
+  --cn-s-32: 32px;
+  --cn-s-40: 40px;
+  --cn-s-48: 48px;
+  --cn-gutter: 20px;
+
+  /* Radii: one numeric ladder, and the semantic names alias into it. ORD-0459 step 2 moved every
+     component rule onto this table, so a radius that is not one of these values cannot be written
+     without adding a tier first. Snap rule used for the migration: nearest tier, ties to the larger
+     tier -- tightening a corner can clip content, loosening one cannot.
+     Where the tiers come from: not the resource table (its radius bucket holds 6 names and three
+     values, 2dp/10dp/30dp), but the reference app's own painted corners, counted out of its layout
+     dump -- 32dp x63, 16dp x57, 24dp x57, 20dp x49, 12dp x35, 8dp x29 are the six most-used. Of the two
+     values our step-1 rules carried, 11dp is used 3 times and 13dp not once, so neither is a corner the
+     app actually draws and both were folded onto the nearest tier.
+     Source: D:/moodle/_apk_analysis_pi_travel/out/layout_tiers_r1.json, buckets.radius (38 distinct values). */
+  --cn-r-0: 0px;
+  --cn-r-4: 4px;
+  --cn-r-8: 8px;
+  --cn-r-12: 12px;
+  --cn-r-16: 16px;
+  --cn-r-20: 20px;
+  --cn-r-24: 24px;
+  --cn-r-circle: 50%;
+  --cn-r-pill: 999px;
+  --cn-r-control: var(--cn-r-12);
+  --cn-r-button: var(--cn-r-16);
+  --cn-r-card: var(--cn-r-16);
+  --cn-r-hero: var(--cn-r-20);
+  --cn-r-sheet: var(--cn-r-24);
+
+  /* Divider weight. Their measured divider tiers are 1dp x12, 3dp x11, 2dp x9, 4dp x6, 0.5dp x3 --
+     the most-used one is the value our rules already drew, so this names it instead of changing it. */
+  --cn-divider-w: 1px;
+
+  /* Depth — restrained */
+  --cn-shadow-card: 0 1px 2px var(--cn-tint-black-04), 0 8px 28px var(--cn-tint-black-06);
+  --cn-shadow-raised: 0 2px 8px var(--cn-tint-black-06), 0 18px 40px var(--cn-tint-black-10);
+
+  /* Motion tokens */
+  --cn-ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --cn-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --cn-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --cn-t-press: 110ms;
+  --cn-t-hover: 160ms;
+  --cn-t-state: 200ms;
+  --cn-t-reveal: 320ms;
+  --cn-t-sheet: 400ms;
+  --cn-t-reorder: 360ms;
+  --cn-t-accept: 440ms;
+}
+
+
+  :root[data-theme="dark"] {
+    --cn-canvas: #000000;
+    --cn-surface: #1c1c1e;
+    --cn-secondary: #2c2c2e;
+    --cn-ink: #f5f5f7;
+    --cn-ink-secondary: #aeaeb2;
+    --cn-ink-tertiary: #8e8e93;
+    --cn-accent: #0a84ff;
+    /* --cn-accent-solid is deliberately NOT re-declared here. Its single value
+       --cn-always-accent-solid (#0a66ff) is byte-identical to what this block
+       used to repeat, so the override was dead weight whose real cost was
+       semantic: re-stating it in the dark block hid the fact that the fill
+       under a white label must never move. */
+    /* #0a84ff on the #000000 dark canvas is 5.76:1 — already AA, so the dark
+       theme keeps the brighter accent for text. */
+    --cn-accent-text: #0a84ff;
+    --cn-success-text: #30d158;
+    --cn-success: #30d158;
+    --cn-warning: #ff9f0a;
+    --cn-danger: #ff453a;
+    --cn-hairline: var(--cn-tint-white-10);
+    --cn-nav-bg: var(--cn-tint-surface-95);
+    --cn-control-border: #7c7c82;
+    /* Shadows get heavier in dark, so they are tiered rather than constant. */
+    --cn-shadow-card: 0 1px 2px var(--cn-tint-black-40), 0 8px 28px var(--cn-tint-black-50);
+    --cn-shadow-raised: 0 2px 8px var(--cn-tint-black-50), 0 18px 40px var(--cn-tint-black-60);
+  }
+
+
+/* Bind the V8 palette to the Apple tokens at :root as well as on the shell.
+   Existing components consume --v8-*, so rebinding them re-skins the app; doing it
+   on :root additionally reaches the one screen that is returned *before*
+   .v8-product-shell exists — JourneyTrialSetup (V8Experience.tsx) — which until
+   now got neither the Apple palette nor the dark theme.
+   The shell selector is not redundant: styles.css carries an AA override block on
+   `.v8-product-shell` (--v8-muted / -amber / -coral) that this file has always beaten
+   by load order at equal specificity.  Binding :root alone would let that override
+   win again inside the shell, silently resurrecting declarations that were dead
+   code.  Keeping both selectors preserves the shell's effective values exactly while
+   extending them to the screen that has no shell. */
+:root,
+.v8-product-shell {
+  --v8-canvas: var(--cn-canvas);
+  --v8-panel: var(--cn-surface);
+  --v8-ink: var(--cn-ink);
+  --v8-muted: var(--cn-ink-secondary);
+  --v8-line: var(--cn-hairline);
+  --v8-indigo: var(--cn-accent);
+  --v8-green: var(--cn-success);
+  --v8-amber: var(--cn-warning);
+  --v8-coral: var(--cn-danger);
+  /* Two tokens 18 declarations referenced but nobody ever defined, so every one of
+     them silently took its fallback: --v8-accent resolved to teal #0f766e in 14
+     places (making the create-trip primary button a different colour from every
+     other primary button in the app) and --v8-surface resolved to #0b1f24 in one
+     place and #fff in two others — one token, three intents.  Accent and card
+     surface get real values here; the near-black site was never a surface at all,
+     it wanted the page canvas behind a fading sticky bar, so that declaration now
+     reads --v8-canvas directly in styles.css.
+     --v8-accent binds to the SOLID accent, not the text accent: it paints button
+     fills that carry white labels (.v8-primary-button is shared by the create-trip
+     CTA and Live's live-accept).  --cn-accent is tuned for text on the canvas and is
+     #0a84ff under dark, which put white-on-blue at 3.4:1 and turned
+     qoder-live-structure's L2 dark assertion red. */
+  --v8-accent: var(--cn-accent-solid);
+  --v8-surface: var(--cn-surface);
+  /* Mobile chrome geometry in one place.  The shell used to reserve a hardcoded
+     63px below the page, which was just a snapshot of "however tall the nav
+     happened to be"; the nav itself carried no safe-area at all.  48 + 8 + 7 = 63
+     is the arithmetic the old literal stood for, now written out. */
+  --cn-touch-min: 44px;
+  /* --cn-nav-bg moved up to the scheme blocks: redeclaring the light value here made the shell
+     the nearest ancestor inside itself, so the dark theme's nav surface never reached a drawer. */
+  --cn-nav-item-h: max(48px, var(--cn-touch-min));
+  /* One 档位 for the icon in a nav row, shared by the desktop sidebar (`.v8-nav button svg`) and the
+     mobile drawer (`#v8-nav-drawer button svg`). 17px is the value the sidebar has always used; it is
+     named here because an <svg> that carries a viewBox and no width/height attribute is sized by its
+     flex container, not by its artwork -- so every surface that puts one in a button has to state a
+     size, and two surfaces stating it separately is how one of them (the drawer, whose rows sit inside
+     a wrapper <div>) stopped matching its own selector and rendered 243px icons at 292px per row. */
+  --cn-nav-icon-size: 17px;
+  --cn-nav-pad-top: 8px;
+  --cn-nav-pad-bottom: 7px;
+  /* Measured, not derived. The old value was arithmetic -- item floor 48 + 8 + 7 = 63px -- while the
+     bar renders **76px** at 390x844 (two independent measurements: e2e evidence
+     `ui-overnight/nav-reservation.json`, and commander `raw/nav_clearance.json`). The extra ~12px is
+     content: icon + label + `gap: 4px` exceed the 48px floor, and `min-height` is a floor, not a
+     cap. `--cn-nav-clearance` below feeds `.v8-product-shell { padding-bottom }`, which every page
+     inherits, so the short number put the last 13px of any phone screen under the nav.
+     80 = 76 measured + 4 of margin. If the nav's content grows, this grows with it, and the gate
+     `nav-reservation-covers-the-rendered-bar` goes red when it does not. */
+  --cn-nav-h: 80px;
+  --cn-nav-clearance: calc(var(--cn-nav-h) + env(safe-area-inset-bottom, 0px));
+  --cn-safe-top: env(safe-area-inset-top, 0px);
+}
+
+.v8-product-shell {
+  font-family: var(--cn-font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Typography rhythm on the surfaces the app already renders. */
+.v8-page { background: var(--cn-canvas); }
+.v8-page h1, .v8-hero-title { font-size: var(--cn-fs-display); font-weight: 700; line-height: var(--cn-lh-tight); letter-spacing: -0.02em; }
+.v8-page h2, .v8-section-title { font-size: var(--cn-fs-title); font-weight: 700; line-height: var(--cn-lh-tight); letter-spacing: -0.015em; }
+
+/* Unify card material: solid content, restrained depth (no atmosphere floating). */
+.v8-page .v8-card,
+.v8-page .replan-card,
+.v8-page .evidence-card,
+.v8-page .map-card {
+  background: var(--cn-surface);
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-card);
+  box-shadow: var(--cn-shadow-card);
+}
+
+/* --- Motion: transform/opacity only, GPU-friendly, capped, reduced-motion aware --- */
+
+@keyframes cn-rise {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* One orchestrated page-load reveal; sections stagger by <=40ms, max 4 groups. */
+.v8-page { animation: cn-rise var(--cn-t-reveal) var(--cn-ease-out) both; }
+.v8-page > * { animation: cn-rise var(--cn-t-reveal) var(--cn-ease-out) both; }
+.v8-page > *:nth-child(1) { animation-delay: 0ms; }
+.v8-page > *:nth-child(2) { animation-delay: 28ms; }
+.v8-page > *:nth-child(3) { animation-delay: 56ms; }
+.v8-page > *:nth-child(4),
+.v8-page > *:nth-child(n + 5) { animation-delay: 84ms; } /* capped: no DOM parade */
+
+/* Restrained press + hover feedback (transform only, no rotate / big shadow). */
+.v8-page button:not(.cn-no-motion):active,
+.v8-page [role="button"]:active,
+.v8-page a.v8-cta:active { transform: scale(0.985); transition: transform var(--cn-t-press) var(--cn-ease-standard); }
+.v8-page button:not(.cn-no-motion),
+.v8-page a.v8-cta,
+.v8-page .v8-card { transition: transform var(--cn-t-hover) var(--cn-ease-standard), box-shadow var(--cn-t-hover) var(--cn-ease-standard); }
+@media (hover: hover) {
+  .v8-page .v8-card:hover { transform: translateY(-1px); box-shadow: var(--cn-shadow-raised); }
+}
+
+/* Focus-visible ring (keyboard), Apple-ish soft accent. */
+.v8-page :focus-visible { outline: 2px solid var(--cn-accent); outline-offset: 2px; border-radius: var(--cn-r-control); }
+
+/* Touch targets >=44px on primary controls. */
+.v8-page button, .v8-page a.v8-cta, .v8-nav button { min-height: 44px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .v8-page,
+  .v8-page > *,
+  .v8-page button, .v8-page a.v8-cta, .v8-page .v8-card {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* --- Today hierarchy refinement (GPT call #2): Hero -> Attention -> Timeline --- */
+/* Single-focus Now/Next Hero (GPT pass-3). One reveal group, one primary CTA. */
+.cn-now-next-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cn-s-8);
+  padding: 24px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-20);
+  background: var(--cn-surface);
+  box-shadow: var(--cn-shadow-card);
+  min-height: 0;
+}
+.cn-now-next-hero .cn-hero-label {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.cn-hero-now .cn-hero-now-place {
+  display: block;
+  color: var(--cn-ink);
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.cn-hero-now {
+  padding-bottom: var(--cn-s-8);
+  border-bottom: 1px solid var(--cn-hairline);
+}
+.cn-hero-next-row {
+  display: block;
+  color: var(--cn-ink);
+  font-size: var(--cn-fs-title);
+  font-weight: 700;
+  line-height: var(--cn-lh-tight);
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.cn-hero-meta {
+  display: block;
+  margin-top: 4px;
+  color: var(--cn-ink-secondary);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: var(--cn-lh-body);
+}
+/* ORD-0082: this line says which clock chose Now/Next, so it is not decoration and does not get
+   the secondary grey a caption would. */
+.cn-clock-source {
+  display: block;
+  margin-top: var(--cn-s-8);
+  color: var(--cn-ink);
+  font-size: var(--cn-fs-caption);
+  font-weight: 500;
+  line-height: var(--cn-lh-body);
+  overflow-wrap: anywhere;
+}
+.cn-hero-cta {
+  align-self: start;
+  margin-top: var(--cn-s-8);
+  min-height: 50px;
+}
+/* The whole card reveals once; do not stagger its Now/Next/CTA children. */
+.cn-now-next-hero.cn-hero-stagger > * { animation: none; }
+
+/* Stay / anchors step down into a compact secondary strip beneath the hero. */
+.cn-hero-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cn-s-8) var(--cn-s-16);
+  margin: 10px 0 0;
+  padding: 12px 16px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-card);
+  background: var(--cn-secondary);
+}
+.cn-strip-item { display: grid; gap: 2px; min-width: 0; }
+.cn-strip-item > span {
+  color: var(--cn-ink-secondary);
+  font-size: var(--cn-fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.cn-strip-item > strong,
+.cn-strip-item > b {
+  color: var(--cn-ink);
+  font-size: var(--cn-fs-secondary);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cn-attention-band {
+  margin: 14px 0 0;
+  padding: var(--cn-s-16) var(--cn-s-20);
+  border-radius: var(--cn-r-card);
+  background: var(--cn-surface);
+  border: 1px solid var(--cn-hairline);
+  box-shadow: var(--cn-shadow-card);
+}
+.cn-attention-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--cn-s-12);
+}
+.cn-attention-head .v8-kicker { margin: 0; }
+.cn-attention-head strong {
+  font-size: var(--cn-fs-card);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.cn-attention-head strong.warn { color: var(--cn-danger); }
+.cn-attention-head strong.green { color: var(--cn-success); }
+.cn-attention-hint {
+  margin: 6px 0 0;
+  color: var(--cn-ink-secondary);
+  font-size: var(--cn-fs-secondary);
+  line-height: var(--cn-lh-body);
+}
+.cn-attention-cta { margin-top: var(--cn-s-12); }
+
+/* Handled history: a quiet single line, no card chrome. */
+.cn-attention-band[data-attention="handled"] {
+  padding: 6px 2px;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.cn-attention-band[data-attention="handled"] .cn-attention-head {
+  align-items: center;
+}
+.cn-attention-band[data-attention="handled"] .cn-attention-head strong {
+  font-size: var(--cn-fs-secondary);
+}
+.cn-attention-band[data-attention="handled"] .cn-attention-hint {
+  display: inline;
+  margin-left: 8px;
+  font-size: var(--cn-fs-caption);
+}
+/* Nothing to attend: near-zero visual footprint — "无事就闭嘴". The element
+   stays in the DOM (rendered tests look for it) but reads as a whisper, not an
+   "all clear" monument. */
+.cn-attention-band[data-attention="clear"] {
+  padding: 2px;
+  margin: 4px 0 0;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.cn-attention-band[data-attention="clear"] .cn-attention-head {
+  justify-content: flex-start;
+}
+.cn-attention-band[data-attention="clear"] .v8-kicker {
+  display: none;
+}
+.cn-attention-band[data-attention="clear"] .cn-attention-head strong {
+  font-size: var(--cn-fs-caption);
+  font-weight: 600;
+}
+/* Open attention escalates with a warm edge. */
+.cn-attention-band[data-attention="open"] {
+  border-color: rgba(215, 0, 21, 0.28);
+}
+@keyframes cn-attention-in {
+  from { opacity: 0; transform: translate3d(0, 8px, 0); }
+  to { opacity: 1; transform: none; }
+}
+.cn-attention-band[data-attention="open"] {
+  animation: cn-attention-in var(--cn-t-reveal) var(--cn-ease-out) both;
+}
+
+/* --- Live replan motion — PRESENTATION ONLY (GPT call #3) ---
+   A pure CSS response to the data-state attribute on the proposal card. This
+   does not touch, and must never touch, what counts as accepted, when a
+   disruption is resolved, or which proposal maps to which event — that logic
+   survived six truth-gate versions and is out of scope for the design line. */
+.v8-page .live-proposal {
+  transition:
+    opacity var(--cn-t-state) var(--cn-ease-standard),
+    transform var(--cn-t-state) var(--cn-ease-standard);
+}
+.v8-page .live-proposal[data-state="accepting"] {
+  opacity: 0.72;
+  transform: translate3d(0, -2px, 0);
+}
+@keyframes cn-accept-settle {
+  from { opacity: 0; transform: translate3d(0, 8px, 0); }
+  to { opacity: 1; transform: none; }
+}
+.v8-page .live-handled,
+.v8-page [data-testid="live-message"] {
+  animation: cn-accept-settle var(--cn-t-accept) var(--cn-ease-out) both;
+}
+
+/* Live single-focus IA (GPT A+): the map is compact; when a decision is active
+   it shrinks slightly so the disruption/replan rises toward the first screen. */
+.live-shell { display: block; }
+/* Live already shows the single current state; hide LiveRecovery's duplicate
+   header (kept in the DOM) so the decision, not two titles, owns the fold. */
+.live-shell > [data-testid="live-recovery"] > .v8-page-intro { display: none; }
+.cn-live-secondary {
+  display: grid;
+  gap: var(--cn-s-12);
+  margin-top: var(--cn-s-8);
+  padding-top: var(--cn-s-12);
+  border-top: 1px solid var(--cn-hairline);
+}
+.cn-live-secondary .v8-mode-chooser { box-shadow: none; }
+.cn-live-secondary .v8-live-side { gap: var(--cn-s-8); }
+.cn-live-secondary .v8-next-card,
+.cn-live-secondary .v8-comparison { box-shadow: none; }
+/* Decision-active emphasis is expressed through layout order + the separator
+   above (not opacity, which the contrast audit cannot see). */
+
+@media (max-width: 680px) {
+  .live-shell > .v8-page .v8-live-main > .v8-map-panel {
+    min-height: 240px !important;
+    height: 240px !important;
+    box-sizing: border-box !important;
+  }
+  .live-shell[data-decision-active="true"] > .v8-page .v8-live-main > .v8-map-panel {
+    min-height: 208px !important;
+    height: 208px !important;
+  }
+  /* Ruling #4, take two. The 240/208 sizing above is stated with !important so
+     it beats the shell's own media rules — which also meant it silently beat my
+     first empty-state fix (computed min-height stayed 240px against a
+     max-height of 156px, because min-height wins over max-height in CSS). An
+     honest empty state has to be exempted in the same register it was sized. */
+  .live-shell > .v8-page .v8-live-main > .v8-map-panel.v8-map-empty {
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: 156px;
+  }
+}
+
+/*
+ * Controlled dark-mode convergence, driven by e2e/qoder-dark-audit.spec.ts
+ * (GPT final call #1). NOT a blind 114-colour rewrite: the audit swept the
+ * reachable Today (/v8/hub) and Live (/v8/live) surfaces under emulated dark
+ * and reported exactly these classes. Most are SHELL surfaces that live outside
+ * `.v8-page` (topbar, mobile nav, copilot pill, avatar, language button) — the
+ * gap a `.v8-page`-scoped pass could not reach. Each is rebound to a theme
+ * token so light stays as-is and dark follows, and filled controls use
+ * --cn-accent-solid so white labels clear AA. Legacy / Advanced / Wallet-JSON /
+ * off-path panels are intentionally left as declared debt this pass.
+ */
+
+  /* 1. Shell surfaces that painted a hardcoded white in dark. */
+  :root[data-theme="dark"] .v8-product-shell .v8-topbar {
+    background: var(--cn-surface) !important;
+  }
+  :root[data-theme="dark"] .v8-product-shell .v8-breadcrumb, :root[data-theme="dark"] .v8-product-shell .v8-runtime, :root[data-theme="dark"] .v8-product-shell .v8-icon-button {
+    color: var(--cn-ink-secondary) !important;
+  }
+  :root[data-theme="dark"] .v8-product-shell .v8-breadcrumb b { color: var(--cn-ink-tertiary) !important; }
+  :root[data-theme="dark"] .v8-product-shell .v8-breadcrumb strong { color: var(--cn-ink) !important; }
+  :root[data-theme="dark"] .v8-product-shell .v8-mobile-nav {
+    background: rgba(28, 28, 30, 0.92) !important;
+    border-top-color: var(--cn-hairline) !important;
+  }
+  :root[data-theme="dark"] .v8-product-shell .v8-mobile-nav button { color: var(--cn-ink-secondary) !important; }
+  :root[data-theme="dark"] .v8-product-shell .v8-mobile-nav button.active { color: var(--cn-accent) !important; }
+  :root[data-theme="dark"] .v8-product-shell .cn-copilot-edge {
+    background: var(--cn-surface) !important;
+    color: var(--cn-ink) !important;
+    border-color: var(--cn-hairline) !important;
+    box-shadow: var(--cn-shadow-raised) !important;
+  }
+
+  /* 2. Language button: was white fill + bright accent text. */
+  :root[data-theme="dark"] .v8-product-shell .v9-language, :root[data-theme="dark"] .v8-page .v9-language {
+    background: var(--cn-secondary) !important;
+    color: var(--cn-ink) !important;
+    border-color: var(--cn-control-border) !important;
+  }
+
+  /* 3. Filled controls: deep accent so the white label clears AA in dark. */
+  :root[data-theme="dark"] .v8-product-shell .v8-avatar, :root[data-theme="dark"] .v8-product-shell .v8-primary, :root[data-theme="dark"] .v8-product-shell .cn-copilot-edge-mark, :root[data-theme="dark"] .v8-product-shell .v9-navigate, :root[data-theme="dark"] .v8-product-shell a.v9-navigate {
+    background: var(--cn-accent-solid) !important;
+    color: #fff !important;
+  }
+
+  /* 4. Content cards / rows that kept a light fill inside .v8-page. */
+  :root[data-theme="dark"] .v8-page .v8-day-card, :root[data-theme="dark"] .v8-page .v8-day-detail, :root[data-theme="dark"] .v8-page .v8-live-now, :root[data-theme="dark"] .v8-page .v8-mode-chooser, :root[data-theme="dark"] .v8-page .v8-next-card, :root[data-theme="dark"] .v8-page .v8-comparison, :root[data-theme="dark"] .v8-page .v8-outline-button, :root[data-theme="dark"] .v8-page .v8-compare-button, :root[data-theme="dark"] .v8-page .v8-rain-button, :root[data-theme="dark"] .v8-page .v8-map-panel {
+    background: var(--cn-surface) !important;
+    color: var(--cn-ink) !important;
+    border-color: var(--cn-hairline) !important;
+  }
+  /* Outline buttons carry no fill — their border is the only affordance, so it
+     must clear 3:1 vs the page (unlike the decorative cards above). */
+  :root[data-theme="dark"] .v8-page .v8-outline-button {
+    border-color: var(--cn-control-border) !important;
+  }
+  :root[data-theme="dark"] .v8-page .active, :root[data-theme="dark"] .v8-page .v8-mode-chooser .active {
+    background: var(--cn-secondary) !important;
+    color: var(--cn-ink) !important;
+  }
+  :root[data-theme="dark"] .v8-page .v8-map-caption {
+    background: rgba(28, 28, 30, 0.86) !important;
+    color: var(--cn-ink) !important;
+  }
+  :root[data-theme="dark"] .v8-page .v8-status-pill {
+    background: rgba(48, 209, 88, 0.16) !important;
+    color: #7bd88f !important;
+  }
+  :root[data-theme="dark"] .v8-page .mode-mark {
+    /* Was accent text on a grey fill: 3.82:1 at 8px/800, below AA.  A filled accent chip
+       with the canvas colour as its label keeps the mode readable and the identity. */
+    background: var(--cn-accent) !important;
+    color: var(--cn-canvas) !important;
+  }
+
+  /* 5. Hardcoded grey-blue body text that fell below AA on the dark canvas. */
+  :root[data-theme="dark"] .v8-product-shell .v8-lede, :root[data-theme="dark"] .v8-product-shell .v8-muted, :root[data-theme="dark"] .v8-product-shell .v8-live-now p, :root[data-theme="dark"] .v8-product-shell .v8-live-now > strong, :root[data-theme="dark"] .v8-product-shell .v8-mode-chooser span, :root[data-theme="dark"] .v8-product-shell .v8-mode-chips button, :root[data-theme="dark"] .v8-product-shell .v8-next-card p, :root[data-theme="dark"] .v8-product-shell .v8-eta span, :root[data-theme="dark"] .v8-product-shell .v9-evidence-summary > small {
+    color: var(--cn-ink-secondary) !important;
+  }
+  :root[data-theme="dark"] .v8-product-shell .v8-live-label { color: var(--cn-danger) !important; }
+  :root[data-theme="dark"] .v8-product-shell .v8-live-label .status-dot { background: var(--cn-danger) !important; }
+
+  :root[data-theme="dark"] .v8-page button:not([class]) {
+    background: var(--cn-surface);
+    color: var(--cn-ink);
+    border: 1px solid var(--cn-hairline);
+  }
+
+
+/*
+ * Desktop-only sidebar (renders above 680px, so only the desktop audit reaches
+ * it) plus the Today hero's semantic status text — the remaining Today/Live
+ * surfaces the dark audit flagged. Same controlled approach: token-bind just
+ * these rendered classes.
+ */
+
+  :root[data-theme="dark"] .v8-product-shell .v8-sidebar {
+    background: var(--cn-surface) !important;
+    border-right-color: var(--cn-hairline) !important;
+  }
+  :root[data-theme="dark"] .v8-product-shell .v8-brand strong { color: var(--cn-ink); }
+  :root[data-theme="dark"] .v8-product-shell .v8-brand span, :root[data-theme="dark"] .v8-product-shell .v8-workspace-label, :root[data-theme="dark"] .v8-product-shell .v8-nav-group, :root[data-theme="dark"] .v8-product-shell .v8-nav button {
+    color: var(--cn-ink-secondary) !important;
+  }
+  :root[data-theme="dark"] .v8-product-shell .v8-workspace-label span { color: var(--cn-ink) !important; }
+  :root[data-theme="dark"] .v8-product-shell .v8-brand-mark {
+    background: var(--cn-accent-solid) !important;
+    color: #fff !important;
+  }
+  :root[data-theme="dark"] .v8-product-shell .v8-nav button:hover, :root[data-theme="dark"] .v8-product-shell .v8-nav button.active {
+    background: var(--cn-secondary) !important;
+    color: var(--cn-ink) !important;
+  }
+  :root[data-theme="dark"] .v8-product-shell .v8-nav button.active:before { background: var(--cn-accent); }
+  :root[data-theme="dark"] .v8-product-shell .v8-sync {
+    color: #7bd88f !important;
+    border-color: var(--cn-hairline) !important;
+  }
+  :root[data-theme="dark"] .v8-product-shell .v8-sync div { color: var(--cn-ink-secondary) !important; }
+  :root[data-theme="dark"] .v8-product-shell .v8-user { color: var(--cn-ink) !important; }
+  :root[data-theme="dark"] .v8-product-shell .v8-user small { color: var(--cn-ink-secondary) !important; }
+
+  /* Today hero attention status: was a hard-coded green/amber. */
+  :root[data-theme="dark"] .v8-page .today-actions strong.green { color: #7bd88f !important; }
+  :root[data-theme="dark"] .v8-page .today-actions strong.warn { color: var(--cn-warning) !important; }
+
+  /* Live next-card green accents: hard-coded dark-on-light greens now sit on a
+     dark card surface, so they fall below AA. */
+  :root[data-theme="dark"] .v8-page .v8-next-card > span, :root[data-theme="dark"] .v8-page .v8-next-card .v9-risk, :root[data-theme="dark"] .v8-page .v8-next-card .v9-risk span { color: #7bd88f !important; }
+  :root[data-theme="dark"] .v8-page .v8-next-card .v9-risk b { color: var(--cn-warning) !important; }
+
+  /* Live replan surfaces (render only with a disruption, so the demo-driven
+     audit cannot reach them — migrated for coherence, declared unverified this
+     pass). They were hard-coded light tints with ink inherited from the body. */
+  :root[data-theme="dark"] .v8-page .live-disruption {
+    background: rgba(255, 159, 10, 0.12) !important;
+    border-color: rgba(255, 159, 10, 0.34) !important;
+    color: var(--cn-ink) !important;
+  }
+  :root[data-theme="dark"] .v8-page .live-proposal {
+    background: var(--cn-surface) !important;
+    border-color: var(--cn-hairline) !important;
+    color: var(--cn-ink) !important;
+  }
+  :root[data-theme="dark"] .v8-page .live-disruption b, :root[data-theme="dark"] .v8-page .live-proposal b { color: var(--cn-ink) !important; }
+  :root[data-theme="dark"] .v8-page .live-summary, :root[data-theme="dark"] .v8-page .live-unchanged, :root[data-theme="dark"] .v8-page .live-diff { color: var(--cn-ink-secondary) !important; }
+  :root[data-theme="dark"] .v8-page .role-alert { color: #ff6961 !important; }
+  :root[data-theme="dark"] .v8-page .live-handled { color: #7bd88f !important; }
+
+  /* Mode chips: the reorder lifted them into the desktop viewport, exposing a
+     hard-coded #fff fill (a light surface in dark) and a selected state that was
+     indistinguishable from unselected. Unselected = surface + control-border
+     (unfilled control); selected = accent-solid fill + white label (a real
+     fill-difference cue, not colour alone). */
+  :root[data-theme="dark"] .v8-page .v8-mode-chips button {
+    background: var(--cn-surface) !important;
+    color: var(--cn-ink-secondary) !important;
+    border-color: var(--cn-control-border) !important;
+  }
+  :root[data-theme="dark"] .v8-page .v8-mode-chips button.active {
+    background: var(--cn-accent-solid) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+  }
+
+
+/* ---------------------------------------------------------------------------
+   AA-safe eyebrow text (regression fix found by axe in the real-seed
+   integration run, 2026-09-19). `.v8-kicker` inherits --v8-indigo, which the
+   Apple palette binds to --cn-accent — fine as a link, 4.42:1 as 10px text on
+   the light canvas. Page intros get the dedicated --cn-accent-text instead.
+   --------------------------------------------------------------------------- */
+.v8-page-intro .v8-kicker { color: var(--cn-accent-text); }
+
+/* An outline button has no fill, so its border is the only affordance — under
+   the light theme it was still the legacy hardcoded #d9ddea (1.2:1 on white),
+   the same failure the dark pass fixed with --cn-control-border. Fixed on both
+   sides of the theme now, decorative separators untouched. */
+.v8-page .v8-outline-button { border-color: var(--cn-control-border); }
+
+/* Hero eyebrow labels: --cn-ink-tertiary is 3.33:1 on the canvas, which fails
+   AA for 10-11px caption text. Secondary ink clears it (4.66:1) and stays
+   visually subordinate to the stop name beneath it. */
+.cn-now-next-hero .cn-hero-label { color: var(--cn-ink-secondary); }
+
+/* ---------------------------------------------------------------------------
+   Shell chrome tokenised for the light theme (found the moment the two-theme
+   contrast gate was switched on). These greys were hardcoded in styles.css at
+   1.5–3.9:1 on white: breadcrumb text and its "/" separator, the workspace
+   label, the sidebar nav group captions, the nav buttons and the language
+   toggle's outline. Under dark they were pulled in by the theme binding; under
+   light they were simply too faint, and axe/computed-style agree.
+   --------------------------------------------------------------------------- */
+.v8-breadcrumb,
+.v8-breadcrumb b,
+.v8-workspace-label,
+.v8-nav-group,
+.v8-nav button,
+.v8-runtime {
+  color: var(--cn-ink-secondary);
+}
+.v8-nav button.active,
+.v8-nav button:hover,
+.v8-page .v9-language {
+  color: var(--cn-ink);
+}
+.v9-language,
+.v8-home-language {
+  border-color: var(--cn-control-border);
+}
+
+/* ---------------------------------------------------------------------------
+   Accent-as-text and remaining sidebar chrome (light theme).
+   Rebinding --v8-indigo to Apple blue made every text consumer of it — the
+   kicker outside page intros, quiet/text buttons — drop to 4.43:1 on the
+   #f5f5f7 canvas. They now take --cn-accent-text, which is the same hue at an
+   AA-safe depth. The sidebar tagline, the sync panel, the icon button and the
+   mode chips were legacy hardcoded greys/blues that the light theme had never
+   been checked against.
+   --------------------------------------------------------------------------- */
+.v8-kicker,
+.v8-text-button,
+.v8-quiet-button,
+.v8-compare-button {
+  color: var(--cn-accent-text);
+}
+.v8-brand span,
+.v8-sync div,
+.v8-icon-button {
+  color: var(--cn-ink-secondary);
+}
+/* 4.40:1 as #248a3d on the tinted sync panel; the deeper green reads identical
+   but clears AA for 11px bold text. */
+.v8-sync {
+  color: #17672f;
+}
+/* A mode chip's border is its selection affordance, so it must clear 3:1. */
+button[data-testid^="mode-"],
+.v8-mode-option {
+  border-color: var(--cn-control-border);
+}
+
+/* The "all clear" caption is the only text in the collapsed attention band; it
+   inherits the semantic green, which as small text needed the AA-safe variant.
+   "无事就闭嘴" must not mean "say it too faintly to read". */
+.cn-attention-band[data-attention="clear"] .cn-attention-head strong {
+  color: var(--cn-success-text);
+}
+
+
+/* ---------------------------------------------------------------------------
+   Focus ring (light theme). The shell's own rule paints a 3px #9aa8ff outline,
+   which measures 2.05-2.23:1 against the #f5f5f7 canvas. Dark was fine; light
+   had never been measured because this gate used to emulate dark only.
+   --cn-accent-text is 5.49:1 on the canvas, and its dark twin #0a84ff is
+   5.76:1 on the dark canvas, so one token now serves both schemes.
+   --------------------------------------------------------------------------- */
+:focus-visible,
+.v8-product-shell :focus-visible,
+.v8-product-shell button:focus-visible,
+.v8-product-shell [role="button"]:focus-visible,
+.v8-product-shell textarea:focus-visible {
+  outline-color: var(--cn-accent-text);
+}
+
+
+/* ---------------------------------------------------------------------------
+   Today secondary action row (pass-8 ruling #1/#2).
+   These three utilities used to render as four stacked full-width buttons with
+   no shared layout rule at all (.v8-hub-actions had no CSS in the repo), which
+   is how the hero's single primary action got out-shouted on a real journey.
+   They are now one quiet, wrapping text row under the trip summary.
+   --------------------------------------------------------------------------- */
+.v8-hub-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 16px;
+  margin-top: 10px;
+}
+/* 30px = compact fine-pointer visual density; mobile/touch hit target is superseded
+   by the >=44px accessibility contract.  (Amendment F-2.)  The override below uses the
+   same 0,2,0 selector on purpose: styles.css's 0,1,0 floor cannot outrank this rule,
+   so the mobile contract has to be asserted at this specificity. */
+.v8-hub-actions .v8-quiet-button {
+  min-height: 30px;
+  padding: 2px 0;
+  font-size: var(--cn-fs-caption);
+  font-weight: 600;
+}
+@media (max-width: 680px) {
+  .v8-hub-actions .v8-quiet-button { min-height: var(--cn-touch-min); }
+}
+/* ORD-0366: the share entry joins this row as its fourth quiet item. It arrives wrapped in its own
+   element because it also owns the feedback line, so it is laid out as one inline piece. A middot
+   separator was tried first and rejected by looking at the phone-width screenshot: at 390px the row
+   already wraps, so the separator landed alone at the start of the second line and read as a stray
+   bullet rather than as part of the list. */
+.v8-hub-actions .journey-link-action { display: inline-flex; align-items: center; gap: 8px; }
+/* ORD-0375: no typographic separator here, in either direction. The row was measured at 320x568,
+   360x740, 390x844 and 430x932 (`review/evidence/ord0375/cmdr022639n3__Q1.json`) and it wraps at every
+   one of those widths. A leading `::before` put a lone middot at the start of the wrapped line (seen at
+   320); moving it to a trailing `::after` did not fix that, it moved the orphan to the end of line one
+   at all four widths -- the same defect, wider. A pseudo-element cannot know where a line break lands,
+   so the punctuation is gone and the row's own 16px column gap carries the separation. Nothing was
+   removed but decoration: all four controls are still rendered and strikable at all four widths. */
+
+
+/* ---------------------------------------------------------------------------
+   Live toolbar + honest empty-map height (pass-8 ruling #3/#4).
+   --------------------------------------------------------------------------- */
+.cn-live-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 16px;
+  margin-bottom: 12px;
+}
+/* 30px = compact fine-pointer visual density; mobile/touch hit target is superseded
+   by the >=44px accessibility contract.  (Amendment F-2.) */
+.cn-live-toolbar .v8-quiet-button {
+  min-height: 30px;
+  padding: 2px 0;
+  font-size: var(--cn-fs-caption);
+  font-weight: 600;
+}
+@media (max-width: 680px) {
+  .cn-live-toolbar .v8-quiet-button { min-height: var(--cn-touch-min); }
+}
+.cn-live-toolbar .v8-quiet-button + .v8-quiet-button::before {
+  content: "·";
+  margin-right: 16px;
+  color: var(--cn-ink-tertiary);
+}
+
+/* The 240/208 map-height rule governs a *rendered* map. With no trustworthy
+   coordinates the panel still reserved a map-sized box, so a two-line caption
+   sat inside roughly 400px of empty card and pushed the actual journey state
+   below the fold. An honest empty state should cost an honest empty-state
+   height. */
+.v8-page .v8-map-panel.v8-map-empty {
+  min-height: 0;
+  max-height: 156px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+}
+.v8-page .v8-map-empty .v8-map-empty-body p {
+  margin: 4px 0 0;
+  font-size: var(--cn-fs-caption);
+  line-height: 1.45;
+}
+
+
+/* ---------------------------------------------------------------------------
+   Pass-8 ruling #5 — one bottom clearance, and a dock that yields in full.
+   The dock is a fixed overlay, so "does it cover the primary action" used to
+   depend on where the page happened to be scrolled. Two changes:
+   * every page reserves a bottom band for the dock + mobile nav, so content is
+     never the thing that has to dodge it;
+   * when a surface is already on screen (yield-to-surface), the dock collapses
+     to a right-aligned pill instead of a 230px slab that still spans the width
+     of a full-bleed Accept button.
+   --------------------------------------------------------------------------- */
+/* Reserve the band once, on the scrolling content container. Putting it on
+   .v8-page was wrong: Today/Live render several .v8-page sections in a row, so
+   each one added the clearance and pushed the decision 124px further down per
+   section — the gate caught it as an 8px first-screen miss. */
+.v8-content {
+  padding-bottom: calc(124px + env(safe-area-inset-bottom, 0px));
+}
+.cn-copilot-dock.yield-to-surface {
+  right: 10px;
+  left: auto;
+  width: auto;
+}
+.cn-copilot-dock.yield-to-surface .cn-copilot-edge {
+  width: auto;
+  min-height: 42px;
+  padding: 0 12px;
+  font-size: 11px;
+}
+
+
+/* ---------------------------------------------------------------------------
+   Pass-8 ruling #6/#7 (mainline chrome, done here because the visual gate is
+   what found them).
+   #7a - the budget line and its explanatory hint are two inline spans with no
+         separator, which rendered as "每人每天约 ¥500这是按你的预算…".
+   #7b - the Live leg line interpolated the raw provider enum, so a Chinese
+         sentence contained "transit"; every other mode surface uses modeLabel.
+   #6  - the avatar is a 28px circle holding up to two initials; without a
+         nowrap/overflow guard the glyphs sat on top of the circle's edge.
+   --------------------------------------------------------------------------- */
+.today-advisory strong {
+  display: block;
+}
+.today-advisory span {
+  display: block;
+  margin-top: 3px;
+  line-height: 1.45;
+}
+.v8-avatar {
+  overflow: hidden;
+  white-space: nowrap;
+  flex: none;
+  font-size: 9px;
+  letter-spacing: 0.02em;
+}
+
+
+/* The real seeded journey renders actual map markers for the first time (the
+   demo/reset trip has no located activities), and the audit immediately caught
+   the current-location badge: white 10px bold text on #d65e56 is 3.75:1 against
+   a 4.5:1 requirement. "Current" is a location, not a risk, so it takes the
+   accent fill rather than a deepened red, which also stops it reading the same
+   as .disrupted. --cn-accent-solid (#0a66ff in both schemes) is the one the
+   token set already defines for white label text at 4.82:1; the brighter link
+   accent fails in dark at 3.49:1. */
+.v9-map-marker.current {
+  background: var(--cn-accent-solid);
+}
+
+
+/* Today's day cards only became auditable once the seed produced a real
+   multi-day plan (the demo/reset trip has one day and no located activities).
+   Two hardcoded greys fail AA as body text: .v8-day-card p at #6c7889 is
+   4.48:1 on white and 3.8:1 on the dark surface, and the DAY n / meta row at
+   #9aa4b3 is 2.52:1. Both take the ink-secondary token, which clears 4.5:1 in
+   either scheme while staying visually subordinate to the stop name. */
+.v8-day-card p,
+.v8-day-card span,
+.v8-day-card small,
+.v8-day-detail-title small {
+  color: var(--cn-ink-secondary);
+}
+
+
+/* Pass-9 blocker #2 — the idle dock presents as the same right-aligned pill the
+   decision state already proved sufficient, so it stops covering Today's
+   content while remaining one tap from the assistant. */
+.cn-copilot-dock.idle-compact {
+  right: 10px;
+  left: auto;
+  width: auto;
+}
+/* Pass-13.1: a position:fixed accessory sits wherever the page happens to come
+   to rest, and pass-13 measured this one resting on top of the DAY 1 card
+   (158x54 of tappable surface).  Reserving that band properly would cost a phone
+   ~138px of every screen, so the pill yields instead -- the problem statement is
+   theirs, the shape of the answer is in pass-13.2 below. */
+/* Pass-13.2 (ORD-0430): yielding relocates, it does not vanish.  The pass-13.1 rule
+   translated the pill out of the viewport with opacity 0, visibility hidden and
+   pointer-events none; measured at 390x844 that cleared the text but the hit test at
+   the pill's own painted bottom edge came back "none" in four of six screen x locale
+   combinations, so the assistant was no longer one tap away.  Clearing an overlap by
+   deleting the control is not yielding.  Now the same named control collapses to a
+   44px corner cell and moves to the first edge slot the runtime found free of text
+   ink, free of every text element's own box and free of other controls -- one
+   control, two shapes, like the viewport button group's centered/off_center pair.
+   The decision is still taken against the resting
+   layout box, so this cannot oscillate. */
+.cn-copilot-dock.idle-compact.yield-at-rest {
+  right: auto;
+  bottom: auto;
+  left: var(--cn-yield-left, auto);
+  top: var(--cn-yield-top, auto);
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  transition: left 140ms ease, top 140ms ease, width 140ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cn-copilot-dock.idle-compact.yield-at-rest { transition: none; }
+}
+/* The mark carries the state; the word and the status dot drop out because the cell
+   is 44px, and the button keeps its accessible name either way. */
+.cn-copilot-dock.idle-compact.yield-at-rest .cn-copilot-edge {
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  justify-content: center;
+}
+.cn-copilot-dock.idle-compact.yield-at-rest .cn-copilot-edge > span:not(.cn-copilot-edge-mark) {
+  display: none;
+}
+.cn-copilot-dock.idle-compact .cn-copilot-edge {
+  width: auto;
+  min-height: 42px;
+  padding: 0 12px;
+  font-size: 11px;
+}
+
+
+/* The Live "现在 / Now" badge sits in a flex row and was being squeezed into two
+   lines at 412px. It is a two-character tag: it must never wrap, and it must not
+   be allowed to shrink. (Note for whoever reads the history: the first attempt at
+   this rule silently no-oped because its existence check matched the dark-theme
+   colour rule instead of itself.) */
+.v8-live-label {
+  flex: none;
+  white-space: nowrap;
+}
+
+
+/* ===========================================================================
+   Pass-17 UI overnight lane — the screen that renders outside the shell.
+
+   JourneyTrialSetup is returned at V8Experience.tsx, before
+   .v8-product-shell exists.  Everything the shell supplied was therefore
+   missing on the very first screen a traveller sees:
+     * the --v8-* tokens            (fixed by hoisting the bindings to :root)
+     * a text colour                (body never set one; only the shell did)
+     * the horizontal gutter        (.v8-content owns it, and there is no .v8-content)
+     * the status-bar inset         (viewport-fit=cover makes env() real)
+
+   Amendment F-1 ruled that this screen is *deliberately* outside the app chrome — an
+   onboarding flow should carry one navigation (Back / Next / Create), not that plus a
+   bottom tab bar leading to destinations that are empty or misleading before a journey
+   exists.  So the fix is not a structural shell migration: it is separating the visual
+   foundation from the navigation chrome.  body keeps a real declaration because a
+   document root should state its own colours, and .cn-onboarding then states the rest
+   explicitly.  The earlier generic `.v8-page { padding: … }` plus
+   `.v8-content .v8-page { padding: 0 }` pair is removed: that was the "it inherits
+   because it happens to sit in the shell's class" pattern F-1 rejects.
+   =========================================================================== */
+body {
+  color: var(--v8-ink);
+  background: var(--v8-canvas);
+  font-family: var(--cn-font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+/* The onboarding surface's own foundation — declared, not inherited by accident.
+   It intentionally renders no .v8-mobile-nav.
+
+   ORD-0338 (甲): it is a two-row app pane -- row 1 is the only thing that scrolls, row 2 is
+   the CTA band.  Until now the band was `position: sticky`, so it painted over whatever
+   happened to be under it and the content had to keep a reserve of padding away from it; that
+   reserve (76px + the stage clearance, 212px measured) is the blank band ORD-0338 was opened
+   for, and it was load-bearing for ORD-0261/0264.  A layout row cannot be painted over, so the
+   reserve has nothing to protect and both ends of that dependency are gone.
+   `--vv-height` is published by `installVisualViewportVars()` (V8Experience.tsx, which runs
+   on this surface too); the `100dvh` fallback is what a browser without a visual viewport gets. */
+.cn-onboarding {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  height: var(--vv-height, 100dvh);
+  max-width: 1370px;
+  margin: 0 auto;
+  padding: calc(var(--cn-s-32) + var(--cn-safe-top)) 0 0;
+  /* One inset table for the pane's two rows: the scroller and the CTA band line up because they
+     read the same inherited property, not because two media queries repeat a number. */
+  --cn-onboarding-inset: var(--cn-gutter);
+  background: var(--v8-canvas);
+  color: var(--v8-ink);
+  font-family: var(--cn-font);
+}
+@media (min-width: 961px) {
+  .cn-onboarding { --cn-onboarding-inset: 46px; }
+}
+@media (max-width: 960px) and (min-width: 681px) {
+  .cn-onboarding { --cn-onboarding-inset: 26px; }
+}
+/* The scroller.  `min-height: 0` is what lets a grid row scroll instead of pushing the pane
+   taller than the viewport; `overscroll-behavior: contain` stops a flick at the end of the
+   wizard from dragging the document behind it.  The horizontal inset lives here rather than on
+   the section so the whole width of the pane answers to a thumb -- an inset on the section would
+   leave two dead gutters that scroll nothing.  The top inset stays on the section, because that
+   band is the notch and content must not scroll into it. */
+.cn-onboarding__scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 var(--cn-onboarding-inset);
+}
+
+/* Three step labels cannot share 360px, and the ellipsis was eating
+   "Travellers & preferences" at all three acceptance widths.  Progressive
+   disclosure instead: the step you are on names itself, the others collapse to
+   their number.  Visually-hidden rather than display:none — ORD-0014 A requires
+   the fix not cost semantics, and display:none would drop the step name out of the
+   accessibility tree, leaving a screen reader with a bare digit. */
+@media (max-width: 680px) {
+  .trial-steps { gap: var(--cn-s-8); }
+  .trial-steps li { flex: 0 0 auto; position: relative; }
+  .trial-steps li:not(.active) span:last-child {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+/* Form fields were UA-white: a white slab floating on a dark card, and a
+   black-on-black label wherever the page carried no inherited colour. */
+.trial-field input,
+.trial-field textarea,
+.trial-field select {
+  min-height: 34px; /* fine-pointer compact density; mobile/touch takes the >=44px contract below */
+  padding: 0 var(--cn-s-12);
+  border: 1px solid var(--cn-control-border);
+  border-radius: var(--cn-r-control);
+  background: var(--v8-panel);
+  color: var(--v8-ink);
+  font: inherit;
+}
+@media (max-width: 680px) {
+  .trial-field input,
+  .trial-field select { min-height: var(--cn-touch-min); }
+}
+.trial-field textarea { padding: var(--cn-s-12); }
+.trial-field input::placeholder,
+.trial-field textarea::placeholder { color: var(--cn-ink-tertiary); }
+/* Native date pickers paint their own chrome; without this they stay light. */
+.trial-field input[type="datetime-local"] { color-scheme: light dark; }
+
+/* ORD-0034 — the onboarding failure notice.
+   Text is --v8-ink on --cn-secondary in both themes (#1d1d1f on #f2f2f7 light,
+   #f5f5f7 on #2c2c2e dark), because a semantic colour used as small text is exactly
+   what fails AA; the danger hue is carried by the rule on the left, which is
+   decorative and not the only carrier of meaning. */
+.trial-create-error {
+  display: grid;
+  gap: var(--cn-s-8);
+  margin: 0 0 var(--cn-s-8);
+  padding: var(--cn-s-12) var(--cn-s-16);
+  border-left: 3px solid var(--cn-danger);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-secondary);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  line-height: 1.45;
+}
+.trial-create-error strong { font-weight: 750; }
+/* ORD-0353: the measured fields fold.  Wrapped rather than scrolled so a long content-type cannot
+   push the confirm button out of reach on a 390px screen, and no colour is set here -- the block
+   inherits the alert's own ink, so the dark gate's contrast ruling is not re-opened by a new pair. */
+.trial-technical { font-size: var(--cn-fs-body); }
+.trial-technical summary { cursor: pointer; }
+.trial-technical .cnx-raw-facts { display: grid; gap: var(--cn-s-8); }
+.trial-technical .cnx-raw-facts-reading {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.trial-technical-none,
+.trial-technical .cnx-raw-facts-receipt { overflow-wrap: anywhere; }/* The named reason is the whole point of this panel, and it inherited --v8-muted, which
+   styles.css overrides theme-blind -- the same hole ORD-0035 recorded. Full ink; size and
+   the leading rule carry the hierarchy instead of a grey that may not be readable. */
+.trial-create-error span { color: var(--v8-ink); overflow-wrap: anywhere; }
+
+.trial-required-hint {
+  margin: 0 0 var(--cn-s-8);
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border-left: 3px solid var(--cn-accent-text);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-secondary);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  line-height: 1.45;
+}
+/* The backend's own sentence, shown under the field it is about. Full ink in both themes:
+   a rejection explanation cannot be the weakest text on the screen. */
+.trial-field-problem {
+  margin-top: var(--cn-s-4);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* ORD-0060 — an assumption the product is about to make has to be readable, not hinted at
+   by a colour. The sentence says "没认出 / not recognised", so the rule is decoration. */
+.trial-city-warning {
+  margin: var(--cn-s-8) 0;
+  padding: var(--cn-s-12) var(--cn-s-16);
+  border-left: 3px solid var(--cn-danger);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-secondary);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+dd.trial-city-warning {
+  margin: var(--cn-s-4) 0 0;
+  padding: var(--cn-s-8) var(--cn-s-12);
+  font-size: var(--cn-fs-caption);
+}
+.trial-supported {
+  margin: 0 0 var(--cn-s-12);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+}
+.trial-supported summary {
+  /* Reachable with a thumb on the smallest layout without stealing weight from the CTA. */
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--v8-accent);
+  font-weight: 700;
+  cursor: pointer;
+}
+.trial-supported-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cn-s-4) var(--cn-s-12);
+  margin: var(--cn-s-8) 0 0;
+  padding-left: var(--cn-s-20);
+  columns: 2;
+  list-style: disc;
+}
+
+/* ORD-0346 — the panel groups by what the server answered, so a row is a sentence now and not a
+   name in a two-column flow.  Every line of it carries meaning, so all of it is full ink:
+   --v8-muted is overridden theme-blind in styles.css, which is the hole ORD-0035 recorded. */
+.trial-supported-group {
+  margin-top: var(--cn-s-12);
+}
+.trial-supported-group-title {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-secondary);
+  font-weight: 750;
+  line-height: var(--cn-lh-body);
+}
+.trial-supported-group-rule {
+  margin: 2px 0 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.trial-supported-none {
+  margin: var(--cn-s-8) 0 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+}
+.trial-supported-group .trial-supported-list {
+  flex-direction: column;
+  gap: var(--cn-s-8);
+  padding-left: 0;
+  columns: auto;
+  list-style: none;
+}
+.trial-supported-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px var(--cn-s-8);
+  color: var(--v8-ink);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.trial-supported-name { font-weight: 750; }
+.trial-supported-fields {
+  /* The route's own field values, so a reader can check the group heading against the answer
+     rather than trust the gloss.  Technical, and sized as such -- but still full ink. */
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+}
+
+/* ORD-0037 — the map must say what it is doing.
+   The tile notice is the honest counterpart to the flat canvas fallback; the gesture
+   hint exists because a two-finger-only map is undiscoverable without being told. */
+.v8-map-tile-notice {
+  position: absolute;
+  top: var(--cn-s-8);
+  right: var(--cn-s-8);
+  left: var(--cn-s-8);
+  z-index: 3;
+  margin: 0;
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-secondary);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  line-height: 1.4;
+}
+.v8-map-gesture-hint {
+  position: absolute;
+  bottom: calc(var(--cn-s-40) + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  margin: 0;
+  max-width: calc(100% - 2 * var(--cn-s-12));
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-surface);
+  box-shadow: var(--cn-shadow-card);
+  text-align: center;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  line-height: 1.4;
+  pointer-events: none;
+}
+/* Maplibre paints its cooperative-gesture label as white text over a 40% black veil,
+   which over a pale raster measures 3.4:1.  A label that has to be read against whatever
+   tile happens to be underneath is not a legibility strategy, so it gets the same opaque
+   chip as our own hint and inherits the theme's ink instead of the library's #fff. */
+.v8-maplibre-canvas
+  .maplibregl-cooperative-gesture-screen
+  .maplibregl-desktop-message,
+.v8-maplibre-canvas
+  .maplibregl-cooperative-gesture-screen
+  .maplibregl-mobile-message {
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-surface);
+  box-shadow: var(--cn-shadow-card);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  line-height: 1.4;
+}

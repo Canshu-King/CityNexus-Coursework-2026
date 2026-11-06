@@ -1,0 +1,385 @@
+/* ORD-0436 -- the 成员与权限 screen. Own file so the shell's stylesheet is not a merge point.
+ *
+ * Nothing here sizes a control from its label: the ladder rows are text, not buttons, because the
+ * doors they would act on belong to ORD-0434. The one real control is the trip picker, and it is
+ * measured in both languages by `live_checks/ord0436_*` before this file ships again. */
+
+.cn-access {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 0 18px;
+}
+
+.cn-access-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cn-access-h {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.cn-access-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid rgb(255 255 255 / 8%);
+  padding-top: 10px;
+}
+
+.cn-access-read {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cn-access-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cn-access-picker-label {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.cn-access-picker select {
+  min-height: 44px;
+  width: 100%;
+  max-width: 420px;
+  padding: 10px 12px;
+  border-radius: var(--cn-r-12);
+  background: rgb(255 255 255 / 4%);
+  color: inherit;
+  font: inherit;
+}
+
+.cn-access-ladder,
+.cn-access-sentences,
+.cn-access-activity {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cn-access-ladder-row {
+  display: grid;
+  grid-template-columns: minmax(84px, 0.32fr) 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.cn-access-role {
+  font-weight: 600;
+}
+
+.cn-access-scope,
+.cn-access-what,
+.cn-access-when,
+.cn-access-absent {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.cn-access-activity-row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.cn-access-when {
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.cn-access-confirm-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.42fr) 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.cn-access-details {
+  font-size: 12px;
+}
+
+.cn-access-details > summary {
+  cursor: pointer;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+}
+
+.cn-access-absent {
+  border-left: 3px solid rgb(255 255 255 / 18%);
+  padding-left: 10px;
+  opacity: 0.9;
+}
+
+@media (max-width: 420px) {
+  .cn-access-ladder-row,
+  .cn-access-confirm-row,
+  .cn-access-activity-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+/* ORD-0449 -- the invitation form and the two lists it writes back into. `width: auto` on the row
+   action is load-bearing: the global sheet sets `button { width: 100% }`, which would stretch a
+   撤销 button across the whole row and overlap the sentence beside it. */
+.cn-access-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.cn-access-field select,
+.cn-access-field input {
+  min-height: 44px;
+  font: inherit;
+  padding: 6px 8px;
+}
+
+.cn-access-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cn-access-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.cn-access-row-what {
+  flex: 1 1 220px;
+}
+
+.cn-access-row-action {
+  width: auto;
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 6px 12px;
+}
+
+.cn-access-refusal,
+.cn-access-muted {
+  margin: 6px 0;
+}
+
+/* ORD-0462 (Amendment F): 44px is the touch target, 30px is what a desktop pointer needs. The
+   reading runs at 390x844, so the 44px rule is the one that arm measures; the desktop rule below it
+   is the one a keyboard traveller gets. */
+@media (min-width: 768px) {
+  .cn-access-row-action,
+  .cn-access-field select,
+  .cn-access-field input {
+    min-height: 30px;
+  }
+}
+
+/* A disabled control has to look disabled: the screenshot showed the two buttons without doors
+   rendered exactly like the ones that work. Same ink, greyed, not-allowed pointer, and the reason
+   sentence beside them carries the meaning. */
+.cn-access-row-action:disabled,
+button.cn-access-row-action[disabled] {
+  opacity: 0.45;
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+/* ----------------------------------------------------------------- ORD-0477 the list's order tier
+
+The three tier buttons are the screen's only control over *how* the door orders its answer, so they
+are laid out as a stack of named options rather than as a strip of chips: the traveller has to read
+which one is in use, and the shell's `button { display:block; width:100% }` (styles.css) would have
+stretched each one to the full canvas with no state of its own.
+
+"This is the order in use" is carried three ways, because colour alone is not a state: the tier word
+in the sentence above the buttons, a heavier border, and bolder ink on the pressed button itself. */
+.cn-access-sort {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cn-access-sort-current {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  overflow-wrap: anywhere;
+}
+
+/* Four orders is a choice, not a menu: laid out as a wrapping row of chips they cost the panel two
+   lines at phone width instead of four full-width buttons' worth of stack (~200 px reclaimed), which
+   is what `sort-geometry-*` measures as this order's cost to everything below it. The pressed state
+   still carries the word, the heavier border and the bolder ink, so nothing about "which one is in
+   use" got weaker. */
+.cn-access-sort-tiers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.cn-access-sort-tier {
+  flex: 0 1 auto;
+  width: auto;
+  max-width: 100%;
+  margin-top: 0;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: transparent;
+  color: var(--v8-ink);
+  font: inherit;
+  font-size: var(--cn-fs-caption);
+  font-weight: 400;
+}
+
+.cn-access-sort-tier[aria-pressed="true"] {
+  border-width: 2px;
+  border-color: var(--cn-accent);
+  font-weight: 700;
+}
+
+.cn-access-sort-note {
+  margin: 0;
+  color: var(--cn-ink-secondary);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+
+/* Same 44px / 30px split ORD-0462 set for this screen's other controls. */
+@media (min-width: 768px) {
+  .cn-access-sort-tier {
+    min-height: 30px;
+  }
+}
+
+/* ----------------------------------------------------------------- ORD-0518 the list, and what the server said
+
+/* The trip list used to be a closed <select>: its order lived in the DOM and one line of text was
+   on the glass, so 'the first and last trip' could not be read without opening the control. Rows
+   now, each one speaking its trip's name. The shell's `button { display:block; width:100% }
+   (styles.css) is what a full-width row wants, so nothing here fights it. */
+.cn-access-trips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cn-access-trip-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 6px 0 0;
+  list-style: none;
+  counter-reset: cn-access-trip;
+  /* The list is as long as the door's answer, and this door has no pagination. When the closed
+     <select> became rows, the rows below pushed a later control -- the roles block's
+     `access-empty-reload-roles` action -- out of the reachable band at 390x844 and 320x653 in both
+     languages (measured by `sort-geometry-*`, which reports the lost key rather than moving the
+     line). A list nobody can get to the end of is not a list, so the roster owns a scroll box of its
+     own and the rest of the panel keeps the place it had before this order existed. */
+  max-height: min(45vh, 320px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: 8px;
+}
+
+.cn-access-trip-row {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+/* The position is said with a number the traveller reads, not only with a `data-position` a gate
+   can query: 'first' and 'last' have to be visible facts about the list, not attributes. */
+.cn-access-trip-row::before {
+  counter-increment: cn-access-trip;
+  content: counter(cn-access-trip);
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+  min-width: 1.5em;
+}
+
+.cn-access-trip-open {
+  flex: 1 1 auto;
+  min-height: 44px;
+  margin-top: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: transparent;
+  color: var(--v8-ink);
+  font: inherit;
+  font-size: var(--cn-fs-caption);
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+
+.cn-access-trip-open[aria-current='true'] {
+  border-width: 2px;
+  border-color: var(--cn-accent);
+  font-weight: 700;
+}
+
+.cn-access-order-verdict,
+.cn-access-picker-hint {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+
+/* "the rows are not in the order I asked for" is the one sentence on this screen that must not look
+   like a calm statement of fact. It gets a dashed box and bolder ink as well as colour, and the
+   `data-state` is what the gate reads alongside the painted words -- the words carry it on their own. */
+.cn-access-order-verdict[data-state='INCONSISTENT'] {
+  border: 1px dashed var(--cn-accent);
+  border-radius: var(--cn-r-8);
+  padding: 6px 8px;
+  font-weight: 700;
+}
+
+.cn-access-sort-absent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cn-access-sort-absent-line {
+  margin: 0;
+  color: var(--cn-ink-secondary);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 768px) {
+  .cn-access-trip-open {
+    min-height: 30px;
+  }
+}

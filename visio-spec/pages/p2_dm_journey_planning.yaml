@@ -1,0 +1,396 @@
+pageName: P2_DM_Journey_Planning
+pageWidth: 42.0
+pageHeight: 29.7
+diagramType: uml-class
+title: CityNexus — Journey & Planning Domain Model
+subtitle: Smart City Traveler System • Domain Model v0.4.2 RC3
+statusTag: PART 2 • DETAILED
+canvasStyle: canvas
+shapes:
+- id: Traveler
+  type: uml_class
+  x: 4.5
+  y: 5.0
+  width: 5.2
+  height: 3.0
+  text: Traveler
+  styleRef: classDefault
+  masterRef: umlClass
+  fields:
+  - travelerId
+  - displayName
+  - homeTimezone
+- id: Preference
+  type: uml_class
+  x: 4.5
+  y: 10.4
+  width: 5.4
+  height: 3.7
+  text: Preference
+  styleRef: classDefault
+  masterRef: umlClass
+  fields:
+  - preferenceId
+  - dimension
+  - value
+  - weight
+  - scope
+  - validUntil
+- id: Journey
+  type: uml_class
+  x: 12.5
+  y: 5.0
+  width: 5.8
+  height: 4.3
+  text: Journey
+  styleRef: classJourney
+  masterRef: umlClass
+  fields:
+  - journeyId
+  - destinationCity
+  - startAt
+  - endAt
+  - budgetLimit
+  - status
+  - healthStatus
+  - activePlanVersionId
+  stereotype: <<aggregate root>>
+- id: PlanVersion
+  type: uml_class
+  x: 20.5
+  y: 5.0
+  width: 5.7
+  height: 4.2
+  text: PlanVersion
+  styleRef: classJourney
+  masterRef: umlClass
+  fields:
+  - planVersionId
+  - versionNumber
+  - planningMode
+  - status
+  - totalEstimatedCost
+  - overallScore
+- id: Activity
+  type: uml_class
+  x: 20.5
+  y: 10.8
+  width: 5.7
+  height: 4.2
+  text: Activity
+  styleRef: classDefault
+  masterRef: umlClass
+  fields:
+  - activityId
+  - category
+  - plannedWindow
+  - estimatedCost
+  - actualCost
+  - status
+- id: JourneyTwin
+  type: uml_class
+  x: 33.0
+  y: 5.0
+  width: 6.0
+  height: 4.2
+  text: JourneyTwin
+  styleRef: classProjection
+  masterRef: umlClass
+  fields:
+  - currentTime
+  - currentLocation
+  - remainingBudget
+  - delayMinutes
+  - journeyHealth
+  - riskScore
+  - opportunityWindow
+  stereotype: <<projection>>
+- id: ContextSnapshot
+  type: uml_class
+  x: 33.0
+  y: 10.8
+  width: 5.8
+  height: 4.0
+  text: ContextSnapshot
+  styleRef: classProjection
+  masterRef: umlClass
+  fields:
+  - capturedAt
+  - currentLocation
+  - weather
+  - traffic
+  - delayMinutes
+  - dataQualityScore
+- id: Commitment
+  type: uml_class
+  x: 8.5
+  y: 17.0
+  width: 5.6
+  height: 4.1
+  text: Commitment
+  styleRef: classDefault
+  masterRef: umlClass
+  fields:
+  - commitmentId
+  - sourceType
+  - strength
+  - status
+  - cancellationCost
+- id: Constraint
+  type: uml_class
+  x: 15.5
+  y: 17.0
+  width: 5.6
+  height: 4.5
+  text: Constraint
+  styleRef: classDefault
+  masterRef: umlClass
+  fields:
+  - constraintId
+  - kind
+  - severity
+  - weight
+  - violationPenalty
+  - relaxationPolicy
+- id: Event
+  type: uml_class
+  x: 22.5
+  y: 17.0
+  width: 5.6
+  height: 4.3
+  text: Event
+  styleRef: classEvent
+  masterRef: umlClass
+  fields:
+  - eventId
+  - kind
+  - observedAt
+  - expiresAt
+  - impactLevel
+  - processingStatus
+- id: ReplanProposal
+  type: uml_class
+  x: 15.5
+  y: 24.0
+  width: 5.8
+  height: 3.8
+  text: ReplanProposal
+  styleRef: classPlanning
+  masterRef: umlClass
+  fields:
+  - proposalId
+  - replanScope
+  - basePlanVersionId
+  - status
+  - failureReason
+- id: CandidatePlan
+  type: uml_class
+  x: 24.0
+  y: 24.0
+  width: 5.6
+  height: 3.8
+  text: CandidatePlan
+  styleRef: classPlanning
+  masterRef: umlClass
+  fields:
+  - candidatePlanId
+  - rank
+  - finalScore
+  - riskPenalty
+  - selectionStatus
+- id: ScoreBreakdown
+  type: uml_class
+  x: 33.0
+  y: 24.0
+  width: 5.9
+  height: 4.5
+  text: ScoreBreakdown
+  styleRef: classPlanning
+  masterRef: umlClass
+  fields:
+  - commitmentPreservation
+  - disruptionStability
+  - timeReliability
+  - preferenceFit
+  - mobilityFit
+  - budgetFit
+  - robustness
+  - opportunityValue
+  - riskPenalty
+  - finalScore
+  stereotype: <<value object>>
+connectors:
+- id: JP-T-J
+  type: association
+  source: Traveler
+  target: Journey
+  styleRef: association
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: JP-T-P
+  type: association
+  source: Traveler
+  target: Preference
+  styleRef: association
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: JP-P-J
+  type: association
+  source: Preference
+  target: Journey
+  styleRef: association
+  sourceMultiplicity: 0..*
+  targetMultiplicity: 0..1
+  role: scoped_to_journey
+- id: JP-J-PV
+  type: composition
+  source: Journey
+  target: PlanVersion
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: JP-PV-A
+  type: composition
+  source: PlanVersion
+  target: Activity
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: JP-J-CM
+  type: composition
+  source: Journey
+  target: Commitment
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: JP-J-CN
+  type: composition
+  source: Journey
+  target: Constraint
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: JP-J-E
+  type: composition
+  source: Journey
+  target: Event
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: JP-J-CS
+  type: composition
+  source: Journey
+  target: ContextSnapshot
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: JP-J-RP
+  type: composition
+  source: Journey
+  target: ReplanProposal
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: JP-CM-A
+  type: association
+  source: Commitment
+  target: Activity
+  styleRef: association
+  sourceMultiplicity: 0..*
+  targetMultiplicity: 0..1
+- id: JP-RP-CP
+  type: composition
+  source: ReplanProposal
+  target: CandidatePlan
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: JP-CP-PV
+  type: association
+  source: CandidatePlan
+  target: PlanVersion
+  styleRef: association
+  sourceMultiplicity: 0..1
+  targetMultiplicity: '1'
+- id: JP-CP-SB
+  type: composition
+  source: CandidatePlan
+  target: ScoreBreakdown
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: '1'
+- id: JP-JT-Journey
+  type: dependency
+  source: JourneyTwin
+  target: Journey
+  styleRef: dependency
+  label: <<projects from>>
+- id: JP-JT-PlanVersion
+  type: dependency
+  source: JourneyTwin
+  target: PlanVersion
+  styleRef: dependency
+  label: <<projects from>>
+- id: JP-JT-Commitment
+  type: dependency
+  source: JourneyTwin
+  target: Commitment
+  styleRef: dependency
+  label: <<projects from>>
+- id: JP-JT-Event
+  type: dependency
+  source: JourneyTwin
+  target: Event
+  styleRef: dependency
+  label: <<projects from>>
+- id: JP-JT-ContextSnapshot
+  type: dependency
+  source: JourneyTwin
+  target: ContextSnapshot
+  styleRef: dependency
+  label: <<projects from>>
+- id: JP-JT-Constraint
+  type: dependency
+  source: JourneyTwin
+  target: Constraint
+  styleRef: dependency
+  label: <<projects from>>
+legend:
+  x: 35.0
+  y: 28.0
+  width: 5.5
+  height: 1.2
+  items:
+  - Association
+  - Composition
+  - Dependency
+  - Multiplicity
+  - <<projection>>
+  - <<value object>>
+zones:
+- id: Z-PROFILE
+  label: Profile
+  xMin: 1.5
+  xMax: 8.0
+  yMin: 3.2
+  yMax: 27.8
+  style: module-tint
+- id: Z-JOURNEY
+  label: Journey Core
+  xMin: 8.3
+  xMax: 24.5
+  yMin: 3.2
+  yMax: 27.8
+  style: module-tint
+- id: Z-CONTEXT
+  label: Context & Planning
+  xMin: 25.0
+  xMax: 40.5
+  yMin: 3.2
+  yMax: 27.8
+  style: module-tint
+notes:
+- Preference is the current unified scoped preference entity; do not draw obsolete
+  TravelerPreference/JourneyPreference classes.
+- ReplanProposal may contain 0..* CandidatePlan while still Draft; accepted proposals
+  select one candidate.

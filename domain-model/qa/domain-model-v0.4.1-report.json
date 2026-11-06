@@ -1,0 +1,185 @@
+{
+  "model": "CityNexus Core Domain Model",
+  "modelId": "CN-DM-0041",
+  "version": "0.4.1",
+  "status": "release-candidate",
+  "checks": [
+    {
+      "name": "package structure",
+      "status": "PASS"
+    },
+    {
+      "name": "strict YAML parse and duplicate-key rejection",
+      "status": "PASS"
+    },
+    {
+      "name": "JSON Schema",
+      "status": "PASS"
+    },
+    {
+      "name": "core entity count frozen at 18",
+      "status": "PASS",
+      "details": 18
+    },
+    {
+      "name": "unique entity identity fields",
+      "status": "PASS"
+    },
+    {
+      "name": "domain rule IDs unique and contiguous",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy business_rules key removed",
+      "status": "PASS"
+    },
+    {
+      "name": "enum values unique",
+      "status": "PASS"
+    },
+    {
+      "name": "no dangling relationship targets",
+      "status": "PASS"
+    },
+    {
+      "name": "valid relationship multiplicities",
+      "status": "PASS"
+    },
+    {
+      "name": "dependencies carry no multiplicity",
+      "status": "PASS"
+    },
+    {
+      "name": "no duplicate relationship signatures",
+      "status": "PASS"
+    },
+    {
+      "name": "no contradictory reciprocal associations",
+      "status": "PASS"
+    },
+    {
+      "name": "typed field and array references resolve",
+      "status": "PASS"
+    },
+    {
+      "name": "entityRef relationshipRole consistency",
+      "status": "PASS"
+    },
+    {
+      "name": "all value objects are used by typed fields",
+      "status": "PASS"
+    },
+    {
+      "name": "value objects contain no duplicated used_by metadata",
+      "status": "PASS"
+    },
+    {
+      "name": "state machines use declared status enums",
+      "status": "PASS"
+    },
+    {
+      "name": "all declared lifecycle states are reachable",
+      "status": "PASS"
+    },
+    {
+      "name": "score dimensions exactly match formula keys",
+      "status": "PASS"
+    },
+    {
+      "name": "score weights sum == 1.0",
+      "status": "PASS",
+      "details": 1.0
+    },
+    {
+      "name": "no unexpected null values",
+      "status": "PASS"
+    },
+    {
+      "name": "no isolated core entities",
+      "status": "PASS"
+    },
+    {
+      "name": "UC-01 through UC-13 exist exactly once and in order",
+      "status": "PASS",
+      "details": [
+        "UC-01",
+        "UC-02",
+        "UC-03",
+        "UC-04",
+        "UC-05",
+        "UC-06",
+        "UC-07",
+        "UC-08",
+        "UC-09",
+        "UC-10",
+        "UC-11",
+        "UC-12",
+        "UC-13"
+      ]
+    },
+    {
+      "name": "use-case domain references resolve",
+      "status": "PASS"
+    },
+    {
+      "name": "UC-13 correctly marked application/infrastructure",
+      "status": "PASS"
+    },
+    {
+      "name": "Journey active-plan lifecycle covers every journey status",
+      "status": "PASS"
+    },
+    {
+      "name": "Preference scope invariants present",
+      "status": "PASS"
+    },
+    {
+      "name": "PaymentTransaction exactly-one subject invariant present",
+      "status": "PASS"
+    },
+    {
+      "name": "Progressive replanning rule DR-008 present",
+      "status": "PASS"
+    },
+    {
+      "name": "AI authority rule DR-010 present",
+      "status": "PASS"
+    },
+    {
+      "name": "requirements coverage sanity",
+      "status": "PASS"
+    },
+    {
+      "name": "README current baseline version consistency",
+      "status": "PASS"
+    },
+    {
+      "name": "CHANGELOG contains v0.4.1 entry",
+      "status": "PASS"
+    }
+  ],
+  "coverage": {
+    "journey anchors": true,
+    "immutable plan versioning": true,
+    "journey twin context": true,
+    "real place grounding": true,
+    "commitment strength/status": true,
+    "three-level constraints": true,
+    "progressive replan candidates": true,
+    "score breakdown": true,
+    "events and freshness": true,
+    "booking/order/payment": true,
+    "scoped preferences": true,
+    "AI cannot own feasibility": true
+  },
+  "summary": {
+    "passed": 34,
+    "failed": 0,
+    "entityCount": 18,
+    "relationshipCount": 37,
+    "valueObjectCount": 6,
+    "enumCount": 22,
+    "domainRuleCount": 10,
+    "useCaseCount": 13
+  }
+}

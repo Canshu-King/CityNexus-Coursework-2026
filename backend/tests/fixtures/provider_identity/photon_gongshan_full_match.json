@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-09-22T01:00:24+0800",
+  "url": "https://photon.komoot.io/api/?q=%E8%B4%A1%E5%B1%B1%E7%8B%AC%E9%BE%99%E6%97%8F%E6%80%92%E6%97%8F%E8%87%AA%E6%B2%BB%E5%8E%BF&limit=10",
+  "request_user_agent": "CityNexus/7.0 (+https://citynexus.local/discovery)",
+  "request_post_data": null,
+  "elapsed_ms": 9734.0,
+  "status": 200,
+  "error": null,
+  "response_headers": {
+    "Server": "nginx",
+    "Date": "Mon, 21 Sep 2026 17:00:22 GMT",
+    "Content-Type": "application/json",
+    "Content-Length": "1706",
+    "Connection": "close",
+    "Expires": "Mon, 21 Sep 2026 18:00:22 GMT",
+    "Cache-Control": "max-age=3600"
+  },
+  "body_text": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"osm_type\":\"R\",\"osm_id\":2729765,\"osm_key\":\"place\",\"osm_value\":\"city\",\"type\":\"city\",\"name\":\"贡山县\",\"county\":\"怒江州 ꓠꓳ-ꓟꓵ ꓝꓳꓴ\",\"state\":\"云南省\",\"country\":\"中国\",\"countrycode\":\"CN\",\"extra\":{\"admin_level\":\"6\"},\"extent\":[98.132047,28.3970972,98.9182148,27.4945677]},\"geometry\":{\"type\":\"Point\",\"coordinates\":[98.6672235,27.7443567]}},{\"type\":\"Feature\",\"properties\":{\"osm_type\":\"W\",\"osm_id\":1417996032,\"osm_key\":\"amenity\",\"osm_value\":\"courthouse\",\"type\":\"house\",\"name\":\"贡山独龙族怒族自治县人民法院\",\"district\":\"茨开镇\",\"city\":\"贡山县\",\"county\":\"怒江州 ꓠꓳ-ꓟꓵ ꓝꓳꓴ\",\"state\":\"云南省\",\"country\":\"中国\",\"countrycode\":\"CN\",\"extent\":[98.6695823,27.7369737,98.6700135,27.7365096]},\"geometry\":{\"type\":\"Point\",\"coordinates\":[98.6697979,27.7367417]}},{\"type\":\"Feature\",\"properties\":{\"osm_type\":\"N\",\"osm_id\":13030932449,\"osm_key\":\"amenity\",\"osm_value\":\"townhall\",\"type\":\"house\",\"name\":\"贡山独龙族怒族自治县人民政府\",\"street\":\"茨开北路\",\"district\":\"茨开镇\",\"city\":\"贡山县\",\"county\":\"怒江州 ꓠꓳ-ꓟꓵ ꓝꓳꓴ\",\"state\":\"云南省\",\"country\":\"中国\",\"countrycode\":\"CN\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[98.6658981,27.7441849]}},{\"type\":\"Feature\",\"properties\":{\"osm_type\":\"N\",\"osm_id\":13030932449,\"osm_key\":\"office\",\"osm_value\":\"government\",\"type\":\"house\",\"name\":\"贡山独龙族怒族自治县人民政府\",\"street\":\"茨开北路\",\"district\":\"茨开镇\",\"city\":\"贡山县\",\"county\":\"怒江州 ꓠꓳ-ꓟꓵ ꓝꓳꓴ\",\"state\":\"云南省\",\"country\":\"中国\",\"countrycode\":\"CN\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[98.6658981,27.7441849]}}]}"
+}

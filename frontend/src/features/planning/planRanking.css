@@ -1,0 +1,9 @@
+/* ORD-0439: the comparison table. Token-driven, no new colour, and in its own file so this order
+   does not collide with the shared stylesheet another lane is editing tonight. */
+.plan-ranking { display: grid; gap: 12px; margin-top: 18px; padding: 20px; border: 1px solid var(--v8-line, #e3e7ef); border-radius: var(--cn-r-16); background: #fff; }
+.plan-ranking .v8-muted { margin: 0; }
+.plan-ranking-by { margin: 0; color: var(--v8-ink, #1d2531); font-size: var(--cn-fs-caption, 12px); font-weight: 750; }
+.plan-ranking-table { width: 100%; border-collapse: collapse; color: var(--v8-ink, #1d2531); font-size: var(--cn-fs-caption, 12px); }
+.plan-ranking-table th, .plan-ranking-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--v8-line, #e3e7ef); overflow-wrap: anywhere; }
+.plan-ranking-table thead th { font-weight: 750; }
+.plan-ranking-notes { margin: 0; padding-left: 18px; color: var(--v8-muted, #5b6675); font-size: var(--cn-fs-caption, 12px); line-height: 1.45; }

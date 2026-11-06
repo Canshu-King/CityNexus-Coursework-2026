@@ -1,0 +1,4117 @@
+metadata:
+  name: CityNexus Requirements Baseline
+  version: 0.3.0
+  status: baseline-candidate
+  officialProject: Smart City Traveler System
+  product: CityNexus
+  domainModel: ../domain-model/citynexus-core-domain-model-v0.4.2.yaml
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-03
+  - UC-04
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-08
+  - UC-09
+  - UC-10
+  - UC-11
+  - UC-12
+  - UC-13
+  expectedCounts:
+    business_goals: 8
+    functional_requirements: 61
+    business_rules: 24
+    non_functional_requirements: 16
+    security_requirements: 14
+    integration_requirements: 15
+    total: 138
+business_goals:
+- id: BG-001
+  type: business_goal
+  title: Maintain an Executable Journey
+  statement: For a valid Journey affected by a disruptive event, CityNexus shall produce either an executable revised
+    plan or an explicit no-feasible-plan result.
+  sources:
+  - UJ
+  - DM
+  - OPT
+  priority: M
+  rationale: This goal defines the product outcome “maintain an executable journey” and guides downstream capability
+    and quality requirements.
+  acceptanceCriteria:
+  - id: BG-001-AC-01
+    condition: Given a valid active Journey and a disruption fixture that makes its current plan infeasible, when
+      recovery is requested
+    expectedResult: The system returns at least one plan that passes applicable hard-constraint validation or records
+      a no-feasible-plan result with a reason.
+    verificationMethod: demonstration
+  useCases:
+  - UC-04
+  - UC-08
+  - UC-10
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Constraint
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: demonstration
+  testCases: []
+  status: proposed
+- id: BG-002
+  type: business_goal
+  title: Reduce Journey Tool Fragmentation
+  statement: The Golden Journey scenario shall allow a traveler to plan, commit, execute and recover a city journey
+    without manually switching among multiple independent tools to recompute the whole journey.
+  sources:
+  - UJ
+  priority: M
+  rationale: This goal defines the product outcome “reduce journey tool fragmentation” and guides downstream capability
+    and quality requirements.
+  acceptanceCriteria:
+  - id: BG-002-AC-01
+    condition: Given the defined Golden Journey scenario, when a traveler proceeds from journey creation through
+      execution and disruption recovery
+    expectedResult: The traveler completes the scenario in CityNexus without manually rebuilding the whole journey
+      in an external planning tool.
+    verificationMethod: demonstration
+  useCases:
+  - UC-02
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-08
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: demonstration
+  testCases: []
+  status: proposed
+- id: BG-003
+  type: business_goal
+  title: Recover from Real-World Disruption
+  statement: CityNexus shall respond to real-world disruption including place closure, transit delay and weather
+    change and determine whether replanning is required.
+  sources:
+  - UJ
+  - OPT
+  priority: M
+  rationale: This goal defines the product outcome “recover from real-world disruption” and guides downstream capability
+    and quality requirements.
+  acceptanceCriteria:
+  - id: BG-003-AC-01
+    condition: Given separate valid fixtures for place closure, transit delay and weather change, when each event
+      is processed
+    expectedResult: The system updates journey context and produces an impact decision stating whether replanning
+      is required.
+    verificationMethod: system_test
+  useCases:
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BG-004
+  type: business_goal
+  title: Protect High-Strength Commitments
+  statement: Normal replanning shall not silently break high-strength C3 or C4 commitments.
+  sources:
+  - DM
+  - OPT
+  priority: M
+  rationale: This goal defines the product outcome “protect high-strength commitments” and guides downstream capability
+    and quality requirements.
+  acceptanceCriteria:
+  - id: BG-004-AC-01
+    condition: Given an active Journey containing C3 and C4 commitments, when normal replanning is executed
+    expectedResult: No C4 commitment is moved or removed, and any material C3 impact is disclosed for explicit traveler
+      confirmation.
+    verificationMethod: system_test
+  useCases:
+  - UC-03
+  - UC-10
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BG-005
+  type: business_goal
+  title: Deliver Context-Aware Personalisation
+  statement: Recommendations shall consider the traveler's current location, available time, preferences, budget
+    and next important commitment.
+  sources:
+  - UJ
+  - AI
+  - OPT
+  priority: M
+  rationale: This goal defines the product outcome “deliver context-aware personalisation” and guides downstream
+    capability and quality requirements.
+  acceptanceCriteria:
+  - id: BG-005-AC-01
+    condition: Given a Journey Twin containing location, time, budget, preferences and a next important commitment,
+      when recommendations are requested
+    expectedResult: The recommendation record and score evidence show that all five context dimensions were evaluated.
+    verificationMethod: demonstration
+  useCases:
+  - UC-05
+  - UC-08
+  - UC-11
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Commitment
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: demonstration
+  testCases: []
+  status: proposed
+- id: BG-006
+  type: business_goal
+  title: Unify Actionable City Services
+  statement: At least three categories of actionable city service shall be represented by a common CityService model.
+  sources:
+  - ARCH
+  priority: S
+  rationale: This goal defines the product outcome “unify actionable city services” and guides downstream capability
+    and quality requirements.
+  acceptanceCriteria:
+  - id: BG-006-AC-01
+    condition: Given representative attraction, dining and local-activity service records, when the domain model
+      and fixtures are inspected
+    expectedResult: All three are represented through CityService without requiring separate incompatible service
+      models.
+    verificationMethod: inspection
+  useCases:
+  - UC-05
+  - UC-06
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: BG-007
+  type: business_goal
+  title: Explain Intelligent Decisions
+  statement: Major recommendations and replanning decisions shall provide an understandable reason and a reviewable
+    summary of changes.
+  sources:
+  - AI
+  - DM
+  priority: M
+  rationale: This goal defines the product outcome “explain intelligent decisions” and guides downstream capability
+    and quality requirements.
+  acceptanceCriteria:
+  - id: BG-007-AC-01
+    condition: Given a major recommendation and a major replanning proposal, when each is presented to the traveler
+    expectedResult: Each presentation includes a human-readable rationale grounded in system data, and the replanning
+      proposal includes a reviewable change summary.
+    verificationMethod: demonstration
+  useCases:
+  - UC-05
+  - UC-10
+  - UC-11
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: demonstration
+  testCases: []
+  status: proposed
+- id: BG-008
+  type: business_goal
+  title: Keep External Providers Replaceable
+  statement: At least one external provider shall be replaceable without changing Journey core business logic.
+  sources:
+  - ARCH
+  priority: S
+  rationale: This goal defines the product outcome “keep external providers replaceable” and guides downstream capability
+    and quality requirements.
+  acceptanceCriteria:
+  - id: BG-008-AC-01
+    condition: Given two conforming implementations of one provider interface, when the configured implementation
+      is replaced
+    expectedResult: The Journey core test suite passes without changes to Journey domain logic.
+    verificationMethod: integration_test
+  useCases:
+  - UC-13
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+functional_requirements:
+- id: FR-001
+  type: functional_requirement
+  title: Manage Traveler Account
+  statement: The system shall allow a traveler to create, authenticate and manage an account.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “manage traveler account” responsibility in the mapped traveler or system
+    workflow.
+  acceptanceCriteria:
+  - id: FR-001-AC-01
+    condition: Given a new or existing traveler, when valid registration, authentication and profile-management
+      actions are submitted
+    expectedResult: The account is created or authenticated and authorised profile changes are persisted.
+    verificationMethod: functional_test
+  useCases:
+  - UC-01
+  domainElements:
+  - name: Traveler
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-002
+  type: functional_requirement
+  title: Persist Long-Term Preferences
+  statement: The system shall persist long-term traveler preferences and allow them to be reused when creating a
+    new Journey.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “persist long-term preferences” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-002-AC-01
+    condition: Given a traveler who saves long-term preferences, when a new Journey is created later
+    expectedResult: The saved preferences are available as defaults without being re-entered.
+    verificationMethod: functional_test
+  useCases:
+  - UC-01
+  domainElements:
+  - name: Traveler
+    kind: entity
+  - name: Preference
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-003
+  type: functional_requirement
+  title: Support Journey-Specific Preferences
+  statement: The system shall support Journey-specific preferences without automatically modifying the traveler's
+    long-term preference profile.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “support journey-specific preferences” responsibility in the mapped
+    traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-003-AC-01
+    condition: Given a traveler with a long-term preference profile, when a different preference is saved for one
+      Journey
+    expectedResult: The Journey uses the Journey-specific value and the long-term profile remains unchanged.
+    verificationMethod: functional_test
+  useCases:
+  - UC-01
+  - UC-02
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Journey
+    kind: entity
+  - name: preference_scope
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-004
+  type: functional_requirement
+  title: Expire Temporary Preferences
+  statement: The system shall support temporary preferences with an expiry time and shall stop applying them after
+    expiry.
+  sources:
+  - UJ
+  - DM
+  priority: S
+  rationale: This capability implements the “expire temporary preferences” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-004-AC-01
+    condition: Given a temporary preference with a validUntil time, when that time passes
+    expectedResult: The preference is no longer applied to recommendation or planning decisions and is not copied
+      into the long-term profile.
+    verificationMethod: functional_test
+  useCases:
+  - UC-01
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: preference_scope
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-005
+  type: functional_requirement
+  title: Interpret Natural-Language Preferences
+  statement: The system shall allow natural-language input to be interpreted as structured preferences or constraints
+    for traveler review.
+  sources:
+  - UJ
+  - AI
+  priority: S
+  rationale: This capability implements the “interpret natural-language preferences” responsibility in the mapped
+    traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-005-AC-01
+    condition: Given natural-language traveler input containing a preference or constraint, when the AI interpretation
+      function is invoked
+    expectedResult: The system returns a structured proposal that the traveler can review before it affects planning.
+    verificationMethod: demonstration
+  useCases:
+  - UC-01
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Constraint
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: demonstration
+  testCases: []
+  status: proposed
+- id: FR-006
+  type: functional_requirement
+  title: Create a Journey
+  statement: The system shall create a Journey with a unique identifier.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “create a journey” responsibility in the mapped traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-006-AC-01
+    condition: Given an authenticated traveler and valid minimum journey input, when Create Journey is submitted
+    expectedResult: A new Journey is persisted with a unique journeyId.
+    verificationMethod: functional_test
+  useCases:
+  - UC-02
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: journey_status
+    kind: enum
+  - name: Journey
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-007
+  type: functional_requirement
+  title: Store Core Journey Parameters
+  statement: The system shall store a Journey destination, start time, end time, origin, final destination and budget
+    policy.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “store core journey parameters” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-007-AC-01
+    condition: Given valid destination, time, origin, final-destination and budget inputs, when a Journey is saved
+    expectedResult: All supplied parameters are persisted and returned unchanged when the Journey is retrieved.
+    verificationMethod: functional_test
+  useCases:
+  - UC-02
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: Place
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-008
+  type: functional_requirement
+  title: Lock a Must-Go Activity
+  statement: The system shall allow the traveler to mark an Activity as must-go or locked.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “lock a must-go activity” responsibility in the mapped traveler or system
+    workflow.
+  acceptanceCriteria:
+  - id: FR-008-AC-01
+    condition: Given an editable Activity in a Journey, when the traveler marks it as must-go or locked
+    expectedResult: The Activity is associated with the corresponding commitment strength and the lock is visible
+      in the plan.
+    verificationMethod: functional_test
+  useCases:
+  - UC-02
+  - UC-03
+  domainElements:
+  - name: Activity
+    kind: entity
+  - name: Commitment
+    kind: entity
+  - name: commitment_strength
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-009
+  type: functional_requirement
+  title: Record Existing Commitments
+  statement: The system shall allow the traveler to enter existing fixed arrangements such as tickets, reservations
+    or transport schedules as Journey commitments.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “record existing commitments” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-009-AC-01
+    condition: Given valid details for an existing ticket, reservation or fixed schedule, when the traveler adds
+      it to a Journey
+    expectedResult: A Commitment is created with its source, time window and selected strength.
+    verificationMethod: functional_test
+  useCases:
+  - UC-02
+  - UC-03
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: commitment_source_type
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-010
+  type: functional_requirement
+  title: Generate an Executable Candidate Plan
+  statement: Given valid Journey parameters and satisfiable mandatory constraints, the system shall generate at
+    least one executable candidate plan.
+  sources:
+  - UJ
+  - OPT
+  priority: M
+  rationale: This capability implements the “generate an executable candidate plan” responsibility in the mapped
+    traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-010-AC-01
+    condition: Given valid Journey parameters and satisfiable active mandatory constraints, when plan generation
+      is requested
+    expectedResult: At least one candidate PlanVersion is produced and passes all applicable system-hard and normal-mode
+      commitment-hard constraints.
+    verificationMethod: system_test
+  useCases:
+  - UC-04
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Constraint
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-011
+  type: functional_requirement
+  title: Support Multiple Planning Modes
+  statement: The system shall support at least two planning modes or weighting policies.
+  sources:
+  - OPT
+  priority: S
+  rationale: This capability implements the “support multiple planning modes” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-011-AC-01
+    condition: Given the same Journey input, when plans are generated under two supported planning modes
+    expectedResult: Each candidate records the selected planningMode and scoringPolicyVersion, and the score breakdown
+      reflects the corresponding weighting policy.
+    verificationMethod: functional_test
+  useCases:
+  - UC-04
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: planning_mode
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-012
+  type: functional_requirement
+  title: Edit and Revalidate an Activity
+  statement: The traveler shall be able to edit an unlocked Activity and the system shall revalidate plan feasibility
+    after the change.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “edit and revalidate an activity” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-012-AC-01
+    condition: Given an unlocked Activity in a draft or editable plan, when the traveler changes its time, place
+      or duration
+    expectedResult: The change is saved to a new or editable candidate version and plan feasibility is recalculated
+      before activation.
+    verificationMethod: functional_test
+  useCases:
+  - UC-02
+  - UC-04
+  domainElements:
+  - name: Activity
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: activity_status
+    kind: enum
+  - name: Activity
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-013
+  type: functional_requirement
+  title: Version Confirmed Plans
+  statement: Each confirmed plan shall be represented by an independent PlanVersion.
+  sources:
+  - DM
+  priority: M
+  rationale: This capability implements the “version confirmed plans” responsibility in the mapped traveler or system
+    workflow.
+  acceptanceCriteria:
+  - id: FR-013-AC-01
+    condition: Given two separately confirmed plan states for one Journey, when persisted data is inspected
+    expectedResult: They are represented by distinct PlanVersion identifiers and version numbers.
+    verificationMethod: inspection
+  useCases:
+  - UC-04
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: FR-014
+  type: functional_requirement
+  title: Maintain a Single Active Plan
+  statement: A Journey shall have at most one active PlanVersion at any time.
+  sources:
+  - DM
+  priority: M
+  rationale: This capability implements the “maintain a single active plan” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-014-AC-01
+    condition: Given a Journey with an active PlanVersion, when another PlanVersion is activated
+    expectedResult: The previous version is no longer active and exactly one version remains active.
+    verificationMethod: system_test
+  useCases:
+  - UC-08
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-015
+  type: functional_requirement
+  title: Compare Plan Versions
+  statement: The system shall allow two PlanVersions to be compared and shall show Activity changes between them.
+  sources:
+  - DM
+  priority: S
+  rationale: This capability implements the “compare plan versions” responsibility in the mapped traveler or system
+    workflow.
+  acceptanceCriteria:
+  - id: FR-015-AC-01
+    condition: Given two PlanVersions belonging to the same Journey, when the traveler requests a comparison
+    expectedResult: The system identifies added, removed, moved and materially changed Activities.
+    verificationMethod: functional_test
+  useCases:
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: Activity
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-016
+  type: functional_requirement
+  title: Expose Journey Twin Status
+  statement: Journey Twin shall expose current time, current location, current Activity, remaining budget and the
+    next important commitment.
+  sources:
+  - DM
+  - UJ
+  priority: M
+  rationale: This capability implements the “expose journey twin status” responsibility in the mapped traveler or
+    system workflow.
+  acceptanceCriteria:
+  - id: FR-016-AC-01
+    condition: Given an active Journey with current context and plan data, when Journey Twin is queried
+    expectedResult: The response includes current time, current location, current Activity, remaining budget and
+      the next important commitment when available.
+    verificationMethod: functional_test
+  useCases:
+  - UC-08
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: Activity
+    kind: entity
+  - name: Commitment
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-017
+  type: functional_requirement
+  title: Derive Journey Health
+  statement: The system shall derive and display the Journey health state as OnTrack, AtRisk, Disrupted or Replanning.
+  sources:
+  - DM
+  - OPT
+  priority: M
+  rationale: This capability implements the “derive journey health” responsibility in the mapped traveler or system
+    workflow.
+  acceptanceCriteria:
+  - id: FR-017-AC-01
+    condition: Given Journey Twin fixtures representing normal progress, emerging risk, confirmed disruption and
+      active replanning, when health is derived
+    expectedResult: The domain states healthy, at_risk, disrupted and replanning are produced respectively and displayed
+      as On Track, At Risk, Disrupted and Replanning.
+    verificationMethod: system_test
+  useCases:
+  - UC-08
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: journey_health
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-018
+  type: functional_requirement
+  title: Search Places
+  statement: The system shall allow locations to be searched by name or category.
+  sources:
+  - UJ
+  - GH-TS
+  priority: M
+  rationale: This capability implements the “search places” responsibility in the mapped traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-018-AC-01
+    condition: Given a place name query or supported category filter, when a location search is submitted
+    expectedResult: The system returns matching real-provider Place records or an explicit empty result.
+    verificationMethod: functional_test
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-019
+  type: functional_requirement
+  title: Ground Executable Places in Real Data
+  statement: Candidate executable places shall originate from at least one real POI data provider.
+  sources:
+  - ARCH
+  - GH-TS
+  priority: M
+  rationale: This capability implements the “ground executable places in real data” responsibility in the mapped
+    traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-019-AC-01
+    condition: Given an executable place candidate, when its provenance is inspected
+    expectedResult: The Place contains a valid provider and providerPlaceId from a configured POI provider.
+    verificationMethod: integration_test
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: FR-020
+  type: functional_requirement
+  title: Show Place Details
+  statement: Place details shall include coordinates, address, category and current or known opening status.
+  sources:
+  - UJ
+  priority: M
+  rationale: This capability implements the “show place details” responsibility in the mapped traveler or system
+    workflow.
+  acceptanceCriteria:
+  - id: FR-020-AC-01
+    condition: Given a Place returned by search, when its detail view or API representation is opened
+    expectedResult: Coordinates, address, category and current or known opening status are present.
+    verificationMethod: functional_test
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-021
+  type: functional_requirement
+  title: Expose Services at a Place
+  statement: A Place shall be able to expose zero or more CityServices.
+  sources:
+  - DM
+  priority: M
+  rationale: This capability implements the “expose services at a place” responsibility in the mapped traveler or
+    system workflow.
+  acceptanceCriteria:
+  - id: FR-021-AC-01
+    condition: Given a Place with no services and a Place with multiple services, when each is retrieved
+    expectedResult: The first returns an empty service collection and the second returns all associated CityServices.
+    verificationMethod: functional_test
+  useCases:
+  - UC-05
+  - UC-06
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-022
+  type: functional_requirement
+  title: Expose City Service Availability
+  statement: A CityService shall be able to expose price, time-window or slot information and availability information
+    when supported by its provider.
+  sources:
+  - UJ
+  - ARCH
+  priority: S
+  rationale: This capability implements the “expose city service availability” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-022-AC-01
+    condition: Given provider data for a service with price and availability windows, when it is normalised
+    expectedResult: The CityService exposes the supported price estimate, time windows or slots, and availability
+      status.
+    verificationMethod: integration_test
+  useCases:
+  - UC-05
+  - UC-06
+  domainElements:
+  - name: CityService
+    kind: entity
+  - name: TimeWindow
+    kind: value_object
+  - name: service_availability_status
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: FR-023
+  type: functional_requirement
+  title: Use Journey Twin for Recommendations
+  statement: Contextual recommendation shall use the current Journey Twin as an input.
+  sources:
+  - UJ
+  - AI
+  - OPT
+  priority: M
+  rationale: This capability implements the “use journey twin for recommendations” responsibility in the mapped
+    traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-023-AC-01
+    condition: Given a contextual recommendation request, when request evidence is inspected
+    expectedResult: The request references the current Journey Twin or an equivalent current-context projection.
+    verificationMethod: inspection
+  useCases:
+  - UC-05
+  - UC-08
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: FR-024
+  type: functional_requirement
+  title: Filter Hard-Constraint Violations
+  statement: A place or service that violates an active hard constraint shall not reach the final recommendation
+    set.
+  sources:
+  - DM
+  - OPT
+  priority: M
+  rationale: This capability implements the “filter hard-constraint violations” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-024-AC-01
+    condition: Given a candidate that violates an active system-hard or applicable commitment-hard constraint, when
+      recommendation ranking runs
+    expectedResult: The candidate is excluded from the final recommendation set.
+    verificationMethod: system_test
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Constraint
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: constraint_severity
+    kind: enum
+  - name: constraint_kind
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-025
+  type: functional_requirement
+  title: Score Recommendation Candidates Reproducibly
+  statement: Each recommendation candidate shall receive a reproducible composite score based on structured system
+    data.
+  sources:
+  - OPT
+  - AI
+  priority: M
+  rationale: This capability implements the “score recommendation candidates reproducibly” responsibility in the
+    mapped traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-025-AC-01
+    condition: Given identical structured candidate and context inputs under the same scoring-policy version, when
+      scoring is repeated
+    expectedResult: The same composite score and score components are produced.
+    verificationMethod: system_test
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: constraint_kind
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-026
+  type: functional_requirement
+  title: Identify an Opportunity Window
+  statement: The system shall identify a usable Opportunity Window when safe free time exists within the active
+    Journey.
+  sources:
+  - UJ
+  - OPT
+  priority: S
+  rationale: This capability implements the “identify an opportunity window” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-026-AC-01
+    condition: Given an active Journey with free time between Activities after travel and safety buffers are applied,
+      when Journey Twin is updated
+    expectedResult: An OpportunityWindow is exposed with start, end, duration and safe-buffer values.
+    verificationMethod: system_test
+  useCases:
+  - UC-05
+  - UC-08
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: OpportunityWindow
+    kind: value_object
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-027
+  type: functional_requirement
+  title: Protect the Next Commitment in Opportunity Recommendations
+  statement: An Opportunity Window recommendation shall not cause the traveler to miss the next hard commitment.
+  sources:
+  - UJ
+  - OPT
+  priority: S
+  rationale: This capability implements the “protect the next commitment in opportunity recommendations” responsibility
+    in the mapped traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-027-AC-01
+    condition: Given an Opportunity Window and a next hard commitment, when candidates are evaluated
+    expectedResult: Only recommendations whose completion and travel time preserve the required arrival buffer may
+      be presented as executable.
+    verificationMethod: system_test
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-028
+  type: functional_requirement
+  title: Explain Major Recommendations
+  statement: A major recommendation shall include an explanation grounded in real structured system data.
+  sources:
+  - AI
+  - GH-PR
+  priority: M
+  rationale: This capability implements the “explain major recommendations” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-028-AC-01
+    condition: Given a major recommendation with structured evidence, when it is presented
+    expectedResult: Its explanation cites only available facts such as distance, time, budget, preference or commitment
+      compatibility and retains the supporting evidence.
+    verificationMethod: functional_test
+  useCases:
+  - UC-05
+  - UC-11
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-029
+  type: functional_requirement
+  title: Create or Strengthen Commitments
+  statement: A booking, payment, external schedule or user lock shall be able to create or strengthen a Journey
+    Commitment.
+  sources:
+  - DM
+  priority: M
+  rationale: This capability implements the “create or strengthen commitments” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-029-AC-01
+    condition: Given each supported commitment source type, when a confirmed source event is applied
+    expectedResult: A Commitment is created or strengthened with the correct source reference and without using
+      payment alone as the strength decision.
+    verificationMethod: system_test
+  useCases:
+  - UC-03
+  - UC-06
+  - UC-07
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: commitment_source_type
+    kind: enum
+  - name: commitment_status
+    kind: enum
+  - name: Commitment
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-030
+  type: functional_requirement
+  title: Support Five Commitment Strengths
+  statement: Commitments shall support strength levels C0 Flexible, C1 Preferred, C2 Reserved, C3 Guaranteed and
+    C4 Anchored.
+  sources:
+  - DM
+  - OPT
+  priority: M
+  rationale: This capability implements the “support five commitment strengths” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-030-AC-01
+    condition: Given the Commitment model and persistence schema, when allowed strength values are inspected
+    expectedResult: Exactly the five defined strength levels are supported and invalid values are rejected.
+    verificationMethod: inspection
+  useCases:
+  - UC-03
+  - UC-10
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: commitment_strength
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: FR-031
+  type: functional_requirement
+  title: Explain Commitment Impact
+  statement: The user interface shall explain commitment strength and the expected impact of changing a commitment.
+  sources:
+  - UJ
+  - DM
+  priority: S
+  rationale: This capability implements the “explain commitment impact” responsibility in the mapped traveler or
+    system workflow.
+  acceptanceCriteria:
+  - id: FR-031-AC-01
+    condition: Given a C2, C3 or C4 commitment, when the traveler opens its details or attempts a change
+    expectedResult: The interface shows its strength and available time, financial or cancellation impact.
+    verificationMethod: demonstration
+  useCases:
+  - UC-03
+  domainElements:
+  - name: Commitment
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: demonstration
+  testCases: []
+  status: proposed
+- id: FR-032
+  type: functional_requirement
+  title: Query Bookable Time Windows
+  statement: For supported CityServices, the system shall return available bookable time windows or slots.
+  sources:
+  - UJ
+  - ARCH
+  priority: S
+  rationale: This capability implements the “query bookable time windows” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-032-AC-01
+    condition: Given a CityService backed by a Booking Provider with available slots, when availability is requested
+    expectedResult: Normalised bookable time windows or slots are returned with provider provenance.
+    verificationMethod: integration_test
+  useCases:
+  - UC-06
+  domainElements:
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: TimeWindow
+    kind: value_object
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: FR-033
+  type: functional_requirement
+  title: Create a Provider-Confirmed Booking
+  statement: A booking attempt shall result in either a provider-confirmed Booking state or an explicit failure
+    result.
+  sources:
+  - UJ
+  priority: S
+  rationale: This capability implements the “create a provider-confirmed booking” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-033-AC-01
+    condition: Given valid and rejected booking fixtures, when booking is attempted
+    expectedResult: A confirmed provider-backed Booking is created for success, and an explicit non-confirmed failure
+      result is returned for rejection.
+    verificationMethod: integration_test
+  useCases:
+  - UC-06
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: booking_status
+    kind: enum
+  - name: Booking
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: FR-034
+  type: functional_requirement
+  title: Cancel a Booking
+  statement: A valid booking cancellation shall update the Booking state according to the provider outcome.
+  sources:
+  - UJ
+  priority: S
+  rationale: This capability implements the “cancel a booking” responsibility in the mapped traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-034-AC-01
+    condition: Given a cancellable confirmed Booking, when cancellation is submitted to the provider
+    expectedResult: The local Booking state is updated to match the provider-confirmed outcome and the response
+      is recorded.
+    verificationMethod: integration_test
+  useCases:
+  - UC-06
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: booking_status
+    kind: enum
+  - name: Booking
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: FR-035
+  type: functional_requirement
+  title: Create an Order for a Tradable Service
+  statement: A tradable CityService shall be able to create an Order.
+  sources:
+  - UJ
+  priority: S
+  rationale: This capability implements the “create an order for a tradable service” responsibility in the mapped
+    traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-035-AC-01
+    condition: Given a tradable CityService and valid order input, when the traveler submits the order
+    expectedResult: An Order is created with its items, total, fulfilment window and initial state.
+    verificationMethod: functional_test
+  useCases:
+  - UC-06
+  domainElements:
+  - name: CityService
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: order_status
+    kind: enum
+  - name: Order
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-036
+  type: functional_requirement
+  title: Initiate Payment for an Order
+  statement: An Order shall be able to initiate payment through a configured Payment Gateway.
+  sources:
+  - ARCH
+  - SEC
+  priority: S
+  rationale: This capability implements the “initiate payment for an order” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-036-AC-01
+    condition: Given an unpaid Order and a configured Payment Adapter, when payment is initiated
+    expectedResult: A PaymentTransaction is created and a provider payment request is sent without exposing provider
+      credentials to the client.
+    verificationMethod: integration_test
+  useCases:
+  - UC-07
+  domainElements:
+  - name: Order
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: payment_transaction_status
+    kind: enum
+  - name: PaymentTransaction
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: FR-037
+  type: functional_requirement
+  title: Persist Payment Outcomes
+  statement: The system shall persist payment success, failure and refund outcomes.
+  sources:
+  - DM
+  - ARCH
+  priority: S
+  rationale: This capability implements the “persist payment outcomes” responsibility in the mapped traveler or
+    system workflow.
+  acceptanceCriteria:
+  - id: FR-037-AC-01
+    condition: Given provider responses for successful, failed and refunded transactions, when they are processed
+    expectedResult: Each PaymentTransaction is persisted with the corresponding authoritative status and provider
+      reference.
+    verificationMethod: integration_test
+  useCases:
+  - UC-07
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  - name: payment_transaction_status
+    kind: enum
+  - name: PaymentTransaction
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: FR-038
+  type: functional_requirement
+  title: Provide a Traceable Receipt
+  statement: A successful commercial transaction shall provide a traceable receipt or provider transaction reference.
+  sources:
+  - UJ
+  priority: S
+  rationale: This capability implements the “provide a traceable receipt” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-038-AC-01
+    condition: Given a captured successful PaymentTransaction, when the traveler views transaction history
+    expectedResult: A receipt reference or provider transaction reference linked to that transaction is displayed.
+    verificationMethod: functional_test
+  useCases:
+  - UC-07
+  - UC-12
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-039
+  type: functional_requirement
+  title: Ingest Journey Context
+  statement: Journey Twin shall receive current time and location plus at least one external context source.
+  sources:
+  - UJ
+  - ARCH
+  priority: M
+  rationale: This capability implements the “ingest journey context” responsibility in the mapped traveler or system
+    workflow.
+  acceptanceCriteria:
+  - id: FR-039-AC-01
+    condition: Given current time, current location and one configured external context input, when a ContextSnapshot
+      is processed
+    expectedResult: Journey Twin reflects the current time and location and the normalised external context.
+    verificationMethod: integration_test
+  useCases:
+  - UC-08
+  - UC-09
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: FR-040
+  type: functional_requirement
+  title: Support Journey Event Types
+  statement: The system shall support at least six distinct Journey-relevant event types.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “support journey event types” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-040-AC-01
+    condition: Given the event-kind catalogue, when it is inspected
+    expectedResult: At least six distinct Journey-relevant event kinds are defined and accepted by event validation.
+    verificationMethod: inspection
+  useCases:
+  - UC-09
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: event_kind
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: FR-041
+  type: functional_requirement
+  title: Retain Event Provenance and Freshness
+  statement: An Event shall retain its source, observation time and validity or freshness information.
+  sources:
+  - DM
+  priority: M
+  rationale: This capability implements the “retain event provenance and freshness” responsibility in the mapped
+    traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-041-AC-01
+    condition: Given an accepted external Event, when it is retrieved
+    expectedResult: Its source, observedAt and expiresAt or equivalent validity data are present.
+    verificationMethod: functional_test
+  useCases:
+  - UC-09
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: event_processing_status
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-042
+  type: functional_requirement
+  title: Map Event Impact
+  statement: A valid Event shall be mapped to the affected Activities or Constraints before replanning impact is
+    evaluated.
+  sources:
+  - OPT
+  priority: M
+  rationale: This capability implements the “map event impact” responsibility in the mapped traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-042-AC-01
+    condition: Given a validated event that affects known journey elements, when impact analysis completes
+    expectedResult: The Event records or produces references to the affected Activities or Constraints before a
+      replanning decision is made.
+    verificationMethod: system_test
+  useCases:
+  - UC-09
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: Activity
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: constraint_scope_type
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-043
+  type: functional_requirement
+  title: Classify Event Impact Level
+  statement: The system shall classify a valid Journey event as Update Only, Suggest Replan or Critical Replan.
+  sources:
+  - OPT
+  priority: M
+  rationale: This capability implements the “classify event impact level” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-043-AC-01
+    condition: Given fixtures for informational, recoverable and critical disruptions, when impact classification
+      runs
+    expectedResult: The events are classified as update_only, suggest_replan and critical_replan respectively.
+    verificationMethod: system_test
+  useCases:
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: event_impact_level
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-044
+  type: functional_requirement
+  title: Recheck Active Plan Feasibility
+  statement: The system shall determine whether the current active PlanVersion remains executable after a relevant
+    event or context change.
+  sources:
+  - OPT
+  priority: M
+  rationale: This capability implements the “recheck active plan feasibility” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-044-AC-01
+    condition: Given an active PlanVersion and a relevant context or event change, when feasibility is reevaluated
+    expectedResult: The system returns a deterministic executable or infeasible result with violated constraints
+      identified.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-045
+  type: functional_requirement
+  title: Attempt Local Repair First
+  statement: Replanning shall first attempt Local Repair of the affected current and near-term Activities.
+  sources:
+  - OPT
+  priority: M
+  rationale: This capability implements the “attempt local repair first” responsibility in the mapped traveler or
+    system workflow.
+  acceptanceCriteria:
+  - id: FR-045-AC-01
+    condition: Given a disruption limited to current or near-term Activities, when replanning starts
+    expectedResult: The first ReplanProposal scope attempted is local and unaffected distant Activities remain unchanged
+      where feasible.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: Activity
+    kind: entity
+  - name: replan_scope
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-046
+  type: functional_requirement
+  title: Expand the Replanning Window
+  statement: If Local Repair produces no feasible solution, the system shall expand the replanning window.
+  sources:
+  - OPT
+  priority: M
+  rationale: This capability implements the “expand the replanning window” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-046-AC-01
+    condition: Given a disruption for which Local Repair has no legal candidate, when replanning continues
+    expectedResult: A subsequent ReplanProposal uses window scope before global or exception scope.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: replan_scope
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-047
+  type: functional_requirement
+  title: Attempt Global Replanning
+  statement: If the bounded replanning window produces no feasible solution, the system shall attempt Global Replanning
+    of the remaining Journey.
+  sources:
+  - OPT
+  priority: M
+  rationale: This capability implements the “attempt global replanning” responsibility in the mapped traveler or
+    system workflow.
+  acceptanceCriteria:
+  - id: FR-047-AC-01
+    condition: Given a disruption for which local and window scopes have no feasible candidate, when replanning
+      continues
+    expectedResult: The remaining Journey is evaluated under global scope before Exception Mode is considered.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: replan_scope
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-048
+  type: functional_requirement
+  title: Produce Comparable Candidate Plans
+  statement: Where at least two legal revised plans exist, the system shall produce at least two CandidatePlans
+    for comparison.
+  sources:
+  - OPT
+  priority: M
+  rationale: This capability implements the “produce comparable candidate plans” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-048-AC-01
+    condition: Given a replanning fixture with at least two legal revised plans, when candidates are generated
+    expectedResult: At least two distinct CandidatePlans are attached to the ReplanProposal and available for comparison.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: selection_status
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-049
+  type: functional_requirement
+  title: Expose Candidate Scores
+  statement: Each CandidatePlan shall expose a total score and score breakdown.
+  sources:
+  - OPT
+  priority: M
+  rationale: This capability implements the “expose candidate scores” responsibility in the mapped traveler or system
+    workflow.
+  acceptanceCriteria:
+  - id: FR-049-AC-01
+    condition: Given a scored CandidatePlan, when its details are retrieved
+    expectedResult: The response includes finalScore and all defined ScoreBreakdown components including risk penalty.
+    verificationMethod: functional_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: CandidatePlan
+    kind: entity
+  - name: ScoreBreakdown
+    kind: value_object
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-050
+  type: functional_requirement
+  title: Compare Old and Proposed Plans
+  statement: The system shall compare old and proposed plans and show changes in Activities, cost, time and affected
+    commitments.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “compare old and proposed plans” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-050-AC-01
+    condition: Given a base PlanVersion and a CandidatePlan, when comparison is requested
+    expectedResult: The system shows Activity differences, cost delta, time or arrival delta and affected commitment
+      counts or details.
+    verificationMethod: functional_test
+  useCases:
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: Commitment
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-051
+  type: functional_requirement
+  title: Require Acceptance for Major Replanning
+  statement: A major replanning proposal shall not become active until the traveler explicitly accepts it.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This capability implements the “require acceptance for major replanning” responsibility in the mapped
+    traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-051-AC-01
+    condition: Given a major ReplanProposal awaiting confirmation, when no traveler acceptance is recorded
+    expectedResult: The active PlanVersion remains unchanged.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: proposal_status
+    kind: enum
+  - name: ReplanProposal
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-052
+  type: functional_requirement
+  title: Activate a New Immutable Plan Version
+  statement: Acceptance of a replanning proposal shall create or activate a new immutable PlanVersion while retaining
+    the previous PlanVersion.
+  sources:
+  - DM
+  priority: M
+  rationale: This capability implements the “activate a new immutable plan version” responsibility in the mapped
+    traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-052-AC-01
+    condition: Given an accepted ReplanProposal, when activation commits
+    expectedResult: A new PlanVersion becomes active, the previous version remains queryable, and the previous version
+      data is unchanged.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: proposal_status
+    kind: enum
+  - name: ReplanProposal
+    kind: state_machine
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-053
+  type: functional_requirement
+  title: Enter Exception Mode When Necessary
+  statement: If no normal feasible plan can preserve required commitment-hard constraints, the system shall enter
+    Exception Mode according to explicit relaxation policy.
+  sources:
+  - OPT
+  priority: S
+  rationale: This capability implements the “enter exception mode when necessary” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-053-AC-01
+    condition: Given no legal candidate under local, window and global normal planning, when eligible commitment-hard
+      constraints have explicit exception policies
+    expectedResult: The proposal enters exception scope, identifies relaxed constraints and requires explicit traveler
+      confirmation; otherwise it records no_feasible_plan.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: constraint_relaxation_policy
+    kind: enum
+  - name: constraint_severity
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-054
+  type: functional_requirement
+  title: Extract Structured Journey Intent
+  statement: The AI layer shall be able to extract structured time, budget and interest information from natural-language
+    traveler input.
+  sources:
+  - AI
+  - UJ
+  priority: S
+  rationale: This capability implements the “extract structured journey intent” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-054-AC-01
+    condition: Given natural-language input containing a travel period, budget and interests, when intent extraction
+      runs
+    expectedResult: The output contains reviewable structured values for the supplied time, budget and interest
+      information.
+    verificationMethod: functional_test
+  useCases:
+  - UC-11
+  - UC-02
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Constraint
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-055
+  type: functional_requirement
+  title: Propose Structured Preferences
+  statement: The AI layer shall be able to convert free-text traveler intent into a reviewable structured Preference
+    proposal.
+  sources:
+  - AI
+  priority: S
+  rationale: This capability implements the “propose structured preferences” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-055-AC-01
+    condition: Given free-text preference input, when preference extraction runs
+    expectedResult: The system returns a structured Preference proposal with source and confidence and does not
+      persist it until reviewed through normal application logic.
+    verificationMethod: functional_test
+  useCases:
+  - UC-11
+  - UC-01
+  domainElements:
+  - name: Preference
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: FR-056
+  type: functional_requirement
+  title: Score Only Grounded Candidates Semantically
+  statement: The AI layer may produce semantic match scores only for candidates grounded in real provider data.
+  sources:
+  - AI
+  - GH-PR
+  priority: S
+  rationale: This capability implements the “score only grounded candidates semantically” responsibility in the
+    mapped traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-056-AC-01
+    condition: Given one grounded candidate and one candidate without provider provenance, when semantic scoring
+      is requested
+    expectedResult: Only the grounded candidate receives a semantic match score usable by recommendation ranking.
+    verificationMethod: system_test
+  useCases:
+  - UC-11
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-057
+  type: functional_requirement
+  title: Ground AI Explanations in Structured Facts
+  statement: AI-generated explanations shall be grounded in structured facts supplied by the system.
+  sources:
+  - AI
+  priority: S
+  rationale: This capability implements the “ground ai explanations in structured facts” responsibility in the mapped
+    traveler or system workflow.
+  acceptanceCriteria:
+  - id: FR-057-AC-01
+    condition: Given a controlled structured fact set and an AI-generated recommendation or replanning explanation,
+      when the explanation is validated
+    expectedResult: Every referenced numeric or factual claim can be traced to the supplied fact set and no unsupported
+      executable place is introduced.
+    verificationMethod: system_test
+  useCases:
+  - UC-11
+  - UC-10
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: FR-058
+  type: functional_requirement
+  title: Degrade Gracefully Without AI
+  statement: If the AI provider is unavailable, core Journey execution, deterministic planning and constraint validation
+    shall continue to function.
+  sources:
+  - ARCH
+  - AI
+  priority: M
+  rationale: This capability implements the “degrade gracefully without ai” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-058-AC-01
+    condition: Given an unavailable AI Provider, when an existing Journey is opened and deterministic planning or
+      validation is requested
+    expectedResult: Core journey data remains accessible and deterministic planning and constraint validation complete
+      without the AI service.
+    verificationMethod: resilience_test
+  useCases:
+  - UC-11
+  - UC-08
+  - UC-10
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: DR-006
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: resilience_test
+  testCases: []
+  status: proposed
+- id: FR-059
+  type: functional_requirement
+  title: Retain Replanning Audit History
+  statement: Each replanning decision shall retain its trigger, previous plan reference, proposed or accepted plan
+    reference and traveler decision.
+  sources:
+  - DM
+  - SEC
+  priority: M
+  rationale: This capability implements the “retain replanning audit history” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-059-AC-01
+    condition: Given an accepted, rejected or no-feasible replanning outcome, when its audit record is inspected
+    expectedResult: The trigger, base plan, candidate or selected plan reference, outcome and traveler decision
+      where applicable are retained.
+    verificationMethod: inspection
+  useCases:
+  - UC-12
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Event
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: FR-060
+  type: functional_requirement
+  title: Inspect Provider Health
+  statement: An administrator shall be able to inspect the health of critical external providers.
+  sources:
+  - ARCH
+  priority: S
+  rationale: This capability implements the “inspect provider health” responsibility in the mapped traveler or system
+    workflow.
+  acceptanceCriteria:
+  - id: FR-060-AC-01
+    condition: Given an authorised administrator and configured provider adapters, when the provider-health view
+      is opened
+    expectedResult: The current availability or health state of each critical provider is displayed without exposing
+      credentials.
+    verificationMethod: demonstration
+  useCases:
+  - UC-13
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: demonstration
+  testCases: []
+  status: proposed
+- id: FR-061
+  type: functional_requirement
+  title: Query Platform Audit Events
+  statement: An administrator shall be able to query important platform audit events.
+  sources:
+  - SEC
+  - ARCH
+  priority: S
+  rationale: This capability implements the “query platform audit events” responsibility in the mapped traveler
+    or system workflow.
+  acceptanceCriteria:
+  - id: FR-061-AC-01
+    condition: Given an authorised administrator and existing audit events, when a supported filter is submitted
+    expectedResult: Matching audit events are returned and an unauthorised user is denied access.
+    verificationMethod: functional_test
+  useCases:
+  - UC-13
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+business_rules:
+- id: BR-001
+  type: business_rule
+  title: Single Active Plan Version
+  statement: A Journey shall have at most one active PlanVersion.
+  sources:
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “single active plan version” and prevents invalid or unauthorised
+    journey behaviour.
+  acceptanceCriteria:
+  - id: BR-001-AC-01
+    condition: Given a Journey with one active PlanVersion, when another PlanVersion is activated
+    expectedResult: The new version becomes active and no second active version remains.
+    verificationMethod: system_test
+  useCases:
+  - UC-04
+  - UC-08
+  - UC-10
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: DR-009
+    kind: rule
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-002
+  type: business_rule
+  title: Activated Plans Are Immutable
+  statement: An activated PlanVersion shall not be modified in place; changes shall use a new draft or version.
+  sources:
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “activated plans are immutable” and prevents invalid or
+    unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-002-AC-01
+    condition: Given an activated PlanVersion, when a change is requested
+    expectedResult: The original version remains unchanged and the change is represented in a new draft or PlanVersion.
+    verificationMethod: system_test
+  useCases:
+  - UC-04
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: DR-009
+    kind: rule
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-003
+  type: business_rule
+  title: Retain the Previous Version After Replanning
+  statement: An accepted replanning action shall result in a new PlanVersion and the previous version shall be retained.
+  sources:
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “retain the previous version after replanning” and prevents
+    invalid or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-003-AC-01
+    condition: Given a ReplanProposal accepted by the traveler, when activation completes
+    expectedResult: A new PlanVersion is active and the previous PlanVersion still exists.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: DR-009
+    kind: rule
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-004
+  type: business_rule
+  title: Keep Historical Plans Queryable
+  statement: A previous PlanVersion shall remain queryable after another PlanVersion becomes active.
+  sources:
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “keep historical plans queryable” and prevents invalid or
+    unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-004-AC-01
+    condition: Given a Journey with a superseded PlanVersion, when history is queried
+    expectedResult: The superseded version and its Activities can still be retrieved.
+    verificationMethod: functional_test
+  useCases:
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: DR-009
+    kind: rule
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: functional_test
+  testCases: []
+  status: proposed
+- id: BR-005
+  type: business_rule
+  title: Require Provider Provenance for Executable Places
+  statement: A Place without a verifiable provider or source reference shall not be treated as an executable place
+    candidate.
+  sources:
+  - DM
+  - ARCH
+  priority: M
+  rationale: This rule preserves domain consistency for “require provider provenance for executable places” and
+    prevents invalid or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-005-AC-01
+    condition: Given a Place without provider provenance, when executable candidate validation runs
+    expectedResult: The Place is rejected as an executable candidate.
+    verificationMethod: system_test
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: DR-003
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-006
+  type: business_rule
+  title: Prevent Direct AI Mutation
+  statement: An AI provider or AI response shall not directly modify persisted Journey state.
+  sources:
+  - AI
+  - ARCH
+  priority: M
+  rationale: This rule preserves domain consistency for “prevent direct ai mutation” and prevents invalid or unauthorised
+    journey behaviour.
+  acceptanceCriteria:
+  - id: BR-006-AC-01
+    condition: Given the AI integration boundary, when code paths and permissions are inspected
+    expectedResult: AI responses enter through proposal or validation paths and have no direct write path to persisted
+      Journey state.
+    verificationMethod: inspection
+  useCases:
+  - UC-05
+  - UC-10
+  - UC-11
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: DR-010
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: BR-007
+  type: business_rule
+  title: Validate AI Structured Output
+  statement: AI-produced structured output shall be validated by the application or business layer before use.
+  sources:
+  - AI
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “validate ai structured output” and prevents invalid or
+    unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-007-AC-01
+    condition: Given malformed or policy-violating AI structured output, when it reaches the application boundary
+    expectedResult: The output is rejected or quarantined and does not affect planning or persisted state.
+    verificationMethod: system_test
+  useCases:
+  - UC-01
+  - UC-05
+  - UC-10
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: DR-010
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-008
+  type: business_rule
+  title: Reject System-Hard Constraint Violations
+  statement: A candidate violating a System Hard Constraint shall be infeasible.
+  sources:
+  - OPT
+  priority: M
+  rationale: This rule preserves domain consistency for “reject system-hard constraint violations” and prevents
+    invalid or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-008-AC-01
+    condition: Given a candidate that violates any active system_hard constraint, when feasibility is evaluated
+    expectedResult: The candidate is marked infeasible and excluded from activation and final recommendation ranking.
+    verificationMethod: system_test
+  useCases:
+  - UC-04
+  - UC-05
+  - UC-10
+  domainElements:
+  - name: Constraint
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: DR-001
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-009
+  type: business_rule
+  title: Protect Anchored Commitments
+  statement: A C4 Anchored commitment shall be changed only by explicit traveler action or an explicitly authorised
+    exception policy.
+  sources:
+  - DM
+  - OPT
+  priority: M
+  rationale: This rule preserves domain consistency for “protect anchored commitments” and prevents invalid or unauthorised
+    journey behaviour.
+  acceptanceCriteria:
+  - id: BR-009-AC-01
+    condition: Given a C4 Anchored commitment, when automatic normal replanning runs
+    expectedResult: The commitment is neither moved nor removed; any exception path requires explicit authorised
+      policy and traveler action.
+    verificationMethod: system_test
+  useCases:
+  - UC-03
+  - UC-10
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: DR-002
+    kind: rule
+  - name: commitment_strength
+    kind: enum
+  - name: Commitment
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-010
+  type: business_rule
+  title: Confirm Material C2 or C3 Changes
+  statement: A major modification of a C2 or C3 commitment shall require traveler confirmation.
+  sources:
+  - DM
+  - OPT
+  priority: M
+  rationale: This rule preserves domain consistency for “confirm material c2 or c3 changes” and prevents invalid
+    or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-010-AC-01
+    condition: Given a proposed material change to a C2 or C3 commitment, when the proposal is generated
+    expectedResult: The change remains pending and cannot become active without explicit traveler confirmation.
+    verificationMethod: system_test
+  useCases:
+  - UC-03
+  - UC-10
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: DR-002
+    kind: rule
+  - name: commitment_strength
+    kind: enum
+  - name: Commitment
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-011
+  type: business_rule
+  title: Derive Commitment Strength from Multiple Factors
+  statement: Commitment strength shall consider time rigidity, financial loss, external responsibility and user
+    lock, and shall not be determined by payment alone.
+  sources:
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “derive commitment strength from multiple factors” and prevents
+    invalid or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-011-AC-01
+    condition: Given representative paid-low-impact and unpaid-fixed-schedule commitments, when strength determination
+      is analysed
+    expectedResult: The fixed schedule may receive higher strength than the low-impact payment and the decision
+      evidence includes the defined factors.
+    verificationMethod: analysis
+  useCases:
+  - UC-03
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: DR-002
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: analysis
+  testCases: []
+  status: proposed
+- id: BR-012
+  type: business_rule
+  title: Do Not Promote Temporary Preferences Automatically
+  statement: Expiry of a temporary Preference shall not automatically modify the long-term traveler Preference profile.
+  sources:
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “do not promote temporary preferences automatically” and
+    prevents invalid or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-012-AC-01
+    condition: Given a temporary Preference that differs from the long-term profile, when the temporary Preference
+      expires
+    expectedResult: The long-term profile remains unchanged.
+    verificationMethod: system_test
+  useCases:
+  - UC-01
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-013
+  type: business_rule
+  title: Separate Estimated and Actual Cost
+  statement: Estimated cost and actual cost shall be represented separately.
+  sources:
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “separate estimated and actual cost” and prevents invalid
+    or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-013-AC-01
+    condition: Given a Journey containing planned and completed commercial Activities, when the data model and records
+      are inspected
+    expectedResult: Estimated and actual monetary values are stored in distinct fields and are not overwritten by
+      one another.
+    verificationMethod: inspection
+  useCases:
+  - UC-08
+  - UC-12
+  domainElements:
+  - name: Activity
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Money
+    kind: value_object
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: BR-014
+  type: business_rule
+  title: Ignore Expired Events for Automatic Replanning
+  statement: An expired Event shall not automatically trigger replanning.
+  sources:
+  - DM
+  - OPT
+  priority: M
+  rationale: This rule preserves domain consistency for “ignore expired events for automatic replanning” and prevents
+    invalid or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-014-AC-01
+    condition: Given an Event whose expiresAt precedes evaluation time, when event processing runs
+    expectedResult: The Event is marked expired or ignored and no automatic ReplanProposal is created from it.
+    verificationMethod: system_test
+  useCases:
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: DR-007
+    kind: rule
+  - name: event_processing_status
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-015
+  type: business_rule
+  title: Use Progressive Replanning Order
+  statement: Replanning shall progress Local Repair → Window Replan → Global Replan before Exception Mode is considered.
+  sources:
+  - OPT
+  priority: M
+  rationale: This rule preserves domain consistency for “use progressive replanning order” and prevents invalid
+    or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-015-AC-01
+    condition: Given fixtures where each earlier replanning scope has no feasible result, when recovery proceeds
+    expectedResult: Scopes are attempted in local, window, global and then exception order.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: replan_scope
+    kind: enum
+  - name: DR-008
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-016
+  type: business_rule
+  title: Retain Replanning Trigger and Reason
+  statement: Every ReplanProposal shall retain its trigger and change reason.
+  sources:
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “retain replanning trigger and reason” and prevents invalid
+    or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-016-AC-01
+    condition: Given any persisted ReplanProposal, when its record is inspected
+    expectedResult: At least one trigger event reference and a change or failure rationale are retained as applicable.
+    verificationMethod: inspection
+  useCases:
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: DR-005
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: BR-017
+  type: business_rule
+  title: Treat Booking Provider State as Authoritative
+  statement: The confirmed Booking state reported by the Booking Provider shall be authoritative.
+  sources:
+  - ARCH
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “treat booking provider state as authoritative” and prevents
+    invalid or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-017-AC-01
+    condition: Given a local inferred Booking state that differs from the latest valid provider-confirmed state,
+      when synchronisation completes
+    expectedResult: The local Booking reflects the provider-confirmed state and the discrepancy is logged.
+    verificationMethod: integration_test
+  useCases:
+  - UC-06
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: booking_status
+    kind: enum
+  - name: Booking
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: BR-018
+  type: business_rule
+  title: Treat Payment Provider State as Authoritative
+  statement: The final PaymentTransaction state reported by the Payment Provider shall be authoritative.
+  sources:
+  - ARCH
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “treat payment provider state as authoritative” and prevents
+    invalid or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-018-AC-01
+    condition: Given a local pending transaction and a valid final provider outcome, when synchronisation completes
+    expectedResult: The PaymentTransaction reflects the provider final state and retains the provider reference.
+    verificationMethod: integration_test
+  useCases:
+  - UC-07
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  - name: payment_transaction_status
+    kind: enum
+  - name: PaymentTransaction
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: BR-019
+  type: business_rule
+  title: Reject Impossible Activity Overlap
+  statement: Activities that overlap impossibly in time shall make a candidate plan infeasible.
+  sources:
+  - OPT
+  priority: M
+  rationale: This rule preserves domain consistency for “reject impossible activity overlap” and prevents invalid
+    or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-019-AC-01
+    condition: Given two Activities requiring the traveler at incompatible places during overlapping time windows,
+      when feasibility is evaluated
+    expectedResult: The candidate plan is marked infeasible.
+    verificationMethod: system_test
+  useCases:
+  - UC-04
+  - UC-10
+  domainElements:
+  - name: Activity
+    kind: entity
+  - name: Constraint
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-020
+  type: business_rule
+  title: Allow Sufficient Travel Time
+  statement: Activities at different places shall include sufficient travel time between them.
+  sources:
+  - OPT
+  priority: M
+  rationale: This rule preserves domain consistency for “allow sufficient travel time” and prevents invalid or unauthorised
+    journey behaviour.
+  acceptanceCriteria:
+  - id: BR-020-AC-01
+    condition: Given consecutive Activities at different Places, when feasibility is evaluated
+    expectedResult: The available transition interval is at least the current route travel-time estimate plus applicable
+      safety buffer.
+    verificationMethod: system_test
+  useCases:
+  - UC-04
+  - UC-10
+  domainElements:
+  - name: Activity
+    kind: entity
+  - name: TravelEstimate
+    kind: value_object
+  - name: Constraint
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-021
+  type: business_rule
+  title: Do Not Schedule Unavailable Services
+  statement: A CityService known to be closed or unavailable shall not be scheduled as an executable Activity.
+  sources:
+  - OPT
+  priority: M
+  rationale: This rule preserves domain consistency for “do not schedule unavailable services” and prevents invalid
+    or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-021-AC-01
+    condition: Given a CityService whose verified availability excludes the proposed Activity time, when plan validation
+      runs
+    expectedResult: The Activity is rejected from the executable candidate plan.
+    verificationMethod: system_test
+  useCases:
+  - UC-04
+  - UC-05
+  - UC-06
+  - UC-10
+  domainElements:
+  - name: CityService
+    kind: entity
+  - name: Activity
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: service_availability_status
+    kind: enum
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-022
+  type: business_rule
+  title: Enter Exception Mode Only After Normal Failure
+  statement: Exception Mode shall be entered only when no normal feasible plan exists.
+  sources:
+  - OPT
+  priority: M
+  rationale: This rule preserves domain consistency for “enter exception mode only after normal failure” and prevents
+    invalid or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-022-AC-01
+    condition: Given at least one feasible normal candidate, when replanning runs
+    expectedResult: Exception Mode is not entered; given no feasible normal candidate, exception evaluation may
+      begin.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: DR-001
+    kind: rule
+  - name: DR-008
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-023
+  type: business_rule
+  title: Require Acceptance Before Major Journey Change
+  statement: A major automatic Journey change shall remain a proposal until explicitly accepted by the traveler.
+  sources:
+  - UJ
+  - DM
+  priority: M
+  rationale: This rule preserves domain consistency for “require acceptance before major journey change” and prevents
+    invalid or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-023-AC-01
+    condition: Given a major proposed Journey change, when no traveler acceptance exists
+    expectedResult: The active PlanVersion and persisted Journey state remain unchanged.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: DR-004
+    kind: rule
+  - name: proposal_status
+    kind: enum
+  - name: ReplanProposal
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: BR-024
+  type: business_rule
+  title: Retain Provenance for External Facts
+  statement: Every external fact used for planning or replanning shall retain source, observation time and validity
+    information.
+  sources:
+  - DM
+  - ARCH
+  priority: M
+  rationale: This rule preserves domain consistency for “retain provenance for external facts” and prevents invalid
+    or unauthorised journey behaviour.
+  acceptanceCriteria:
+  - id: BR-024-AC-01
+    condition: Given an external fact used by planning or replanning, when its evidence is inspected
+    expectedResult: Source, observedAt and validity or expiry information are present.
+    verificationMethod: inspection
+  useCases:
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  - name: DR-007
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+non_functional_requirements:
+- id: NFR-001
+  type: non_functional_requirement
+  title: Ordinary Page Initial Display Performance
+  statement: At least 95% of ordinary application page initial displays shall complete within 2 seconds under the
+    defined reference environment.
+  sources:
+  - UJ
+  - ARCH
+  priority: M
+  rationale: This quality requirement makes “ordinary page initial display performance” measurable and suitable
+    for release verification.
+  acceptanceCriteria:
+  - id: NFR-001-AC-01
+    condition: Given the defined reference environment and representative ordinary pages, when at least 100 initial-display
+      measurements are collected
+    expectedResult: At least 95% complete within 2.0 seconds.
+    verificationMethod: performance_test
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-04
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-08
+  - UC-10
+  - UC-11
+  - UC-12
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: performance_test
+  testCases: []
+  status: proposed
+- id: NFR-002
+  type: non_functional_requirement
+  title: Local Repair Performance
+  statement: A basic Local Repair operation shall complete within 5 seconds on the defined reference demonstration
+    dataset.
+  sources:
+  - OPT
+  priority: M
+  rationale: This quality requirement makes “local repair performance” measurable and suitable for release verification.
+  acceptanceCriteria:
+  - id: NFR-002-AC-01
+    condition: Given the reference demonstration dataset and a supported local disruption, when Local Repair is
+      executed
+    expectedResult: A candidate result or explicit no-local-solution result is returned within 5.0 seconds.
+    verificationMethod: performance_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: performance_test
+  testCases: []
+  status: proposed
+- id: NFR-003
+  type: non_functional_requirement
+  title: Non-Blocking AI Timeout
+  statement: An AI provider timeout shall not prevent the deterministic planning result from being returned.
+  sources:
+  - AI
+  - ARCH
+  priority: M
+  rationale: This quality requirement makes “non-blocking ai timeout” measurable and suitable for release verification.
+  acceptanceCriteria:
+  - id: NFR-003-AC-01
+    condition: Given a deterministic planning result and an AI Provider that exceeds its timeout, when the request
+      completes
+    expectedResult: The deterministic result is returned with degraded explanation status rather than failing the
+      planning operation.
+    verificationMethod: resilience_test
+  useCases:
+  - UC-10
+  - UC-11
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: DR-006
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: resilience_test
+  testCases: []
+  status: proposed
+- id: NFR-004
+  type: non_functional_requirement
+  title: Monthly Availability Target
+  statement: The production design target for monthly service availability shall be at least 99.5%, excluding planned
+    maintenance.
+  sources:
+  - ARCH
+  priority: S
+  rationale: This quality requirement makes “monthly availability target” measurable and suitable for release verification.
+  acceptanceCriteria:
+  - id: NFR-004-AC-01
+    condition: Given the production availability model and monitoring definition, when planned maintenance is excluded
+    expectedResult: The calculated monthly design target is at least 99.5%.
+    verificationMethod: analysis
+  useCases:
+  - UC-13
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: analysis
+  testCases: []
+  status: proposed
+- id: NFR-005
+  type: non_functional_requirement
+  title: Journey Access During Provider Failure
+  statement: Failure of one non-core external provider shall not make an existing Journey inaccessible.
+  sources:
+  - ARCH
+  priority: M
+  rationale: This quality requirement makes “journey access during provider failure” measurable and suitable for
+    release verification.
+  acceptanceCriteria:
+  - id: NFR-005-AC-01
+    condition: Given an existing persisted Journey and one failed non-core Provider, when the traveler opens the
+      Journey
+    expectedResult: The Journey and last known active plan remain accessible, with unavailable dependent features
+      shown as degraded.
+    verificationMethod: resilience_test
+  useCases:
+  - UC-08
+  - UC-13
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: DR-006
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: resilience_test
+  testCases: []
+  status: proposed
+- id: NFR-006
+  type: non_functional_requirement
+  title: Atomic Active Plan Switch
+  statement: Switching the active PlanVersion of a Journey shall be atomic.
+  sources:
+  - DM
+  - ARCH
+  priority: M
+  rationale: This quality requirement makes “atomic active plan switch” measurable and suitable for release verification.
+  acceptanceCriteria:
+  - id: NFR-006-AC-01
+    condition: Given a simulated failure during active-plan switching, when the transaction rolls back
+    expectedResult: Either the new PlanVersion is fully active or the previous PlanVersion remains active; no partial
+      state is visible.
+    verificationMethod: system_test
+  useCases:
+  - UC-10
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: PlanVersion
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: NFR-007
+  type: non_functional_requirement
+  title: Persist Journey and Commerce State Across Restart
+  statement: Application restart shall not lose persisted Journey, Booking or PaymentTransaction state.
+  sources:
+  - ARCH
+  - DM
+  priority: M
+  rationale: This quality requirement makes “persist journey and commerce state across restart” measurable and suitable
+    for release verification.
+  acceptanceCriteria:
+  - id: NFR-007-AC-01
+    condition: Given persisted Journey, Booking and PaymentTransaction fixtures, when the application is restarted
+    expectedResult: The fixtures are retrievable with their states unchanged.
+    verificationMethod: resilience_test
+  useCases:
+  - UC-06
+  - UC-07
+  - UC-08
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: Booking
+    kind: state_machine
+  - name: PaymentTransaction
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: resilience_test
+  testCases: []
+  status: proposed
+- id: NFR-008
+  type: non_functional_requirement
+  title: End-to-End Requirement Traceability
+  statement: Every formal requirement shall be traceable to at least one design or verification object.
+  sources:
+  - CW
+  - ARCH
+  priority: M
+  rationale: This quality requirement makes “end-to-end requirement traceability” measurable and suitable for release
+    verification.
+  acceptanceCriteria:
+  - id: NFR-008-AC-01
+    condition: Given a baseline-candidate or approved requirement set, when the traceability report is generated
+    expectedResult: Every requirement has at least one linked use case, domain element, diagram or test/verification
+      object appropriate to its nature, with documented infrastructure-level exceptions.
+    verificationMethod: traceability_review
+  useCases: []
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: traceability_review
+  testCases: []
+  status: proposed
+- id: NFR-009
+  type: non_functional_requirement
+  title: Provider Adapter Independence
+  statement: External providers shall be accessed through adapters and the core domain shall not directly depend
+    on vendor SDKs.
+  sources:
+  - ARCH
+  priority: M
+  rationale: This quality requirement makes “provider adapter independence” measurable and suitable for release
+    verification.
+  acceptanceCriteria:
+  - id: NFR-009-AC-01
+    condition: Given the application architecture and dependency graph, when provider integrations are inspected
+    expectedResult: Vendor SDK dependencies are confined to adapter or infrastructure modules and are absent from
+      core domain modules.
+    verificationMethod: inspection
+  useCases:
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-09
+  - UC-11
+  - UC-13
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: NFR-010
+  type: non_functional_requirement
+  title: Operational Event Logging
+  statement: The system shall log provider failures, replanning actions and Booking and PaymentTransaction state
+    changes.
+  sources:
+  - ARCH
+  priority: M
+  rationale: This quality requirement makes “operational event logging” measurable and suitable for release verification.
+  acceptanceCriteria:
+  - id: NFR-010-AC-01
+    condition: Given fixtures for each listed event type, when the event occurs
+    expectedResult: A timestamped structured log entry is produced with correlation context and without prohibited
+      secrets.
+    verificationMethod: system_test
+  useCases:
+  - UC-06
+  - UC-07
+  - UC-10
+  - UC-13
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: NFR-011
+  type: non_functional_requirement
+  title: Desktop Browser Compatibility
+  statement: The main user flow shall support current desktop versions of Google Chrome and Microsoft Edge.
+  sources:
+  - CW
+  - UJ
+  priority: S
+  rationale: This quality requirement makes “desktop browser compatibility” measurable and suitable for release
+    verification.
+  acceptanceCriteria:
+  - id: NFR-011-AC-01
+    condition: Given the defined main flow, when it is executed on the current supported desktop releases of Chrome
+      and Edge
+    expectedResult: The flow completes without browser-specific blocking defects.
+    verificationMethod: system_test
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-04
+  - UC-05
+  - UC-08
+  - UC-10
+  - UC-12
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: NFR-012
+  type: non_functional_requirement
+  title: Mobile Golden Path Usability
+  statement: The Golden Path shall remain usable at a viewport width of 360 pixels.
+  sources:
+  - UJ
+  priority: M
+  rationale: This quality requirement makes “mobile golden path usability” measurable and suitable for release verification.
+  acceptanceCriteria:
+  - id: NFR-012-AC-01
+    condition: Given a 360-pixel-wide viewport, when the Golden Path is executed
+    expectedResult: All required controls and content remain operable without horizontal page scrolling or inaccessible
+      actions.
+    verificationMethod: usability_test
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-04
+  - UC-05
+  - UC-08
+  - UC-10
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: usability_test
+  testCases: []
+  status: proposed
+- id: NFR-013
+  type: non_functional_requirement
+  title: Independent First-Time Journey Planning
+  statement: A new traveler shall be able to create a Journey, generate a plan and view that plan without administrator
+    intervention.
+  sources:
+  - UJ
+  priority: M
+  rationale: This quality requirement makes “independent first-time journey planning” measurable and suitable for
+    release verification.
+  acceptanceCriteria:
+  - id: NFR-013-AC-01
+    condition: Given a new traveler with no administrative assistance, when the defined first-time task is attempted
+    expectedResult: The traveler completes account access, Journey creation, plan generation and plan viewing successfully.
+    verificationMethod: usability_test
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-04
+  domainElements:
+  - name: Traveler
+    kind: entity
+  - name: Journey
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: usability_test
+  testCases: []
+  status: proposed
+- id: NFR-014
+  type: non_functional_requirement
+  title: Accessible Critical State and Controls
+  statement: Critical state shall not be communicated by color alone and primary controls shall support keyboard
+    interaction and text labels.
+  sources:
+  - UJ
+  priority: S
+  rationale: This quality requirement makes “accessible critical state and controls” measurable and suitable for
+    release verification.
+  acceptanceCriteria:
+  - id: NFR-014-AC-01
+    condition: Given critical-state components and primary controls, when accessibility inspection and keyboard
+      testing are performed
+    expectedResult: Critical state has a non-color indicator, and each primary control has an accessible text label
+      and keyboard operation.
+    verificationMethod: accessibility_test
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-04
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-08
+  - UC-10
+  - UC-11
+  - UC-12
+  - UC-13
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: accessibility_test
+  testCases: []
+  status: proposed
+- id: NFR-015
+  type: non_functional_requirement
+  title: Avoid Unnecessary Global Replanning
+  statement: A minor context event shall not unnecessarily trigger Global Replanning.
+  sources:
+  - OPT
+  priority: M
+  rationale: This quality requirement makes “avoid unnecessary global replanning” measurable and suitable for release
+    verification.
+  acceptanceCriteria:
+  - id: NFR-015-AC-01
+    condition: Given a minor event whose impact can be handled by update-only processing or Local Repair, when it
+      is processed
+    expectedResult: No global-scope ReplanProposal is created.
+    verificationMethod: system_test
+  useCases:
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: DR-008
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: NFR-016
+  type: non_functional_requirement
+  title: AI Explanation Data Consistency
+  statement: Structured numeric facts shown in an AI explanation shall match the corresponding plan, score or event
+    data provided by the deterministic system.
+  sources:
+  - AI
+  priority: M
+  rationale: This quality requirement makes “ai explanation data consistency” measurable and suitable for release
+    verification.
+  acceptanceCriteria:
+  - id: NFR-016-AC-01
+    condition: Given controlled structured plan, score and event facts, when an AI explanation is generated and
+      validated
+    expectedResult: Every displayed numeric value exactly matches the supplied structured fact or is rejected before
+      presentation.
+    verificationMethod: system_test
+  useCases:
+  - UC-05
+  - UC-10
+  - UC-11
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: ScoreBreakdown
+    kind: value_object
+  - name: DR-005
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+security_requirements:
+- id: SR-001
+  type: security_requirement
+  title: Encrypt Production Network Communication
+  statement: All production network communication shall use HTTPS/TLS.
+  sources:
+  - SEC
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “encrypt production network communication”.
+  acceptanceCriteria:
+  - id: SR-001-AC-01
+    condition: Given the production deployment configuration and representative client/provider traffic, when transport
+      security is inspected
+    expectedResult: All application endpoints use HTTPS/TLS and insecure HTTP is redirected or rejected as defined.
+    verificationMethod: security_test
+  useCases:
+  - UC-01
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-08
+  - UC-09
+  - UC-10
+  - UC-11
+  - UC-13
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: security_test
+  testCases: []
+  status: proposed
+- id: SR-002
+  type: security_requirement
+  title: Keep Private API Keys out of Frontend Builds
+  statement: Private third-party API keys shall not be embedded in the frontend build.
+  sources:
+  - SEC
+  - ARCH
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “keep private api keys out of frontend
+    builds”.
+  acceptanceCriteria:
+  - id: SR-002-AC-01
+    condition: Given a production frontend build and source-map policy, when static secret scanning is performed
+    expectedResult: No private third-party API key or provider secret is present in client-delivered assets.
+    verificationMethod: inspection
+  useCases:
+  - UC-13
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: SR-003
+  type: security_requirement
+  title: Support Passkey Authentication for High-Risk Actions
+  statement: High-risk payment or refund actions shall support WebAuthn/passkey authentication when enabled by policy.
+  sources:
+  - SEC
+  priority: S
+  rationale: This control addresses the security or privacy risk represented by “support passkey authentication
+    for high-risk actions”.
+  acceptanceCriteria:
+  - id: SR-003-AC-01
+    condition: Given a policy requiring step-up authentication for a high-risk payment or refund, when the action
+      is attempted
+    expectedResult: A WebAuthn/passkey challenge must succeed before the action can proceed.
+    verificationMethod: security_test
+  useCases:
+  - UC-07
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: security_test
+  testCases: []
+  status: proposed
+- id: SR-004
+  type: security_requirement
+  title: Do Not Store Raw Biometric Templates
+  statement: The system shall not store raw fingerprint or facial biometric templates in application databases or
+    logs.
+  sources:
+  - SEC
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “do not store raw biometric templates”.
+  acceptanceCriteria:
+  - id: SR-004-AC-01
+    condition: Given application databases, logs and biometric-authentication flows, when data inspection is performed
+    expectedResult: No raw fingerprint, facial image or biometric template is stored by CityNexus.
+    verificationMethod: inspection
+  useCases:
+  - UC-07
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: SR-005
+  type: security_requirement
+  title: Do Not Persist Full Sensitive Card Credentials
+  statement: The system shall not persist complete sensitive payment-card credentials.
+  sources:
+  - SEC
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “do not persist full sensitive card
+    credentials”.
+  acceptanceCriteria:
+  - id: SR-005-AC-01
+    condition: Given application databases, logs and payment request records, when sensitive-data inspection is
+      performed
+    expectedResult: No full card number, security code or equivalent complete sensitive credential is persisted.
+    verificationMethod: inspection
+  useCases:
+  - UC-07
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: SR-006
+  type: security_requirement
+  title: Apply Least Privilege
+  statement: Application permissions shall follow least-privilege principles.
+  sources:
+  - SEC
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “apply least privilege”.
+  acceptanceCriteria:
+  - id: SR-006-AC-01
+    condition: Given each defined user or service role, when authorised and unauthorised actions are tested
+    expectedResult: Each role can perform only its required operations and is denied unrelated privileged operations.
+    verificationMethod: security_test
+  useCases:
+  - UC-01
+  - UC-13
+  domainElements:
+  - name: Traveler
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: security_test
+  testCases: []
+  status: proposed
+- id: SR-007
+  type: security_requirement
+  title: Authorise Administrative Operations by Role
+  statement: Administrative routes and operations shall require role-based authorisation.
+  sources:
+  - SEC
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “authorise administrative operations
+    by role”.
+  acceptanceCriteria:
+  - id: SR-007-AC-01
+    condition: Given an authorised administrator and a non-administrator, when each accesses an administrative route
+    expectedResult: The administrator is allowed according to policy and the non-administrator is denied.
+    verificationMethod: security_test
+  useCases:
+  - UC-13
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: security_test
+  testCases: []
+  status: proposed
+- id: SR-008
+  type: security_requirement
+  title: Validate Client and Provider Input
+  statement: Client and external-provider input shall be validated against defined schemas before use.
+  sources:
+  - SEC
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “validate client and provider input”.
+  acceptanceCriteria:
+  - id: SR-008-AC-01
+    condition: Given malformed, out-of-range or unexpected client/provider payloads, when they enter the system
+    expectedResult: Validation rejects the payloads before they affect core domain state and returns a controlled
+      error.
+    verificationMethod: security_test
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-09
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: security_test
+  testCases: []
+  status: proposed
+- id: SR-009
+  type: security_requirement
+  title: Exclude Secrets from AI Payloads
+  statement: Payloads sent to AI providers shall not include authentication secrets or sensitive payment credentials.
+  sources:
+  - SEC
+  - AI
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “exclude secrets from ai payloads”.
+  acceptanceCriteria:
+  - id: SR-009-AC-01
+    condition: Given captured outbound AI requests from representative workflows, when payload fields are inspected
+    expectedResult: No authentication secret, provider API key or sensitive payment credential is present.
+    verificationMethod: inspection
+  useCases:
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: SR-010
+  type: security_requirement
+  title: Redact Secrets from Logs
+  statement: Logs shall redact secrets and sensitive payment fields.
+  sources:
+  - SEC
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “redact secrets from logs”.
+  acceptanceCriteria:
+  - id: SR-010-AC-01
+    condition: Given events containing known test secrets and payment fields, when logging occurs
+    expectedResult: The stored logs contain redacted values and do not contain the original sensitive strings.
+    verificationMethod: security_test
+  useCases:
+  - UC-13
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: security_test
+  testCases: []
+  status: proposed
+- id: SR-011
+  type: security_requirement
+  title: Audit High-Risk Changes
+  statement: Payments, refunds, administrator changes and material C3/C4 commitment changes shall generate audit
+    records.
+  sources:
+  - SEC
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “audit high-risk changes”.
+  acceptanceCriteria:
+  - id: SR-011-AC-01
+    condition: Given each listed high-risk action, when it completes or is rejected
+    expectedResult: A timestamped audit record identifies the action type, actor or service, target and outcome
+      without prohibited secrets.
+    verificationMethod: system_test
+  useCases:
+  - UC-03
+  - UC-07
+  - UC-13
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: system_test
+  testCases: []
+  status: proposed
+- id: SR-012
+  type: security_requirement
+  title: Rate-Limit Sensitive and Expensive Endpoints
+  statement: Login, AI and payment-related endpoints shall implement appropriate rate limiting.
+  sources:
+  - SEC
+  - ARCH
+  priority: S
+  rationale: This control addresses the security or privacy risk represented by “rate-limit sensitive and expensive
+    endpoints”.
+  acceptanceCriteria:
+  - id: SR-012-AC-01
+    condition: Given repeated requests above the configured limit for each protected endpoint class, when the limit
+      is exceeded
+    expectedResult: Further requests are throttled or rejected for the configured period without corrupting valid
+      state.
+    verificationMethod: security_test
+  useCases:
+  - UC-01
+  - UC-07
+  - UC-11
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: security_test
+  testCases: []
+  status: proposed
+- id: SR-013
+  type: security_requirement
+  title: Respect Purpose and Permission for Location and Personalisation
+  statement: Location or personalisation data shall not be used or transmitted without authorised application purpose
+    and user permission where required.
+  sources:
+  - SEC
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “respect purpose and permission
+    for location and personalisation”.
+  acceptanceCriteria:
+  - id: SR-013-AC-01
+    condition: Given a traveler who has not granted the relevant permission, when a location or personalisation
+      workflow is invoked
+    expectedResult: The protected data is not collected or transmitted and the system offers an appropriate degraded
+      path.
+    verificationMethod: security_test
+  useCases:
+  - UC-01
+  - UC-08
+  - UC-11
+  domainElements:
+  - name: Traveler
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: security_test
+  testCases: []
+  status: proposed
+- id: SR-014
+  type: security_requirement
+  title: Minimise Data Sent to AI Providers
+  statement: Only the minimum data required for an AI task shall be sent to an AI provider.
+  sources:
+  - SEC
+  - AI
+  priority: M
+  rationale: This control addresses the security or privacy risk represented by “minimise data sent to ai providers”.
+  acceptanceCriteria:
+  - id: SR-014-AC-01
+    condition: Given representative outbound requests for each AI capability, when their fields are compared with
+      the task data contract
+    expectedResult: Each request contains only fields required by that capability and excludes unrelated traveler,
+      payment and authentication data.
+    verificationMethod: inspection
+  useCases:
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+integration_requirements:
+- id: IR-001
+  type: integration_requirement
+  title: Integrate a POI Provider through a Unified Interface
+  statement: The system shall support at least one POI provider through a unified provider interface.
+  sources:
+  - ARCH
+  priority: M
+  rationale: This contract makes “integrate a poi provider through a unified interface” explicit, testable and replaceable
+    at the system boundary.
+  acceptanceCriteria:
+  - id: IR-001-AC-01
+    condition: Given a configured POI Adapter, when a supported search request is submitted
+    expectedResult: The adapter returns normalised Place records through the unified interface.
+    verificationMethod: integration_test
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: IR-002
+  type: integration_requirement
+  title: Integrate Geocoding through an Adapter
+  statement: The system shall support a geocoding provider through an integration adapter.
+  sources:
+  - ARCH
+  priority: M
+  rationale: This contract makes “integrate geocoding through an adapter” explicit, testable and replaceable at
+    the system boundary.
+  acceptanceCriteria:
+  - id: IR-002-AC-01
+    condition: Given a supported address and coordinate fixture, when forward and reverse geocoding are requested
+    expectedResult: The adapter returns normalised coordinates or address data without exposing vendor-specific
+      objects to the core domain.
+    verificationMethod: integration_test
+  useCases:
+  - UC-02
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: GeoPoint
+    kind: value_object
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: IR-003
+  type: integration_requirement
+  title: Obtain Route Estimates through a Provider Interface
+  statement: The system shall obtain route distance and travel-time estimates through a routing provider interface.
+  sources:
+  - ARCH
+  - OPT
+  priority: M
+  rationale: This contract makes “obtain route estimates through a provider interface” explicit, testable and replaceable
+    at the system boundary.
+  acceptanceCriteria:
+  - id: IR-003-AC-01
+    condition: Given two valid Place coordinates and a supported travel mode, when routing is requested
+    expectedResult: The adapter returns a normalised TravelEstimate containing distance, duration and mode.
+    verificationMethod: integration_test
+  useCases:
+  - UC-04
+  - UC-05
+  - UC-08
+  - UC-10
+  domainElements:
+  - name: TravelEstimate
+    kind: value_object
+  - name: Activity
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: IR-004
+  type: integration_requirement
+  title: Allow Multimodal Mobility Extension
+  statement: The mobility-provider interface shall be extensible to public-transit or multimodal routing.
+  sources:
+  - ARCH
+  priority: S
+  rationale: This contract makes “allow multimodal mobility extension” explicit, testable and replaceable at the
+    system boundary.
+  acceptanceCriteria:
+  - id: IR-004-AC-01
+    condition: Given the mobility integration contract, when architecture and adapter tests are inspected
+    expectedResult: A conforming transit or multimodal implementation can be added without changing Journey domain
+      interfaces.
+    verificationMethod: inspection
+  useCases:
+  - UC-04
+  - UC-08
+  - UC-10
+  domainElements:
+  - name: TravelEstimate
+    kind: value_object
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: IR-005
+  type: integration_requirement
+  title: Normalise Weather and City Events
+  statement: Weather or city-event providers shall be able to emit normalised Journey Events.
+  sources:
+  - ARCH
+  - DM
+  priority: M
+  rationale: This contract makes “normalise weather and city events” explicit, testable and replaceable at the system
+    boundary.
+  acceptanceCriteria:
+  - id: IR-005-AC-01
+    condition: Given representative provider weather or city-disruption payloads, when the adapter processes them
+    expectedResult: Normalised Event records are produced with kind, source, observation time, expiry and impact
+      data.
+    verificationMethod: integration_test
+  useCases:
+  - UC-09
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: IR-006
+  type: integration_requirement
+  title: Provide Booking Adapter Operations
+  statement: A Booking Adapter shall support availability query, booking creation, cancellation and status retrieval.
+  sources:
+  - ARCH
+  priority: S
+  rationale: This contract makes “provide booking adapter operations” explicit, testable and replaceable at the
+    system boundary.
+  acceptanceCriteria:
+  - id: IR-006-AC-01
+    condition: Given a mock or test Booking Provider, when each required adapter operation is called
+    expectedResult: Availability, create, cancel and status operations return normalised provider outcomes.
+    verificationMethod: integration_test
+  useCases:
+  - UC-06
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: IR-007
+  type: integration_requirement
+  title: Provide Payment Adapter Operations
+  statement: A Payment Adapter shall support payment initiation and retrieval of the final payment outcome.
+  sources:
+  - ARCH
+  - SEC
+  priority: S
+  rationale: This contract makes “provide payment adapter operations” explicit, testable and replaceable at the
+    system boundary.
+  acceptanceCriteria:
+  - id: IR-007-AC-01
+    condition: Given a mock or test Payment Provider, when payment is initiated and its final status is queried
+    expectedResult: A PaymentTransaction is created and updated from the authoritative normalised provider outcome.
+    verificationMethod: integration_test
+  useCases:
+  - UC-07
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: state_machine
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: IR-008
+  type: integration_requirement
+  title: Integrate WebAuthn Authenticators
+  statement: The application shall support browser or device WebAuthn authenticators through a unified authentication
+    integration.
+  sources:
+  - SEC
+  - ARCH
+  priority: S
+  rationale: This contract makes “integrate webauthn authenticators” explicit, testable and replaceable at the system
+    boundary.
+  acceptanceCriteria:
+  - id: IR-008-AC-01
+    condition: Given a supported browser authenticator and configured policy, when registration and authentication
+      ceremonies are exercised
+    expectedResult: The integration completes the WebAuthn flows and returns normalised success or failure results.
+    verificationMethod: integration_test
+  useCases:
+  - UC-07
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: IR-009
+  type: integration_requirement
+  title: Route LLM Calls through AIProvider
+  statement: All LLM interaction shall be routed through a unified AIProvider interface.
+  sources:
+  - AI
+  - ARCH
+  priority: M
+  rationale: This contract makes “route llm calls through aiprovider” explicit, testable and replaceable at the
+    system boundary.
+  acceptanceCriteria:
+  - id: IR-009-AC-01
+    condition: Given the application dependency graph and representative AI calls, when inspected
+    expectedResult: All LLM calls pass through the AIProvider abstraction and no feature module calls a vendor SDK
+      directly.
+    verificationMethod: inspection
+  useCases:
+  - UC-11
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: IR-010
+  type: integration_requirement
+  title: Support AI Provider Operating Modes
+  statement: AI integration shall support Primary → Fallback → Disabled/Mock operating modes.
+  sources:
+  - AI
+  - ARCH
+  priority: M
+  rationale: This contract makes “support ai provider operating modes” explicit, testable and replaceable at the
+    system boundary.
+  acceptanceCriteria:
+  - id: IR-010-AC-01
+    condition: Given primary-provider failure, fallback availability and then all-provider unavailability, when
+      AI capability is invoked
+    expectedResult: The system uses fallback, then enters disabled or mock mode while preserving deterministic core
+      functions.
+    verificationMethod: resilience_test
+  useCases:
+  - UC-11
+  domainElements:
+  - name: DR-006
+    kind: rule
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: resilience_test
+  testCases: []
+  status: proposed
+- id: IR-011
+  type: integration_requirement
+  title: Expose a Replaceable Planning Engine Interface
+  statement: The planning engine shall expose a replaceable interface allowing a baseline planner and an advanced
+    solver implementation.
+  sources:
+  - OPT
+  - ARCH
+  priority: M
+  rationale: This contract makes “expose a replaceable planning engine interface” explicit, testable and replaceable
+    at the system boundary.
+  acceptanceCriteria:
+  - id: IR-011-AC-01
+    condition: Given baseline and advanced planner implementations conforming to the same contract, when each is
+      configured
+    expectedResult: Both consume the same normalised planning input and return valid candidate-plan output without
+      changing callers.
+    verificationMethod: integration_test
+  useCases:
+  - UC-04
+  - UC-10
+  domainElements:
+  - name: Constraint
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: integration_test
+  testCases: []
+  status: proposed
+- id: IR-012
+  type: integration_requirement
+  title: Normalise Provider Data before Core Use
+  statement: External provider data shall be normalised before entering core Journey logic.
+  sources:
+  - ARCH
+  priority: M
+  rationale: This contract makes “normalise provider data before core use” explicit, testable and replaceable at
+    the system boundary.
+  acceptanceCriteria:
+  - id: IR-012-AC-01
+    condition: Given representative provider payloads and core-domain call boundaries, when inspected
+    expectedResult: Vendor-specific payload objects are converted to CityNexus domain or integration models before
+      core Journey logic uses them.
+    verificationMethod: inspection
+  useCases:
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-09
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: Event
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: inspection
+  testCases: []
+  status: proposed
+- id: IR-013
+  type: integration_requirement
+  title: Define Provider Timeouts
+  statement: Each external provider integration shall define an explicit timeout.
+  sources:
+  - ARCH
+  priority: M
+  rationale: This contract makes “define provider timeouts” explicit, testable and replaceable at the system boundary.
+  acceptanceCriteria:
+  - id: IR-013-AC-01
+    condition: Given each configured provider adapter, when configuration and timeout behaviour are inspected
+    expectedResult: Every adapter has a finite explicit timeout and returns a controlled timeout outcome when exceeded.
+    verificationMethod: resilience_test
+  useCases:
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-09
+  - UC-11
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: resilience_test
+  testCases: []
+  status: proposed
+- id: IR-014
+  type: integration_requirement
+  title: Use Bounded Retry for Safe Operations
+  statement: Safe or idempotent external-provider operations shall use bounded retry behaviour.
+  sources:
+  - ARCH
+  priority: S
+  rationale: This contract makes “use bounded retry for safe operations” explicit, testable and replaceable at the
+    system boundary.
+  acceptanceCriteria:
+  - id: IR-014-AC-01
+    condition: Given a retry-eligible idempotent provider operation with transient failures, when invoked
+    expectedResult: Retries do not exceed the configured bound; non-idempotent unsafe operations are not automatically
+      retried without an idempotency mechanism.
+    verificationMethod: resilience_test
+  useCases:
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-09
+  - UC-11
+  domainElements: []
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: resilience_test
+  testCases: []
+  status: proposed
+- id: IR-015
+  type: integration_requirement
+  title: Provide Mock Integrations for the Demo
+  statement: The demonstration environment shall support Mock Payment, Mock Booking and Mock Event integrations
+    so the Golden Scenario remains executable without live commercial dependencies.
+  sources:
+  - ARCH
+  - CW
+  priority: M
+  rationale: This contract makes “provide mock integrations for the demo” explicit, testable and replaceable at
+    the system boundary.
+  acceptanceCriteria:
+  - id: IR-015-AC-01
+    condition: Given the demonstration environment with live commercial dependencies disabled, when the Golden Scenario
+      runs
+    expectedResult: Mock Booking, Payment and Event providers complete the required booking, payment and disruption-recovery
+      steps.
+    verificationMethod: demonstration
+  useCases:
+  - UC-06
+  - UC-07
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  dependsOn: []
+  conflictsWith: []
+  verificationMethod: demonstration
+  testCases: []
+  status: proposed

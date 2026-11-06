@@ -1,0 +1,1667 @@
+metadata:
+  name: CityNexus Requirements Traceability Baseline
+  version: 0.3.0
+  status: baseline-candidate
+  requirementsFile: requirements.yaml
+  domainModel: ../domain-model/citynexus-core-domain-model-v0.4.2.yaml
+mappings:
+- requirementId: BG-001
+  useCases:
+  - UC-04
+  - UC-08
+  - UC-10
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Constraint
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: BG-002
+  useCases:
+  - UC-02
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-08
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: BG-003
+  useCases:
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: BG-004
+  useCases:
+  - UC-03
+  - UC-10
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: BG-005
+  useCases:
+  - UC-05
+  - UC-08
+  - UC-11
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Commitment
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: BG-006
+  useCases:
+  - UC-05
+  - UC-06
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: BG-007
+  useCases:
+  - UC-05
+  - UC-10
+  - UC-11
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: BG-008
+  useCases:
+  - UC-13
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: FR-001
+  useCases:
+  - UC-01
+  domainElements:
+  - name: Traveler
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-002
+  useCases:
+  - UC-01
+  domainElements:
+  - name: Traveler
+    kind: entity
+  - name: Preference
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-003
+  useCases:
+  - UC-01
+  - UC-02
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Journey
+    kind: entity
+  - name: preference_scope
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-004
+  useCases:
+  - UC-01
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: preference_scope
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-005
+  useCases:
+  - UC-01
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Constraint
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-006
+  useCases:
+  - UC-02
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: journey_status
+    kind: enum
+  - name: Journey
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-007
+  useCases:
+  - UC-02
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: Place
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-008
+  useCases:
+  - UC-02
+  - UC-03
+  domainElements:
+  - name: Activity
+    kind: entity
+  - name: Commitment
+    kind: entity
+  - name: commitment_strength
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-009
+  useCases:
+  - UC-02
+  - UC-03
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: commitment_source_type
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-010
+  useCases:
+  - UC-04
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Constraint
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-011
+  useCases:
+  - UC-04
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: planning_mode
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-012
+  useCases:
+  - UC-02
+  - UC-04
+  domainElements:
+  - name: Activity
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: activity_status
+    kind: enum
+  - name: Activity
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-013
+  useCases:
+  - UC-04
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-014
+  useCases:
+  - UC-08
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-015
+  useCases:
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: Activity
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-016
+  useCases:
+  - UC-08
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: Activity
+    kind: entity
+  - name: Commitment
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-017
+  useCases:
+  - UC-08
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: journey_health
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-018
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-019
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-020
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-021
+  useCases:
+  - UC-05
+  - UC-06
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-022
+  useCases:
+  - UC-05
+  - UC-06
+  domainElements:
+  - name: CityService
+    kind: entity
+  - name: TimeWindow
+    kind: value_object
+  - name: service_availability_status
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-023
+  useCases:
+  - UC-05
+  - UC-08
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-024
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Constraint
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: constraint_severity
+    kind: enum
+  - name: constraint_kind
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-025
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: constraint_kind
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-026
+  useCases:
+  - UC-05
+  - UC-08
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: OpportunityWindow
+    kind: value_object
+  diagrams: []
+  testCases: []
+- requirementId: FR-027
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-028
+  useCases:
+  - UC-05
+  - UC-11
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-029
+  useCases:
+  - UC-03
+  - UC-06
+  - UC-07
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: commitment_source_type
+    kind: enum
+  - name: commitment_status
+    kind: enum
+  - name: Commitment
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-030
+  useCases:
+  - UC-03
+  - UC-10
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: commitment_strength
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-031
+  useCases:
+  - UC-03
+  domainElements:
+  - name: Commitment
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-032
+  useCases:
+  - UC-06
+  domainElements:
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: TimeWindow
+    kind: value_object
+  diagrams: []
+  testCases: []
+- requirementId: FR-033
+  useCases:
+  - UC-06
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: booking_status
+    kind: enum
+  - name: Booking
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-034
+  useCases:
+  - UC-06
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: booking_status
+    kind: enum
+  - name: Booking
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-035
+  useCases:
+  - UC-06
+  domainElements:
+  - name: CityService
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: order_status
+    kind: enum
+  - name: Order
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-036
+  useCases:
+  - UC-07
+  domainElements:
+  - name: Order
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: payment_transaction_status
+    kind: enum
+  - name: PaymentTransaction
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-037
+  useCases:
+  - UC-07
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  - name: payment_transaction_status
+    kind: enum
+  - name: PaymentTransaction
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-038
+  useCases:
+  - UC-07
+  - UC-12
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-039
+  useCases:
+  - UC-08
+  - UC-09
+  domainElements:
+  - name: JourneyTwin
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-040
+  useCases:
+  - UC-09
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: event_kind
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-041
+  useCases:
+  - UC-09
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: event_processing_status
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-042
+  useCases:
+  - UC-09
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: Activity
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: constraint_scope_type
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-043
+  useCases:
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: event_impact_level
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-044
+  useCases:
+  - UC-10
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-045
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: Activity
+    kind: entity
+  - name: replan_scope
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-046
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: replan_scope
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-047
+  useCases:
+  - UC-10
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: replan_scope
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-048
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: selection_status
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-049
+  useCases:
+  - UC-10
+  domainElements:
+  - name: CandidatePlan
+    kind: entity
+  - name: ScoreBreakdown
+    kind: value_object
+  diagrams: []
+  testCases: []
+- requirementId: FR-050
+  useCases:
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: Commitment
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-051
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: proposal_status
+    kind: enum
+  - name: ReplanProposal
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-052
+  useCases:
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: proposal_status
+    kind: enum
+  - name: ReplanProposal
+    kind: state_machine
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: FR-053
+  useCases:
+  - UC-10
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: constraint_relaxation_policy
+    kind: enum
+  - name: constraint_severity
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: FR-054
+  useCases:
+  - UC-11
+  - UC-02
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: Constraint
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-055
+  useCases:
+  - UC-11
+  - UC-01
+  domainElements:
+  - name: Preference
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-056
+  useCases:
+  - UC-11
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-057
+  useCases:
+  - UC-11
+  - UC-10
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-058
+  useCases:
+  - UC-11
+  - UC-08
+  - UC-10
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: DR-006
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: FR-059
+  useCases:
+  - UC-12
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Event
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: FR-060
+  useCases:
+  - UC-13
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: FR-061
+  useCases:
+  - UC-13
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: BR-001
+  useCases:
+  - UC-04
+  - UC-08
+  - UC-10
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: DR-009
+    kind: rule
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: BR-002
+  useCases:
+  - UC-04
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: DR-009
+    kind: rule
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: BR-003
+  useCases:
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: DR-009
+    kind: rule
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: BR-004
+  useCases:
+  - UC-12
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: DR-009
+    kind: rule
+  - name: plan_version_status
+    kind: enum
+  - name: PlanVersion
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: BR-005
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: DR-003
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: BR-006
+  useCases:
+  - UC-05
+  - UC-10
+  - UC-11
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: DR-010
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: BR-007
+  useCases:
+  - UC-01
+  - UC-05
+  - UC-10
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: DR-010
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: BR-008
+  useCases:
+  - UC-04
+  - UC-05
+  - UC-10
+  domainElements:
+  - name: Constraint
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: DR-001
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: BR-009
+  useCases:
+  - UC-03
+  - UC-10
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: DR-002
+    kind: rule
+  - name: commitment_strength
+    kind: enum
+  - name: Commitment
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: BR-010
+  useCases:
+  - UC-03
+  - UC-10
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: DR-002
+    kind: rule
+  - name: commitment_strength
+    kind: enum
+  - name: Commitment
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: BR-011
+  useCases:
+  - UC-03
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: DR-002
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: BR-012
+  useCases:
+  - UC-01
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: BR-013
+  useCases:
+  - UC-08
+  - UC-12
+  domainElements:
+  - name: Activity
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: Money
+    kind: value_object
+  diagrams: []
+  testCases: []
+- requirementId: BR-014
+  useCases:
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: DR-007
+    kind: rule
+  - name: event_processing_status
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: BR-015
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: replan_scope
+    kind: enum
+  - name: DR-008
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: BR-016
+  useCases:
+  - UC-10
+  - UC-12
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: DR-005
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: BR-017
+  useCases:
+  - UC-06
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: booking_status
+    kind: enum
+  - name: Booking
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: BR-018
+  useCases:
+  - UC-07
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  - name: payment_transaction_status
+    kind: enum
+  - name: PaymentTransaction
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: BR-019
+  useCases:
+  - UC-04
+  - UC-10
+  domainElements:
+  - name: Activity
+    kind: entity
+  - name: Constraint
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: BR-020
+  useCases:
+  - UC-04
+  - UC-10
+  domainElements:
+  - name: Activity
+    kind: entity
+  - name: TravelEstimate
+    kind: value_object
+  - name: Constraint
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: BR-021
+  useCases:
+  - UC-04
+  - UC-05
+  - UC-06
+  - UC-10
+  domainElements:
+  - name: CityService
+    kind: entity
+  - name: Activity
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: service_availability_status
+    kind: enum
+  diagrams: []
+  testCases: []
+- requirementId: BR-022
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: Constraint
+    kind: entity
+  - name: DR-001
+    kind: rule
+  - name: DR-008
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: BR-023
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: DR-004
+    kind: rule
+  - name: proposal_status
+    kind: enum
+  - name: ReplanProposal
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: BR-024
+  useCases:
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  - name: DR-007
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: NFR-001
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-04
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-08
+  - UC-10
+  - UC-11
+  - UC-12
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: NFR-002
+  useCases:
+  - UC-10
+  domainElements:
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: NFR-003
+  useCases:
+  - UC-10
+  - UC-11
+  domainElements:
+  - name: PlanVersion
+    kind: entity
+  - name: DR-006
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: NFR-004
+  useCases:
+  - UC-13
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: NFR-005
+  useCases:
+  - UC-08
+  - UC-13
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: DR-006
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: NFR-006
+  useCases:
+  - UC-10
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  - name: PlanVersion
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: NFR-007
+  useCases:
+  - UC-06
+  - UC-07
+  - UC-08
+  domainElements:
+  - name: Journey
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: Booking
+    kind: state_machine
+  - name: PaymentTransaction
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: NFR-008
+  useCases: []
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: NFR-009
+  useCases:
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-09
+  - UC-11
+  - UC-13
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: NFR-010
+  useCases:
+  - UC-06
+  - UC-07
+  - UC-10
+  - UC-13
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: NFR-011
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-04
+  - UC-05
+  - UC-08
+  - UC-10
+  - UC-12
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: NFR-012
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-04
+  - UC-05
+  - UC-08
+  - UC-10
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: NFR-013
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-04
+  domainElements:
+  - name: Traveler
+    kind: entity
+  - name: Journey
+    kind: entity
+  - name: PlanVersion
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: NFR-014
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-04
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-08
+  - UC-10
+  - UC-11
+  - UC-12
+  - UC-13
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: NFR-015
+  useCases:
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: DR-008
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: NFR-016
+  useCases:
+  - UC-05
+  - UC-10
+  - UC-11
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  - name: ScoreBreakdown
+    kind: value_object
+  - name: DR-005
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: SR-001
+  useCases:
+  - UC-01
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-08
+  - UC-09
+  - UC-10
+  - UC-11
+  - UC-13
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: SR-002
+  useCases:
+  - UC-13
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: SR-003
+  useCases:
+  - UC-07
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: SR-004
+  useCases:
+  - UC-07
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: SR-005
+  useCases:
+  - UC-07
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: SR-006
+  useCases:
+  - UC-01
+  - UC-13
+  domainElements:
+  - name: Traveler
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: SR-007
+  useCases:
+  - UC-13
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: SR-008
+  useCases:
+  - UC-01
+  - UC-02
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-09
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: SR-009
+  useCases:
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: Recommendation
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: SR-010
+  useCases:
+  - UC-13
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: SR-011
+  useCases:
+  - UC-03
+  - UC-07
+  - UC-13
+  domainElements:
+  - name: Commitment
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: SR-012
+  useCases:
+  - UC-01
+  - UC-07
+  - UC-11
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: SR-013
+  useCases:
+  - UC-01
+  - UC-08
+  - UC-11
+  domainElements:
+  - name: Traveler
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: SR-014
+  useCases:
+  - UC-11
+  domainElements:
+  - name: Preference
+    kind: entity
+  - name: JourneyTwin
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: IR-001
+  useCases:
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: IR-002
+  useCases:
+  - UC-02
+  - UC-05
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: GeoPoint
+    kind: value_object
+  diagrams: []
+  testCases: []
+- requirementId: IR-003
+  useCases:
+  - UC-04
+  - UC-05
+  - UC-08
+  - UC-10
+  domainElements:
+  - name: TravelEstimate
+    kind: value_object
+  - name: Activity
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: IR-004
+  useCases:
+  - UC-04
+  - UC-08
+  - UC-10
+  domainElements:
+  - name: TravelEstimate
+    kind: value_object
+  diagrams: []
+  testCases: []
+- requirementId: IR-005
+  useCases:
+  - UC-09
+  domainElements:
+  - name: Event
+    kind: entity
+  - name: ContextSnapshot
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: IR-006
+  useCases:
+  - UC-06
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: IR-007
+  useCases:
+  - UC-07
+  domainElements:
+  - name: PaymentTransaction
+    kind: entity
+  - name: Order
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: state_machine
+  diagrams: []
+  testCases: []
+- requirementId: IR-008
+  useCases:
+  - UC-07
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: IR-009
+  useCases:
+  - UC-11
+  domainElements:
+  - name: Recommendation
+    kind: entity
+  - name: Preference
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: IR-010
+  useCases:
+  - UC-11
+  domainElements:
+  - name: DR-006
+    kind: rule
+  diagrams: []
+  testCases: []
+- requirementId: IR-011
+  useCases:
+  - UC-04
+  - UC-10
+  domainElements:
+  - name: Constraint
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  - name: CandidatePlan
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: IR-012
+  useCases:
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-09
+  domainElements:
+  - name: Place
+    kind: entity
+  - name: CityService
+    kind: entity
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: Event
+    kind: entity
+  diagrams: []
+  testCases: []
+- requirementId: IR-013
+  useCases:
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-09
+  - UC-11
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: IR-014
+  useCases:
+  - UC-05
+  - UC-06
+  - UC-07
+  - UC-09
+  - UC-11
+  domainElements: []
+  diagrams: []
+  testCases: []
+- requirementId: IR-015
+  useCases:
+  - UC-06
+  - UC-07
+  - UC-09
+  - UC-10
+  domainElements:
+  - name: Booking
+    kind: entity
+  - name: PaymentTransaction
+    kind: entity
+  - name: Event
+    kind: entity
+  - name: ReplanProposal
+    kind: entity
+  diagrams: []
+  testCases: []

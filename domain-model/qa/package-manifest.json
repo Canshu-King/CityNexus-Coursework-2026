@@ -1,0 +1,50 @@
+{
+  "package": "CityNexus Domain Model v0.4.1 RC2",
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "6207bf0cc19ed8cab383d9ca5075d56acc399be16cc7c180c7a1a19e3536e7c5",
+      "bytes": 4852
+    },
+    {
+      "path": "README.md",
+      "sha256": "b94e3fe27761bfa4ae30f5bf11e6c37aa3712a1c7e3f5116a33c64e41901dcd9",
+      "bytes": 2828
+    },
+    {
+      "path": "citynexus-core-domain-model-v0.4.1.yaml",
+      "sha256": "3fe1ae670ba50f60b0dc1b406a5a8a8e31110f07fb05bd9a110176f2fc6efd14",
+      "bytes": 35920
+    },
+    {
+      "path": "citynexus-domain-model.schema.json",
+      "sha256": "22879dd7c4fa29fec0e10b7c17517a5dfee38dbbb5536486101609c07552a817",
+      "bytes": 15718
+    },
+    {
+      "path": "qa/domain-model-v0.4.1-report.json",
+      "sha256": "804193e07c8603e7fc31dc90f501111b6f4c10a81c3410280acabc23906449a3",
+      "bytes": 4147
+    },
+    {
+      "path": "qa/model-diff-v0.4-to-v0.4.1.json",
+      "sha256": "2773064b6a2c89c8735b15a099aefe1b99efdf808e981def9ec6a6c08783f745",
+      "bytes": 19421
+    },
+    {
+      "path": "qa/validator-self-test.json",
+      "sha256": "158a18612f9b35e5a92428efe90e8889b62792bf3fcf36ae853b4cf13382e28b",
+      "bytes": 548
+    },
+    {
+      "path": "scripts/self-test-validator.py",
+      "sha256": "050848e98dc91d4ee24782e111e7d1c404f54626cd36755b5ef543c5e58890f3",
+      "bytes": 4124
+    },
+    {
+      "path": "scripts/validate-domain-model.py",
+      "sha256": "124160551145b6b286da5249fb66eb69a740877caf97c09ede8c2d8bef35ff05",
+      "bytes": 20042
+    }
+  ]
+}

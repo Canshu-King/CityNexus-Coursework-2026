@@ -1,0 +1,39 @@
+/* ORD-0455 -- the estimation ladder. Own file so `frontend/src/styles.css` is not a merge point: the
+ * current 禁改墙 already has three orders queued against it.
+ *
+ * Layout only. No colour is set here, so every rung inherits the panel's own text colour and this
+ * batch cannot move a contrast reading the dark-mode gate already holds. No control is sized from
+ * its label either -- there is no control on this ladder; the 给补救 rung names the door in words and
+ * the traveller uses the nav strip to reach it. */
+
+.cnx-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 10px 0 0;
+  list-style: none;
+  border-top: 1px solid rgb(255 255 255 / 8%);
+}
+
+.cnx-ladder-rung {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: baseline;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.cnx-ladder-tier {
+  flex: 0 0 auto;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.cnx-ladder-said {
+  flex: 1 1 220px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

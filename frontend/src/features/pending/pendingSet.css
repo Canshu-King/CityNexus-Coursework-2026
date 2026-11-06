@@ -1,0 +1,203 @@
+/* ORD-0445 -- the 待规划 screen. Its own file, same reason as ORD-0384's band and ORD-0402's bin:
+   the shared token sheet is edited by other lanes, and every value here is read from it, never
+   redefined. */
+.cn-pending {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 16px 18px 18px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-card);
+  background: var(--v8-panel);
+}
+.cn-pending-head { display: grid; gap: 6px; }
+.cn-pending-note,
+.cn-pending-rule {
+  margin: 0;
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+.cn-pending-notice p {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  overflow-wrap: anywhere;
+}
+
+/* Count and the filter entry on one line: the number is what a traveller reads first, and the
+   sheet is the only thing allowed to change it. */
+.cn-pending-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cn-pending-count {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.cn-pending-filter-open { width: fit-content; }
+
+/* The filter sheet: a list, then 重置 and 完成 (F27's shape). Each row is one button whose whole
+   area is the target, so the count on the right never has to be tapped precisely. */
+.cn-pending-sheet {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--v8-panel);
+}
+.cn-pending-sheet-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.cn-pending-chip {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 4px 10px;
+  width: 100%;
+  padding: 10px 12px;
+  text-align: left;
+  color: var(--v8-ink);
+  background: transparent;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  font-size: var(--cn-fs-body);
+}
+.cn-pending-chip--on { border-color: var(--v8-ink); background: var(--v8-panel); }
+.cn-pending-chip-name { overflow-wrap: anywhere; }
+.cn-pending-chip-sub {
+  grid-column: 1 / -1;
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+.cn-pending-chip-count { font-variant-numeric: tabular-nums; }
+.cn-pending-sheet-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.cn-pending-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.cn-pending-row {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--v8-panel);
+}
+/* A place name is whatever a provider wrote, and the day line carries two ISO dates inside a
+   sentence; both wrap anywhere rather than clipping either. */
+.cn-pending-row-name { color: var(--v8-ink); font-size: var(--cn-fs-body); overflow-wrap: anywhere; }
+.cn-pending-row-cause,
+.cn-pending-row-meta {
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+
+.cn-pending-unknown { display: grid; gap: 8px; }
+.cn-pending-unknown p {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  overflow-wrap: anywhere;
+}
+.cn-pending-empty { display: grid; gap: 8px; }
+.cn-pending-empty-title { margin: 0; color: var(--v8-ink); font-size: var(--cn-fs-body); overflow-wrap: anywhere; }
+.cn-pending-empty-next { margin: 0; color: var(--cn-ink-tertiary); font-size: var(--cn-fs-caption); overflow-wrap: anywhere; }
+.cn-pending-empty-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.cn-pending-details { margin-top: 6px; }
+.cn-pending-details summary { color: var(--cn-ink-tertiary); font-size: var(--cn-fs-caption); }
+.cn-pending-reads,
+.cn-pending-token,
+.cn-pending-facts {
+  margin: 4px 0 0;
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+
+/* ORD-0450 -- the tick, the batch bar and the receipt.
+   The tick is a button, and the shared sheet has a bare `button { width: 100% }` rule (the trap
+   ORD-0435 hit), so its own geometry is declared here rather than inherited. */
+.cn-pending-tick {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 10px;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  color: var(--v8-ink);
+  background: transparent;
+  border: 0;
+  font-size: var(--cn-fs-body);
+}
+.cn-pending-tick-box {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border: 1px solid var(--cn-ink-tertiary);
+  border-radius: var(--cn-r-control);
+}
+.cn-pending-tick--on .cn-pending-tick-box {
+  border-color: var(--v8-ink);
+  background: var(--v8-ink);
+}
+.cn-pending-tick:disabled { opacity: 0.5; }
+
+.cn-pending-batch {
+  display: grid;
+  gap: 8px;
+  padding-top: 2px;
+}
+.cn-pending-batch-count {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  font-variant-numeric: tabular-nums;
+}
+.cn-pending-batch-line,
+.cn-pending-batch-blocked {
+  margin: 0;
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+.cn-pending-batch [data-testid="pending-place-action"] { width: fit-content; }
+
+.cn-pending-receipt {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--v8-panel);
+}
+.cn-pending-receipt p {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  overflow-wrap: anywhere;
+}
+.cn-pending-receipt [data-testid="pending-adopt"],
+.cn-pending-receipt [data-testid="pending-view-days"] { width: fit-content; }
+
+@media (max-width: 680px) {
+  .cn-pending { padding: 14px; }
+  /* Amendment F-2: the >=44px contract belongs to the touch layer, and 筛选 / 完成 / 排进某一天 /
+     改用这版 / 去城市探索 are the primary actions of this screen on a phone. The tick row is a
+     control too -- its own line box is what the thumb hits. */
+  .cn-pending-filter-open,
+  .cn-pending-tick,
+  .cn-pending-batch button,
+  .cn-pending-receipt button,
+  .cn-pending-unknown button,
+  .cn-pending-chip,
+  .cn-pending-sheet-actions button,
+  .cn-pending-empty-actions button { min-height: var(--cn-touch-min); }
+}

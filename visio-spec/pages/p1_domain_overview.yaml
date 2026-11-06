@@ -1,0 +1,248 @@
+pageName: P1_Domain_Overview
+pageWidth: 33.87
+pageHeight: 19.05
+diagramType: uml-class
+title: CityNexus — Core Domain Overview
+subtitle: Smart City Traveler System • Proposed Model Baseline v1.0
+statusTag: PART 1 • SIMPLIFIED
+canvasStyle: canvas
+shapes:
+- id: Traveler
+  type: uml_class
+  x: 8.4
+  y: 5.0
+  width: 4.8
+  height: 1.9
+  text: Traveler
+  styleRef: classDefault
+  masterRef: umlClass
+  fields:
+  - travelerId
+- id: Journey
+  type: uml_class
+  x: 16.9
+  y: 5.0
+  width: 5.2
+  height: 2.1
+  text: Journey
+  styleRef: classJourney
+  masterRef: umlClass
+  fields:
+  - lifecycleState
+  - healthStatus
+  stereotype: <<aggregate root>>
+- id: JourneyTwin
+  type: uml_class
+  x: 25.4
+  y: 5.0
+  width: 5.2
+  height: 2.1
+  text: JourneyTwin
+  styleRef: classProjection
+  masterRef: umlClass
+  fields:
+  - healthStatus
+  - riskScore
+  stereotype: <<projection>>
+- id: Commitment
+  type: uml_class
+  x: 8.4
+  y: 8.7
+  width: 4.8
+  height: 1.9
+  text: Commitment
+  styleRef: classDefault
+  masterRef: umlClass
+  fields:
+  - strength
+- id: PlanVersion
+  type: uml_class
+  x: 16.9
+  y: 8.7
+  width: 4.8
+  height: 1.9
+  text: PlanVersion
+  styleRef: classDefault
+  masterRef: umlClass
+  fields:
+  - versionNumber
+  - status
+- id: Event
+  type: uml_class
+  x: 25.4
+  y: 8.7
+  width: 4.8
+  height: 1.9
+  text: Event
+  styleRef: classEvent
+  masterRef: umlClass
+  fields:
+  - kind
+  - impactLevel
+- id: Constraint
+  type: uml_class
+  x: 8.4
+  y: 12.4
+  width: 4.8
+  height: 1.9
+  text: Constraint
+  styleRef: classDefault
+  masterRef: umlClass
+  fields:
+  - severity
+- id: Activity
+  type: uml_class
+  x: 16.9
+  y: 12.4
+  width: 4.8
+  height: 1.9
+  text: Activity
+  styleRef: classDefault
+  masterRef: umlClass
+  fields:
+  - plannedWindow
+  - status
+- id: ReplanProposal
+  type: uml_class
+  x: 25.4
+  y: 12.4
+  width: 4.8
+  height: 1.9
+  text: ReplanProposal
+  styleRef: classPlanning
+  masterRef: umlClass
+  fields:
+  - replanScope
+  - status
+- id: Place
+  type: uml_class
+  x: 12.6
+  y: 15.8
+  width: 4.8
+  height: 1.9
+  text: Place
+  styleRef: classCommerce
+  masterRef: umlClass
+  fields:
+  - providerPlaceId
+  - category
+- id: CityService
+  type: uml_class
+  x: 21.2
+  y: 15.8
+  width: 4.8
+  height: 1.9
+  text: CityService
+  styleRef: classCommerce
+  masterRef: umlClass
+  fields:
+  - category
+  - availabilityStatus
+connectors:
+- id: D-T-J
+  type: association
+  source: Traveler
+  target: Journey
+  styleRef: association
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: D-J-PV
+  type: composition
+  source: Journey
+  target: PlanVersion
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: D-PV-A
+  type: composition
+  source: PlanVersion
+  target: Activity
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: D-J-CM
+  type: composition
+  source: Journey
+  target: Commitment
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: D-J-CN
+  type: composition
+  source: Journey
+  target: Constraint
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: D-J-E
+  type: composition
+  source: Journey
+  target: Event
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: D-J-RP
+  type: composition
+  source: Journey
+  target: ReplanProposal
+  styleRef: keyRelation
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: D-A-P
+  type: association
+  source: Activity
+  target: Place
+  styleRef: association
+  sourceMultiplicity: 0..*
+  targetMultiplicity: 0..1
+- id: D-A-CS
+  type: association
+  source: Activity
+  target: CityService
+  styleRef: association
+  sourceMultiplicity: 0..*
+  targetMultiplicity: 0..1
+- id: D-P-CS
+  type: association
+  source: Place
+  target: CityService
+  styleRef: association
+  sourceMultiplicity: '1'
+  targetMultiplicity: 0..*
+- id: DEP-JT-Journey
+  type: dependency
+  source: JourneyTwin
+  target: Journey
+  styleRef: dependency
+  label: <<projects from>>
+- id: DEP-JT-PlanVersion
+  type: dependency
+  source: JourneyTwin
+  target: PlanVersion
+  styleRef: dependency
+  label: <<projects from>>
+- id: DEP-JT-Commitment
+  type: dependency
+  source: JourneyTwin
+  target: Commitment
+  styleRef: dependency
+  label: <<projects from>>
+- id: DEP-JT-Event
+  type: dependency
+  source: JourneyTwin
+  target: Event
+  styleRef: dependency
+  label: <<projects from>>
+legend:
+  x: 27.0
+  y: 17.6
+  width: 5.5
+  height: 1.1
+  items:
+  - Association
+  - Composition
+  - Dependency
+  - Multiplicity
+  - <<projection>>
+zones: []
+notes: []

@@ -1,0 +1,937 @@
+{
+  "fromVersion": "0.4",
+  "toVersion": "0.4.1",
+  "entityCount": {
+    "before": 18,
+    "after": 18
+  },
+  "valueObjectCount": {
+    "before": 5,
+    "after": 6
+  },
+  "relationshipCount": {
+    "before": 37,
+    "after": 37
+  },
+  "relationshipDiff": {
+    "added": [
+      {
+        "source": "Commitment",
+        "target": "Activity",
+        "type": "association",
+        "role": "binds_to_activity",
+        "multiplicity": {
+          "source": "0..*",
+          "target": "0..1"
+        }
+      },
+      {
+        "source": "Journey",
+        "target": "Place",
+        "type": "association",
+        "role": "final_destination",
+        "multiplicity": {
+          "source": "0..*",
+          "target": "1"
+        }
+      },
+      {
+        "source": "Journey",
+        "target": "Place",
+        "type": "association",
+        "role": "origin",
+        "multiplicity": {
+          "source": "0..*",
+          "target": "1"
+        }
+      },
+      {
+        "source": "JourneyTwin",
+        "target": "Constraint",
+        "type": "dependency",
+        "role": "projects_from",
+        "multiplicity": null
+      },
+      {
+        "source": "Preference",
+        "target": "Journey",
+        "type": "association",
+        "role": "scoped_to_journey",
+        "multiplicity": {
+          "source": "0..*",
+          "target": "0..1"
+        }
+      }
+    ],
+    "removed": [
+      {
+        "source": "Activity",
+        "target": "Commitment",
+        "type": "association",
+        "role": "may_create",
+        "multiplicity": {
+          "source": "0..*",
+          "target": "0..1"
+        }
+      },
+      {
+        "source": "Booking",
+        "target": "PaymentTransaction",
+        "type": "association",
+        "role": "settled_by",
+        "multiplicity": {
+          "source": "0..*",
+          "target": "0..*"
+        }
+      },
+      {
+        "source": "Commitment",
+        "target": "PaymentTransaction",
+        "type": "association",
+        "role": "paid_by",
+        "multiplicity": {
+          "source": "0..*",
+          "target": "0..*"
+        }
+      },
+      {
+        "source": "Order",
+        "target": "PaymentTransaction",
+        "type": "association",
+        "role": "settled_by",
+        "multiplicity": {
+          "source": "0..*",
+          "target": "0..*"
+        }
+      },
+      {
+        "source": "PlanVersion",
+        "target": "ReplanProposal",
+        "type": "association",
+        "role": "proposed_by_or_for",
+        "multiplicity": {
+          "source": "0..*",
+          "target": "0..1"
+        }
+      }
+    ],
+    "multiplicityChanged": [
+      {
+        "source": "CandidatePlan",
+        "target": "PlanVersion",
+        "type": "association",
+        "role": "references",
+        "before": {
+          "source": "0..*",
+          "target": "1"
+        },
+        "after": {
+          "source": "0..1",
+          "target": "1"
+        }
+      },
+      {
+        "source": "Commitment",
+        "target": "Booking",
+        "type": "association",
+        "role": "realised_by",
+        "before": {
+          "source": "0..*",
+          "target": "0..1"
+        },
+        "after": {
+          "source": "0..1",
+          "target": "0..1"
+        }
+      },
+      {
+        "source": "PlanVersion",
+        "target": "Activity",
+        "type": "composition",
+        "role": "contains",
+        "before": {
+          "source": "1",
+          "target": "1..*"
+        },
+        "after": {
+          "source": "1",
+          "target": "0..*"
+        }
+      },
+      {
+        "source": "ReplanProposal",
+        "target": "CandidatePlan",
+        "type": "composition",
+        "role": "candidates",
+        "before": {
+          "source": "1",
+          "target": "1..*"
+        },
+        "after": {
+          "source": "1",
+          "target": "0..*"
+        }
+      },
+      {
+        "source": "ReplanProposal",
+        "target": "PlanVersion",
+        "type": "association",
+        "role": "base_plan",
+        "before": {
+          "source": "0..*",
+          "target": "0..1"
+        },
+        "after": {
+          "source": "0..*",
+          "target": "1"
+        }
+      }
+    ]
+  },
+  "valueObjects": {
+    "added": [
+      "OpportunityWindow"
+    ],
+    "removed": []
+  },
+  "fieldChanges": [
+    {
+      "entity": "Activity",
+      "field": "actualCost",
+      "change": "added",
+      "after": {
+        "type": "valueObjectRef",
+        "required": false,
+        "ref": "Money"
+      }
+    },
+    {
+      "entity": "Activity",
+      "field": "estimatedCost",
+      "change": "added",
+      "after": {
+        "type": "valueObjectRef",
+        "required": false,
+        "ref": "Money"
+      }
+    },
+    {
+      "entity": "CandidatePlan",
+      "field": "affectedCommitmentCount",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    {
+      "entity": "CandidatePlan",
+      "field": "costDelta",
+      "change": "added",
+      "after": {
+        "type": "valueObjectRef",
+        "required": false,
+        "ref": "Money"
+      }
+    },
+    {
+      "entity": "CandidatePlan",
+      "field": "endArrivalDeltaMinutes",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": false
+      }
+    },
+    {
+      "entity": "CandidatePlan",
+      "field": "preservedCommitmentCount",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    {
+      "entity": "CandidatePlan",
+      "field": "travelTimeDeltaMinutes",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": false
+      }
+    },
+    {
+      "entity": "CandidatePlan",
+      "field": "walkingDistanceDeltaMeters",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": false
+      }
+    },
+    {
+      "entity": "CandidatePlan",
+      "field": "planVersion",
+      "change": "modified",
+      "before": {
+        "type": "entityRef",
+        "required": true,
+        "ref": "PlanVersion"
+      },
+      "after": {
+        "type": "entityRef",
+        "required": true,
+        "ref": "PlanVersion",
+        "relationshipRole": "references"
+      }
+    },
+    {
+      "entity": "Commitment",
+      "field": "sourceReferenceId",
+      "change": "added",
+      "after": {
+        "type": "string",
+        "required": false
+      }
+    },
+    {
+      "entity": "Commitment",
+      "field": "sourceReference",
+      "change": "removed",
+      "before": {
+        "type": "string",
+        "required": false
+      }
+    },
+    {
+      "entity": "Constraint",
+      "field": "violationPenalty",
+      "change": "added",
+      "after": {
+        "type": "decimal",
+        "required": false
+      }
+    },
+    {
+      "entity": "Constraint",
+      "field": "weight",
+      "change": "added",
+      "after": {
+        "type": "decimal",
+        "required": false
+      }
+    },
+    {
+      "entity": "Constraint",
+      "field": "kind",
+      "change": "modified",
+      "before": {
+        "type": "string",
+        "required": true
+      },
+      "after": {
+        "type": "enumRef",
+        "required": true,
+        "enumRef": "constraint_kind"
+      }
+    },
+    {
+      "entity": "Constraint",
+      "field": "relaxationPolicy",
+      "change": "modified",
+      "before": {
+        "type": "string",
+        "required": false
+      },
+      "after": {
+        "type": "enumRef",
+        "required": true,
+        "enumRef": "constraint_relaxation_policy"
+      }
+    },
+    {
+      "entity": "ContextSnapshot",
+      "field": "dataQualityScore",
+      "change": "added",
+      "after": {
+        "type": "decimal",
+        "required": true
+      }
+    },
+    {
+      "entity": "ContextSnapshot",
+      "field": "delayMinutes",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    {
+      "entity": "ContextSnapshot",
+      "field": "walkingDistanceTodayMeters",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    {
+      "entity": "ContextSnapshot",
+      "field": "delays",
+      "change": "removed",
+      "before": {
+        "type": "string",
+        "required": false
+      }
+    },
+    {
+      "entity": "ContextSnapshot",
+      "field": "sourceReferences",
+      "change": "modified",
+      "before": {
+        "type": "array",
+        "required": false
+      },
+      "after": {
+        "type": "array",
+        "required": false,
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "entity": "Journey",
+      "field": "finalDestinationPlaceId",
+      "change": "added",
+      "after": {
+        "type": "entityRef",
+        "required": true,
+        "ref": "Place",
+        "relationshipRole": "final_destination"
+      }
+    },
+    {
+      "entity": "Journey",
+      "field": "originPlaceId",
+      "change": "added",
+      "after": {
+        "type": "entityRef",
+        "required": true,
+        "ref": "Place",
+        "relationshipRole": "origin"
+      }
+    },
+    {
+      "entity": "JourneyTwin",
+      "field": "currentActivityId",
+      "change": "added",
+      "after": {
+        "type": "entityRef",
+        "required": false,
+        "ref": "Activity"
+      }
+    },
+    {
+      "entity": "JourneyTwin",
+      "field": "delayMinutes",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    {
+      "entity": "JourneyTwin",
+      "field": "nextActivityId",
+      "change": "added",
+      "after": {
+        "type": "entityRef",
+        "required": false,
+        "ref": "Activity"
+      }
+    },
+    {
+      "entity": "JourneyTwin",
+      "field": "nextHardCommitmentId",
+      "change": "added",
+      "after": {
+        "type": "entityRef",
+        "required": false,
+        "ref": "Commitment"
+      }
+    },
+    {
+      "entity": "JourneyTwin",
+      "field": "opportunityWindow",
+      "change": "added",
+      "after": {
+        "type": "valueObjectRef",
+        "required": false,
+        "ref": "OpportunityWindow"
+      }
+    },
+    {
+      "entity": "JourneyTwin",
+      "field": "riskScore",
+      "change": "added",
+      "after": {
+        "type": "decimal",
+        "required": true
+      }
+    },
+    {
+      "entity": "JourneyTwin",
+      "field": "walkingDistanceTodayMeters",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": true
+      }
+    },
+    {
+      "entity": "Order",
+      "field": "items",
+      "change": "modified",
+      "before": {
+        "type": "array",
+        "required": true
+      },
+      "after": {
+        "type": "array",
+        "required": true,
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "entity": "PaymentTransaction",
+      "field": "capturedAt",
+      "change": "added",
+      "after": {
+        "type": "datetime",
+        "required": false
+      }
+    },
+    {
+      "entity": "PaymentTransaction",
+      "field": "createdAt",
+      "change": "added",
+      "after": {
+        "type": "datetime",
+        "required": true
+      }
+    },
+    {
+      "entity": "PaymentTransaction",
+      "field": "providerTransactionId",
+      "change": "added",
+      "after": {
+        "type": "string",
+        "required": false
+      }
+    },
+    {
+      "entity": "PaymentTransaction",
+      "field": "updatedAt",
+      "change": "added",
+      "after": {
+        "type": "datetime",
+        "required": true
+      }
+    },
+    {
+      "entity": "Place",
+      "field": "availabilityWindows",
+      "change": "added",
+      "after": {
+        "type": "array",
+        "required": false,
+        "items": {
+          "type": "valueObjectRef",
+          "ref": "TimeWindow"
+        }
+      }
+    },
+    {
+      "entity": "PlanVersion",
+      "field": "expectedEndAt",
+      "change": "added",
+      "after": {
+        "type": "datetime",
+        "required": false
+      }
+    },
+    {
+      "entity": "PlanVersion",
+      "field": "totalEstimatedCost",
+      "change": "added",
+      "after": {
+        "type": "valueObjectRef",
+        "required": false,
+        "ref": "Money"
+      }
+    },
+    {
+      "entity": "PlanVersion",
+      "field": "totalTravelTimeMinutes",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": false
+      }
+    },
+    {
+      "entity": "PlanVersion",
+      "field": "totalWalkingDistanceMeters",
+      "change": "added",
+      "after": {
+        "type": "integer",
+        "required": false
+      }
+    },
+    {
+      "entity": "PlanVersion",
+      "field": "feasibility",
+      "change": "modified",
+      "before": {
+        "type": "boolean",
+        "required": true
+      },
+      "after": {
+        "type": "boolean",
+        "required": false
+      }
+    },
+    {
+      "entity": "PlanVersion",
+      "field": "score",
+      "change": "modified",
+      "before": {
+        "type": "decimal",
+        "required": true
+      },
+      "after": {
+        "type": "decimal",
+        "required": false
+      }
+    },
+    {
+      "entity": "Preference",
+      "field": "journeyId",
+      "change": "modified",
+      "before": {
+        "type": "entityRef",
+        "required": false,
+        "ref": "Journey"
+      },
+      "after": {
+        "type": "entityRef",
+        "required": false,
+        "ref": "Journey",
+        "relationshipRole": "scoped_to_journey"
+      }
+    },
+    {
+      "entity": "Recommendation",
+      "field": "generatedAt",
+      "change": "added",
+      "after": {
+        "type": "datetime",
+        "required": true
+      }
+    },
+    {
+      "entity": "Recommendation",
+      "field": "evidence",
+      "change": "modified",
+      "before": {
+        "type": "array",
+        "required": true
+      },
+      "after": {
+        "type": "array",
+        "required": true,
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "entity": "Recommendation",
+      "field": "expiresAt",
+      "change": "modified",
+      "before": {
+        "type": "datetime",
+        "required": false
+      },
+      "after": {
+        "type": "datetime",
+        "required": true
+      }
+    },
+    {
+      "entity": "Recommendation",
+      "field": "placeId",
+      "change": "modified",
+      "before": {
+        "type": "entityRef",
+        "required": true,
+        "ref": "Place"
+      },
+      "after": {
+        "type": "entityRef",
+        "required": true,
+        "ref": "Place",
+        "relationshipRole": "for_place"
+      }
+    },
+    {
+      "entity": "Recommendation",
+      "field": "serviceId",
+      "change": "modified",
+      "before": {
+        "type": "entityRef",
+        "required": false,
+        "ref": "CityService"
+      },
+      "after": {
+        "type": "entityRef",
+        "required": false,
+        "ref": "CityService",
+        "relationshipRole": "for_service"
+      }
+    },
+    {
+      "entity": "ReplanProposal",
+      "field": "affectedActivityIds",
+      "change": "added",
+      "after": {
+        "type": "array",
+        "required": false,
+        "items": {
+          "type": "entityRef",
+          "ref": "Activity"
+        }
+      }
+    },
+    {
+      "entity": "ReplanProposal",
+      "field": "affectedConstraintIds",
+      "change": "added",
+      "after": {
+        "type": "array",
+        "required": false,
+        "items": {
+          "type": "entityRef",
+          "ref": "Constraint"
+        }
+      }
+    },
+    {
+      "entity": "ReplanProposal",
+      "field": "affectedCommitmentIds",
+      "change": "modified",
+      "before": {
+        "type": "array",
+        "required": false
+      },
+      "after": {
+        "type": "array",
+        "required": false,
+        "items": {
+          "type": "entityRef",
+          "ref": "Commitment"
+        }
+      }
+    },
+    {
+      "entity": "ReplanProposal",
+      "field": "basePlanVersionId",
+      "change": "modified",
+      "before": {
+        "type": "entityRef",
+        "required": true,
+        "ref": "PlanVersion"
+      },
+      "after": {
+        "type": "entityRef",
+        "required": true,
+        "ref": "PlanVersion",
+        "relationshipRole": "base_plan"
+      }
+    },
+    {
+      "entity": "ReplanProposal",
+      "field": "summaryRationale",
+      "change": "modified",
+      "before": {
+        "type": "string",
+        "required": true
+      },
+      "after": {
+        "type": "string",
+        "required": false
+      }
+    },
+    {
+      "entity": "ReplanProposal",
+      "field": "triggerEventIds",
+      "change": "modified",
+      "before": {
+        "type": "array",
+        "required": true
+      },
+      "after": {
+        "type": "array",
+        "required": true,
+        "items": {
+          "type": "entityRef",
+          "ref": "Event"
+        }
+      }
+    },
+    {
+      "entity": "Traveler",
+      "field": "budgetPreference",
+      "change": "removed",
+      "before": {
+        "type": "valueObjectRef",
+        "required": false,
+        "ref": "Money"
+      }
+    },
+    {
+      "entity": "Traveler",
+      "field": "walkingTolerance",
+      "change": "removed",
+      "before": {
+        "type": "integer",
+        "required": false
+      }
+    }
+  ],
+  "enumChanges": [
+    {
+      "enum": "activity_status",
+      "before": [
+        "proposed",
+        "scheduled",
+        "in_progress",
+        "completed",
+        "skipped",
+        "cancelled"
+      ],
+      "after": [
+        "proposed",
+        "scheduled",
+        "in_progress",
+        "completed",
+        "skipped",
+        "cancelled",
+        "failed"
+      ]
+    },
+    {
+      "enum": "booking_status",
+      "before": [
+        "pending",
+        "confirmed",
+        "cancelled",
+        "fulfilled",
+        "expired"
+      ],
+      "after": [
+        "requested",
+        "held",
+        "confirmed",
+        "fulfilled",
+        "cancelled",
+        "expired"
+      ]
+    },
+    {
+      "enum": "constraint_kind",
+      "before": null,
+      "after": [
+        "temporal",
+        "spatial",
+        "availability",
+        "precedence",
+        "commitment",
+        "budget",
+        "mobility",
+        "preference",
+        "capacity",
+        "risk"
+      ]
+    },
+    {
+      "enum": "constraint_relaxation_policy",
+      "before": null,
+      "after": [
+        "never",
+        "exception_only",
+        "weighted_penalty"
+      ]
+    },
+    {
+      "enum": "order_status",
+      "before": [
+        "pending",
+        "confirmed",
+        "preparing",
+        "ready",
+        "completed",
+        "cancelled"
+      ],
+      "after": [
+        "created",
+        "accepted",
+        "preparing",
+        "ready",
+        "completed",
+        "cancelled"
+      ]
+    },
+    {
+      "enum": "payment_transaction_status",
+      "before": [
+        "initiated",
+        "authorised",
+        "failed",
+        "refunded"
+      ],
+      "after": [
+        "initiated",
+        "authenticating",
+        "authorised",
+        "captured",
+        "failed",
+        "refunded",
+        "partially_refunded"
+      ]
+    },
+    {
+      "enum": "proposal_status",
+      "before": [
+        "draft",
+        "awaiting_confirmation",
+        "accepted",
+        "rejected",
+        "superseded",
+        "expired"
+      ],
+      "after": [
+        "draft",
+        "awaiting_confirmation",
+        "accepted",
+        "rejected",
+        "expired"
+      ]
+    }
+  ]
+}

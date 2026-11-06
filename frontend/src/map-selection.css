@@ -1,0 +1,265 @@
+/*
+ * ORD-0390 — the map is a surface you can pick things on, so a marker has to look pickable and the
+ * selection has to be visible on both halves of the screen at once.
+ *
+ * Selectors are deliberately deeper than `styles.css` (`.v9-map-marker`) so they win on
+ * specificity rather than on import order, and colours come from the existing `--cn-*` / `--v8-*`
+ * tokens: the ring is the same accent the product already uses for "this one", so a selected pin
+ * does not introduce a fourth meaning for a colour.
+ */
+
+.v8-map-panel .v9-map-marker {
+  cursor: pointer;
+}
+
+/* Keyboard reachability: the markers are real buttons now, so focus has to be as visible as the
+   press state. `:focus-visible` keeps it off pointer clicks. */
+.v8-map-panel .v9-map-marker:focus-visible {
+  outline: 2px solid var(--v8-indigo);
+  outline-offset: 2px;
+}
+
+/*
+ * ORD-0497 — the footprint on the pin: solid and dated for a stop this trip's read carried a stamp
+ * for, hollow for one it did not.
+ *
+ * Deliberately placed ABOVE `.selected` and below `.v9-map-marker` in `styles.css`:
+ *   - deeper than `styles.css`'s single-class rules, so it wins without depending on import order
+ *     (the same reason this file exists, per its header);
+ *   - shallower than, and earlier than, `.v8-map-panel .v9-map-marker.selected`, so a pin that is
+ *     both hollow and selected keeps the selection ring -- the stamp claim is about the server, the
+ *     ring is about where the traveller's finger is, and neither is allowed to erase the other.
+ *
+ * Colour comes from the tokens this file already uses (`--cn-surface` / `--v8-indigo` / `--v8-ink`),
+ * which is the pairing `.v8-map-stop` ships in both schemes -- no new colour, so the dark audit has
+ * nothing fresh to fail on. The fill, not the outline, is the claim: `.current`'s scale and
+ * `.disrupted`'s pulse stay plan status, and a stamped pin is told apart by its date badge as well as
+ * its fill, so a surface that never asked (`footprints = null`) cannot be mistaken for "all visited".
+ *
+ * `.filtered-out` hides by visibility and never by removal:
+ * `e2e/qoder-map-ord0390-selection-both-ways.spec.ts` and
+ * `e2e/qoder-ord0394-map-coordinates.spec.ts` count pins as the proof that every located stop is
+ * pickable, and ORD-0453 already ruled that a constrained view on this surface is a clip, not a
+ * deletion.
+ */
+.v8-map-panel .v9-map-marker.un-stamped {
+  border-color: var(--v8-indigo);
+  background: var(--cn-surface);
+  color: var(--v8-ink);
+}
+
+.v8-map-panel .v9-map-marker.filtered-out {
+  visibility: hidden;
+}
+
+/* The day the server recorded, under the pin and beside nothing else. Its own marker rather than a
+   child of the pin, because `e2e/qoder-map-ord0403-named-control-and-labels.spec.ts` asserts a
+   pin paints only its stop number; date-only because that gate's `clock-time` rule
+   (`e2e/_mapLabelRules.ts`) forbids a time on the glass. `pointer-events: none` is not
+   decorative: an element that swallows a tap here would take the pin's hit test with it, which is
+   what `e2e/qoder-ord0417-tap-names-the-stop.spec.ts` measures at four widths. */
+.v8-map-panel .v8-map-stamp-date {
+  padding: 1px 5px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-surface);
+  color: var(--v8-ink);
+  box-shadow: 0 2px 6px #17294533;
+  font-size: var(--cn-fs-caption);
+  font-weight: 750;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.v8-map-panel .v9-map-marker.selected {
+  box-shadow: 0 0 0 3px var(--cn-surface), 0 0 0 6px var(--v8-indigo);
+}
+
+/* The stop rows beside the map (the reverse half: row → camera). Name only — a duration or a price
+   here would put the two surfaces back into disagreement about what a "selected stop" shows. */
+.v8-map-page-grid .v8-map-stops {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cn-s-8);
+  margin-top: var(--cn-s-12);
+}
+
+.v8-map-page-grid .v8-map-stops .v8-kicker {
+  flex-basis: 100%;
+}
+
+.v8-map-page-grid .v8-map-stop {
+  min-height: 32px;
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-surface);
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  text-align: left;
+  cursor: pointer;
+}
+
+.v8-map-page-grid .v8-map-stop.selected {
+  border-color: var(--v8-indigo);
+  color: var(--v8-indigo);
+  font-weight: 750;
+}
+
+.v8-map-page-grid .v8-map-stop:focus-visible {
+  outline: 2px solid var(--v8-indigo);
+  outline-offset: 2px;
+}
+
+.v8-map-selected-type {
+  margin: var(--cn-s-8) 0 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+}
+
+/* ORD-0417 — the selected stop's own name, on the map glass.
+
+   Inline, inside `.v8-map-caption`, and that placement is the whole design decision.
+
+   The bottom band (`.v8-map-overlay-stack`, `map-attribution.css`) is the box `MapPanel` measures
+   its `fitBounds` bottom padding against -- once, when the map is built, with nothing selected -- and
+   it leaves `safetyGap` 16 px between the band's top edge and the framing.  So anything that raises
+   that top edge moves it into ground the camera was promised: measured on this lane's own gate, a
+   cell added as another block in the stack covered a pin at 390x844 that the untouched tip leaves
+   clear, and a permanently reserved two-line cell did the same at every shape because the reserve
+   itself is the height increase.  Laid out as text within the line box the caption already owns, the
+   band's height moves only when the sentence needs a line of its own, which the gate measures at all
+   four shapes instead of assuming.
+
+   `.v8-map-overlay-stack` is `pointer-events: none`, so the band swallows no drag (the ORD-0134
+   failure) and blocks no hit-test -- `elementFromPoint` at a pin's centre still returns the pin,
+   which `e2e/qoder-ord0417-tap-names-the-stop.spec.ts` measures rather than assumes.
+
+   Colour follows `styles.css`'s own `.v8-map-caption b`, which is already `var(--v8-indigo)`
+   inside this box: no new token, and the caption's existing dark binding
+   (`design-tokens.css`) keeps the surrounding text legible without a rule for this span.
+   `overflow-wrap: anywhere` is the ORD-0407 C7 lesson -- a long provider name must not widen the
+   panel at 320 px. */
+.v8-map-panel .v8-map-caption .v8-map-selected-stop {
+  margin-inline-end: var(--cn-s-8);
+  color: var(--v8-indigo);
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+
+/*
+ * ORD-0453 — the third state of a long stop list: pressed down, masked, and saying so.
+ *
+ * Three rules, and the reason each exists is measurable rather than decorative:
+ *   `.v8-map-stops` is the box whose `max-height` is set from the laid-out chip after the last one it
+ *   shows (see `measurePressed` in `V8Experience.tsx`), with `overflow: hidden` so the cut is a cut.
+ *   It is a height clip, not a deletion: every located stop keeps its row in the document, because
+ *   `e2e/qoder-map-ord0390-selection-both-ways.spec.ts` and
+ *   `e2e/qoder-ord0394-map-coordinates.spec.ts` count those rows as the proof that a pinned stop
+ *   can be picked, and a collapse that removed nodes would read 4 against 9 pins there.
+ *   `align-content: flex-start` keeps the chip lines at their own height instead of squeezing five
+ *   lines into the clipped box.
+ *   `.v8-map-stops-capture` is a real `<button>`, present in BOTH states, so a centre hit-test lands on
+ *   something that answers in each. It is also the only opener: a tap on the glass costs
+ *   `e2e/qoder-ord0417-tap-names-the-stop.spec.ts` its control count, measured, see the note in
+ *   `V8Experience.tsx`.
+ *   `.v8-map-stops-mask` hangs above that button (`bottom: 100%`) onto the clip line, so the fade marks
+ *   the cut without being a second absolute context inside the scrolling box, and stays
+ *   `pointer-events: none` + `aria-hidden` — paint, never a target.
+ * Tokens are the ones this file already uses, so light/dark needs no new colour.
+ */
+.v8-map-page-grid .v8-map-stops-wrap {
+  position: relative;
+}
+
+.v8-map-page-grid .v8-map-stops {
+  position: relative;
+  align-content: flex-start;
+  overflow: hidden;
+}
+
+.v8-map-page-grid .v8-map-stops-capture {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--cn-s-8);
+  min-height: 32px;
+  margin-top: var(--cn-s-8);
+  padding: var(--cn-s-8) var(--cn-s-12);
+  border: 1px dashed var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-surface);
+  color: var(--v8-indigo);
+  font-size: var(--cn-fs-caption);
+  font-weight: 750;
+  text-align: left;
+  cursor: pointer;
+}
+
+.v8-map-page-grid .v8-map-stops-capture:focus-visible {
+  outline: 2px solid var(--v8-indigo);
+  outline-offset: 2px;
+}
+
+/* The mask itself: a fade over the last visible row, so the cut reads as "there is more" instead of
+   "this is the whole list". Never a hit target, never a layout participant. */
+.v8-map-page-grid .v8-map-stops-wrap[data-stops-pressed="true"] .v8-map-stops-mask {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: 26px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, #ffffff00, #ffffff);
+}
+
+.v8-map-page-grid .v8-map-stops-wrap[data-stops-pressed="false"] .v8-map-stops-mask {
+  display: none;
+}
+
+[data-theme="dark"] .v8-map-page-grid .v8-map-stops-wrap[data-stops-pressed="true"] .v8-map-stops-mask {
+  background: linear-gradient(to bottom, #00000000, var(--cn-surface));
+}
+
+
+/* ORD-0497 — the read out loud, in the facts column beside the map.
+ *
+ * Not inside `.v8-map-panel`, and that is the load-bearing choice: the bottom overlay band inside the
+ * panel is the box `MapPanel` measures its `fitBounds` padding against (the note above
+ * `.v8-map-selected-stop`), so a line added there moves ground the camera was promised. This column
+ * is normal document flow and already carries sentences of this kind.
+ *
+ * Both arms borrow the chip shape `.v8-map-stops-capture` ships: same tokens, same min-height, so the
+ * 44px touch floor this project keeps having to re-learn is not reintroduced one control later.
+ */
+.v8-map-page-grid .v8-map-footprint-state {
+  margin: var(--cn-s-12) 0 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+
+.v8-map-page-grid .v8-map-footprint-filter {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--cn-s-8);
+  padding: 0 var(--cn-s-12);
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--cn-surface);
+  color: var(--v8-indigo);
+  font-size: var(--cn-fs-caption);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.v8-map-page-grid .v8-map-footprint-filter[aria-pressed="true"] {
+  border-color: var(--v8-indigo);
+}
+
+.v8-map-page-grid .v8-map-footprint-filter:focus-visible {
+  outline: 2px solid var(--v8-indigo);
+  outline-offset: 2px;
+}

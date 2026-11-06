@@ -1,0 +1,25 @@
+/* ORD-0504 -- the spend face's own sheet. Its own file for the reason every other panel on this tree
+   has one: the shared stylesheet is edited by other lanes, and the values below are read from here. */
+
+/* One line per spend fact, with its three parts held apart. Without this the source name, the amount
+   and the strength word ran into one another on the phone -- "方案里的路段CNY 45.00估算" -- which is
+   the same defect ORD-0474 caught on the share screen from a screenshot rather than from a judge:
+   each part was present and each part had text, so nothing that read the DOM could see the problem.
+   Flex with a gap, and wrapping allowed, because a three-column grid is exactly as wide as the longest
+   currency label and a trip title can be longer than a phone. */
+.cn-spend-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  align-items: baseline;
+}
+.cn-spend-line-source { color: var(--v8-ink); }
+.cn-spend-line-amount {
+  color: var(--v8-ink);
+  font-variant-numeric: tabular-nums;
+  /* A price that wraps mid-number is unreadable, and a currency code separated from its figure reads
+     as two facts instead of one. */
+  white-space: nowrap;
+}
+.cn-spend-line-strength { color: var(--cn-ink-tertiary); }
+.cn-spend-unpriced { color: var(--cn-ink-secondary); }

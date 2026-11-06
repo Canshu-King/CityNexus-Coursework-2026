@@ -1,0 +1,123 @@
+/* ORD-0465 -- the share-receiving screen. Its own sheet, same reason every other panel on this tree
+   has one: the shared token sheet is edited by other lanes, and every value below is read from it
+   rather than redefined. */
+.cn-shared {
+  display: grid;
+  gap: 14px;
+  width: min(760px, 100%);
+  /* Declared, not inherited: this tree has no global `box-sizing` rule -- every component that needs
+     border-box states it on its own (`.v8-sidebar`, `#v8-nav-drawer`, the composer's fields). Without
+     it, `width: 100%` plus this rule's own 28px of padding made the container 418px wide inside a
+     390px column, and the language button at the end of the header row sat 14px off the right edge of
+     a real phone. Measured at dist_r05; the two earlier attempts (a wrapping flex row, then a grid)
+     both left it at exactly the same 404px because neither was the cause. */
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 22px 20px 40px;
+}
+.cn-shared-head {
+  /* A grid, not a wrapping flex row. The first attempt at this was `flex-wrap: wrap`, and it measured
+     the same 404px right edge on a 390px viewport: a flex item cannot shrink below its own text, so
+     the kicker stayed full width and the row simply pushed the button off the end of the column.
+     `1fr auto` gives the sentence the space that is left and gives the button a lane of its own, so
+     neither one decides where the other ends up. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 8px 12px;
+}
+.cn-shared-head .v8-kicker { min-width: 0; overflow-wrap: anywhere; }
+.cn-shared-language { width: fit-content; }
+.cn-shared-title {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-title);
+  font-weight: 700;
+  line-height: var(--cn-lh-tight);
+  /* A trip title is whatever its owner typed. It can be one unbroken token longer than a phone
+     column, and clipping it would hide the one line this screen is about. */
+  overflow-wrap: anywhere;
+}
+.cn-shared-notice {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-card);
+  background: var(--v8-panel);
+  color: var(--v8-ink);
+}
+.cn-shared-notice p { margin: 0; overflow-wrap: anywhere; }
+.cn-shared-details { margin-top: 2px; }
+.cn-shared-details summary {
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+}
+.cn-shared-code-label {
+  margin: 6px 0 0;
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+}
+.cn-shared-details code {
+  color: var(--cn-ink-secondary);
+  font-size: var(--cn-fs-caption);
+  overflow-wrap: anywhere;
+}
+/* One measured row per line. `CnxMeasuredFacts` mounts its fields as inline <span>s and no sheet on
+   this tree styles that class, so on a 390px phone the server's refusal name ran straight into the
+   next label -- "SHARE_GRANT_JOURNEY_IN_RECYCLE_BIN回读的媒体类型 application/json这台设备数到的字节
+   372" -- which is ORD-0474's real reading made unreadable. Seen in this lane's own screenshot of the
+   bin face, not in a judge: the 0474 arm checks each row has text, and they all did. Scoped to this
+   fold rather than fixed on the component, because `JourneyTrashPanel.tsx` mounts the same spans
+   and that screen's layout is not this order's to change. */
+.cn-shared-details .cnx-measured-fact {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.cn-shared-day {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-card);
+  background: var(--v8-panel);
+}
+.cn-shared-day-head {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-card);
+  font-weight: 700;
+}
+.cn-shared-stops { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.cn-shared-stop { display: grid; gap: 2px; }
+.cn-shared-stop-name {
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-body);
+  overflow-wrap: anywhere;
+}
+.cn-shared-stop-meta {
+  color: var(--cn-ink-secondary);
+  font-size: var(--cn-fs-meta);
+}
+.cn-shared-map { display: grid; gap: 8px; }
+.cn-shared-map-head {
+  margin: 0;
+  color: var(--v8-ink);
+  font-size: var(--cn-fs-card);
+  font-weight: 700;
+}
+
+/* Amendment F-2: the >=44px contract belongs to the touch layer, and on this screen the two controls
+   a visitor can actually press are 再读一次 and the language switch. Desktop keeps the 30px the rest
+   of the shell's quiet buttons use, which is set by the shared sheet rather than repeated here.
+   The width is pinned alongside the height because the language button holds a two-letter word: a
+   44px-tall, 17px-wide target satisfies one axis of the contract and fails the other, and the corner
+   of a phone column is where a thumb misses it. */
+@media (max-width: 680px) {
+  .cn-shared { padding: 16px 14px 32px; }
+  .cn-shared .v8-quiet-button {
+    min-width: var(--cn-touch-min);
+    min-height: var(--cn-touch-min);
+    padding-inline: 14px;
+  }
+}

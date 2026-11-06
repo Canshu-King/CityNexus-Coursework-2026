@@ -1,0 +1,48 @@
+[project]
+name = "citynexus-backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.30,<1",
+  "sqlalchemy>=2.0,<3",
+  "alembic>=1.13,<2",
+  "pydantic>=2.8,<3",
+  "pydantic-settings>=2.4,<3",
+  "httpx>=0.27,<1",
+  "tzdata>=2024.1",
+  "rapidfuzz>=3.10,<4",
+  "shapely>=2.0,<3",
+  "icalendar>=6.1,<7",
+]
+
+[project.optional-dependencies]
+solver = [
+  "ortools==9.15.6755",
+]
+dev = [
+  "pytest>=8,<10",
+  "pytest-asyncio>=0.24,<1",
+  "ruff>=0.6,<1",
+]
+push = [
+  "pywebpush>=2,<3",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# `..` is not decoration: twenty `backend/tests/test_v18_hermes_r*_probe.py` files import
+# `scripts.hermes_r*`, and `scripts/` sits at the repository root.  Without it those twenty are
+# `ModuleNotFoundError` at collection on any tree that is not already inside a working copy -- a fresh
+# clone, a `git archive` export, a new lane worktree, the landing gate's root-test leg, and future CI.
+# Lanes did not see it because their cwd happened to put the root on sys.path.
+pythonpath = [".", "../agent-mcp", ".."]
+markers = ["integration: optional tests that require an explicitly configured live provider"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+# FastAPI's dependency injection and the imported package reference module use
+# these patterns deliberately.
+ignore = ["B008", "RUF007", "UP017", "UP035"]

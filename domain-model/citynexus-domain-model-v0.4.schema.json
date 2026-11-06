@@ -1,0 +1,25 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://citynexus.local/schema/domain-model-v0.4.json",
+  "title":"CityNexus Core Domain Model v0.4",
+  "type":"object",
+  "required":["model","value_objects","entities","enums","state_machines","business_rules","replanning_score","traceability"],
+  "properties":{
+    "model":{"type":"object","required":["id","version","status","official_project","product"],"properties":{"id":{"const":"CN-DM-004"},"version":{"const":0.4},"status":{"const":"release-candidate"},"official_project":{"const":"Smart City Traveler System"},"product":{"const":"CityNexus"}},"additionalProperties":true},
+    "value_objects":{"type":"object","minProperties":1,"additionalProperties":{"$ref":"#/$defs/valueObject"}},
+    "entities":{"type":"object","minProperties":1,"additionalProperties":{"$ref":"#/$defs/entity"}},
+    "enums":{"type":"object","minProperties":1,"additionalProperties":{"type":"array","minItems":1,"items":{"type":"string"}}},
+    "state_machines":{"type":"object","additionalProperties":{"$ref":"#/$defs/stateMachine"}},
+    "business_rules":{"type":"array","minItems":1,"items":{"type":"object","required":["id","name","rule"],"properties":{"id":{"pattern":"^DR-[0-9]{3}$"},"name":{"type":"string"},"rule":{"type":"string"}},"additionalProperties":true}},
+    "replanning_score":{"type":"object","required":["dimensions","formula","decision_policy"],"properties":{"dimensions":{"type":"array","minItems":1,"items":{"type":"string"}},"formula":{"type":"object","additionalProperties":{"type":"object","required":["weight","description"],"properties":{"weight":{"type":"number"},"description":{"type":"string"}},"additionalProperties":false}},"decision_policy":{"type":"array","minItems":1,"items":{"type":"string"}}},"additionalProperties":true},
+    "traceability":{"type":"object","required":["use_cases"],"properties":{"use_cases":{"type":"object","additionalProperties":{"type":"array","items":{"type":"string"}}}},"additionalProperties":true}
+  },
+  "$defs":{
+    "valueObject":{"type":"object","required":["fields"],"properties":{"fields":{"type":"object"},"used_by":{"type":"array","items":{"type":"string"}}},"additionalProperties":true},
+    "typedField":{"type":"object","required":["type","required"],"properties":{"type":{"type":"string","enum":["string","integer","decimal","boolean","datetime","duration","array","object","entityRef","valueObjectRef","enumRef"]},"required":{"type":"boolean"},"ref":{"type":"string"},"enumRef":{"type":"string"}},"additionalProperties":false},
+    "entity":{"type":"object","required":["identity","fields"],"properties":{"identity":{"type":"string"},"fields":{"type":"object","additionalProperties":{"$ref":"#/$defs/typedField"}},"relationships":{"type":"array","items":{"$ref":"#/$defs/relationship"}}},"additionalProperties":true},
+    "relationship":{"type":"object","required":["type","target","role"],"properties":{"type":{"enum":["association","composition","aggregation","dependency","projection","generalization","typed_value_object"]},"target":{"type":"string"},"role":{"type":"string"},"label":{"type":"string"},"multiplicity":{"$ref":"#/$defs/multiplicity"}},"allOf":[{"if":{"properties":{"type":{"enum":["association","aggregation","composition"]}}},"then":{"required":["multiplicity"]},"else":{"not":{"required":["multiplicity"]}}}],"additionalProperties":true},
+    "multiplicity":{"type":"object","required":["source","target"],"properties":{"source":{"pattern":"^(0|1|0\\.\\.1|0\\.\\.\\*|1\\.\\.\\*)$"},"target":{"pattern":"^(0|1|0\\.\\.1|0\\.\\.\\*|1\\.\\.\\*)$"}},"additionalProperties":false},
+    "stateMachine":{"type":"object","required":["initial","transitions"],"properties":{"initial":{"type":"string"},"transitions":{"type":"array","items":{"type":"object","required":["from","event","to"],"properties":{"from":{"oneOf":[{"type":"string"},{"type":"array","items":{"type":"string"}}]},"event":{"type":"string"},"to":{"type":"string"}},"additionalProperties":true}}},"additionalProperties":true}
+  }
+}

@@ -1,0 +1,44 @@
+/* ORD-0384 -- the pre-trip checklist band on Today. Its own file because `design-tokens.css` is being
+   edited by another lane right now; the tokens it consumes are read, never redefined. */
+.cn-pretrip {
+  margin-top: 22px;
+  padding: 16px 18px 18px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-card);
+  background: var(--v8-panel);
+}
+.cn-pretrip-head { display: grid; gap: 6px; }
+.cn-pretrip-head h2 { margin: 4px 0 0; color: var(--v8-ink); font-size: var(--cn-fs-title); letter-spacing: -.03em; }
+.cn-pretrip-note { margin: 0; color: var(--v8-muted); font-size: var(--cn-fs-caption); line-height: 1.5; }
+.cn-pretrip-list { display: grid; gap: 12px; margin: 14px 0 0; padding: 0; list-style: none; }
+.cn-pretrip-list li {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid var(--cn-hairline);
+  border-radius: var(--cn-r-control);
+  background: var(--v8-panel);
+}
+.cn-pretrip-title { color: var(--v8-ink); font-size: var(--cn-fs-body); }
+/* The server's own strings can be one unbroken token (`ORD0384_SYNTHETIC_FEASIBILITY_FAILURE`, or a real
+   code like `STALE_RECOMPOSE_REQUIRED`), and a long token inside the sentence that carries the finding is
+   the one thing this band must not clip. So the prose wraps anywhere as well, not just the basis line. */
+.cn-pretrip-title,
+.cn-pretrip-why { overflow-wrap: anywhere; }
+.cn-pretrip-why { margin: 0; color: var(--v8-muted); font-size: var(--cn-fs-body); line-height: 1.5; }
+.cn-pretrip-basis { margin: 0; color: var(--cn-ink-tertiary); font-size: var(--cn-fs-caption); overflow-wrap: anywhere; }
+.cn-pretrip-basis code { font-family: var(--cn-font-mono, ui-monospace, monospace); font-size: 11px; }
+/* The anchor is the contract line that makes the basis claim checkable, so it must be readable and not
+   a footnote nobody can reach -- same wrap rules as the basis line above. */
+.cn-pretrip-anchor { margin: 0; color: var(--cn-ink-tertiary); font-size: var(--cn-fs-caption); overflow-wrap: anywhere; }
+.cn-pretrip-anchor code { font-family: var(--cn-font-mono, ui-monospace, monospace); font-size: 11px; }
+.cn-pretrip-list li .v8-quiet-button { width: fit-content; margin-top: 4px; }
+.cn-pretrip-empty { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; color: var(--v8-muted); font-size: var(--cn-fs-body); }
+.cn-pretrip-empty .v8-quiet-button { width: fit-content; }
+/* Amendment F-2: the >=44px contract belongs to the touch layer, and this band is on the phone's
+   primary screen, so the row's actions have to meet it here rather than inherit it from another row. */
+@media (max-width: 680px) {
+  .cn-pretrip { padding: 14px; }
+  .cn-pretrip-list li .v8-quiet-button,
+  .cn-pretrip-empty .v8-quiet-button { min-height: var(--cn-touch-min); }
+}

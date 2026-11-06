@@ -1,0 +1,90 @@
+{
+  "modelVersion": "0.1.0",
+  "topLevelUseCases": 13,
+  "actors": 9,
+  "detailUseCases": 14,
+  "passed": 16,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "strict YAML parse",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "JSON Schema validation",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "exact top-level UC-01..UC-13",
+      "status": "PASS",
+      "detail": "actual=['UC-01', 'UC-02', 'UC-03', 'UC-04', 'UC-05', 'UC-06', 'UC-07', 'UC-08', 'UC-09', 'UC-10', 'UC-11', 'UC-12', 'UC-13']"
+    },
+    {
+      "name": "actor ids unique",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "all actor references resolve",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "all requirement references resolve",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "requirements mirror baseline useCase mappings",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "domain references resolve by name and kind",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "relationship endpoints resolve",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "core extend semantics exact",
+      "status": "PASS",
+      "detail": "{('UC-07', 'UC-06', '[payment required]'), ('UC-09', 'UC-08', '[event detected]'), ('UC-10', 'UC-09', '[replan required]')}"
+    },
+    {
+      "name": "focused detail use cases exact",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "detail include relationships complete",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "main-flow step ids sequential and unique",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "alternate and exception flow ids valid",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "primary actor baseline semantics",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "every top-level use case traces requirements",
+      "status": "PASS",
+      "detail": "[]"
+    }
+  ]
+}

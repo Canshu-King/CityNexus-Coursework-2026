@@ -1,0 +1,196 @@
+/* ORD-0476 slice 2 -- the footprint screen's own sheet, and the per-stop 打卡 control.
+
+Imported by the components rather than written into `frontend/src/styles.css`, which several lanes
+are landing rules in at once. Vite inlines it into the same document, so the reach is the same.
+
+Colours, sizes and radii come from the `--cn-*` layer, never hex literals, so dark follows without a
+second block.
+
+`width: auto; margin-top: 0` on both controls is load-bearing: `src/styles.css` carries a bare
+element rule (`button { display: block; width: 100%; margin-top: 12px; … }`), and a class that
+overrides only `display` inherits the full width -- the trap that measured 272 px of control inside a
+358 px card on a sibling order.
+
+`flex: none` on the row's 打卡 control keeps the station title from being squeezed out at 390 wide,
+which is what the hit test in the delivery receipt measures.
+*/
+
+.cn-footprints {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cn-s-12);
+  padding: var(--cn-s-16) var(--cn-gutter);
+  border: var(--cn-hairline) solid var(--cn-control-border);
+  border-radius: var(--cn-r-16);
+  color: var(--cn-ink);
+  line-height: var(--cn-lh-body);
+}
+
+.cn-footprints__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--cn-s-12);
+}
+
+.cn-footprints__head h2 {
+  margin: 0;
+  font-size: var(--cn-fs-section);
+  font-weight: 600;
+  line-height: var(--cn-lh-tight);
+}
+
+.cn-footprints__retry,
+.cn-stop-checkin {
+  width: auto;
+  margin-top: 0;
+  padding: var(--cn-s-6) var(--cn-s-12);
+  border: var(--cn-hairline) solid var(--cn-control-border);
+  border-radius: var(--cn-r-button);
+  background: transparent;
+  color: var(--cn-ink-secondary);
+  font: inherit;
+  font-size: var(--cn-fs-caption);
+}
+
+.cn-footprints__retry:disabled,
+.cn-stop-checkin:disabled {
+  color: var(--cn-ink-tertiary);
+}
+
+.cn-footprints__state,
+.cn-footprints__tally,
+.cn-footprints__note {
+  margin: 0;
+  color: var(--cn-ink-secondary);
+  font-size: var(--cn-fs-meta);
+}
+
+.cn-footprints__note--absent {
+  color: var(--cn-ink-tertiary);
+}
+
+.cn-footprints__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.cn-footprints__row {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: var(--cn-s-4) var(--cn-s-12);
+  padding: var(--cn-s-10) 0;
+  border-top: var(--cn-hairline) solid var(--cn-control-border);
+}
+
+.cn-footprints__when {
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-meta);
+  font-variant-numeric: tabular-nums;
+}
+
+.cn-footprints__what {
+  font-size: var(--cn-fs-secondary);
+  overflow-wrap: anywhere;
+}
+
+.cn-footprints__note {
+  grid-column: 2;
+}
+
+/* The per-stop control inside a `.trip-stop` row that is itself clickable. */
+.cn-stop-checkin {
+  flex: none;
+  align-self: center;
+  min-height: 28px;
+}
+
+.cn-stop-checkin[data-state="stamped"] {
+  border-color: var(--cn-accent);
+  color: var(--cn-accent-text);
+}
+
+.cn-stop-checkin:disabled {
+  opacity: 0.6;
+}
+
+.cn-stop-checkin__notice {
+  grid-column: 2;
+  margin: 0;
+  color: var(--cn-ink-secondary);
+  font-size: var(--cn-fs-caption);
+}
+
+/* ORD-0530 -- the day the trip was actually on.
+ *
+ * `.cn-footprints__zone` is the sentence that says WHICH clock split the days. It is on the screen
+ * rather than in a comment because the alternative -- grouping quietly in the device's zone -- puts a
+ * wrong date in front of a traveller who has no way to see where it came from.
+ * `.cn-footprints__day` is a heading, not another row: an empty day never renders one (the groups are
+ * built from the stamps the server sent), so a day line cannot exist without a stamp under it.
+ * `.cn-footprints__source` shares the note's column so the time column stays the only clock on the
+ * row, and every cell still has a word in it -- an absent note says 没写备注, an unnamed source says
+ * the server gave no name. Colours are the sheet's existing `--cn-*` tokens, so dark needs no block.
+ */
+.cn-footprints__zone {
+  margin: 0;
+  color: var(--cn-ink-secondary);
+  font-size: var(--cn-fs-meta);
+  overflow-wrap: anywhere;
+}
+
+.cn-footprints__day-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cn-s-4);
+}
+
+.cn-footprints__day {
+  margin: 0;
+  padding-bottom: var(--cn-s-4);
+  border-bottom: var(--cn-hairline) solid var(--cn-control-border);
+  color: var(--cn-ink);
+  font-size: var(--cn-fs-secondary);
+  font-weight: 700;
+}
+
+.cn-footprints__source {
+  grid-column: 2;
+  margin: 0;
+  color: var(--cn-ink-tertiary);
+  font-size: var(--cn-fs-caption);
+}
+
+/* ORD-0500 -- two phone-reachability facts about the stop row.
+ *
+ * 1. Measured on this generation, same instrument on both faces (390x844, `scrollIntoViewIfNeeded`
+ *    then `elementFromPoint` at the control's own centre): 5 of the 6 stop controls answer a centre
+ *    hit; the row that does not is the second one, whose centre lands on `.v8-mobile-nav`, where a
+ *    tap changes tab.  Desktop 1280x800 answers 6 of 6 on both faces.  A `scroll-margin-bottom: 92px`
+ *    on `.trip-stop` was built onto its own face and re-measured: still 5 of 6, so the rule was
+ *    taken out instead of kept as decoration.  What would move the number is padding on the scroll
+ *    container or the fixed nav itself, and that is not this order's write set -- named, left open.
+ *
+ * 2. `.trip-stop-more` is a real <button> now (it used to be an aria-hidden span inside a row that
+ *    claimed role="button").  The bare `button { width: 100% }` in `styles.css` would stretch it
+ *    across the meta row, so it is reset here, where the control lives.
+ */
+.trip-stop-more {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  opacity: 0.5;
+}
+
+.trip-stop-more:focus-visible {
+  outline: 2px solid var(--cn-accent-text);
+  outline-offset: 2px;
+}

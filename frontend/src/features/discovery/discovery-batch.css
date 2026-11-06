@@ -1,0 +1,49 @@
+/* ORD-0435 -- the POI batch bar and the per-card tick.
+ *
+ * This lives in its own file, imported by the panel, because `frontend/src/styles.css` is a hot file
+ * under this order (the commander's ruling of 2026-09-29 05:1x): four lanes are landing rules in it
+ * at once, and a batch bar does not need to queue behind that. Importing from the component keeps
+ * the reach the same -- vite inlines it into the same document -- without touching a byte of the
+ * shared sheet.
+ *
+ * Two rules are written for every state on purpose. A selected state with no unselected twin is the
+ * defect this order is named for: `.v8-stay-card.selected` has existed for as long as this screen
+ * has, and it is the server's feasibility verdict, so nothing on the card ever showed or answered a
+ * traveller's own choice. `[data-picked="false"]` is therefore as styled as `[data-picked="true"]`,
+ * and `.v8-pick-box` as styled as `.v8-pick-box.checked`.
+ *
+ * Colours come from the `--cn-*` layer rather than the hex literals the shared sheet is full of, so
+ * the dark theme follows without a second block, and the batch never becomes the screen's second
+ * primary action (Pass-8: 打开权威方案 owns that). The `[data-picked]` rules sit at specificity
+ * 0-2-1 against `.v8-stay-card`'s 0-1-0, so they win regardless of injection order.
+ *
+ * `width: auto` and `margin-top: 0` on `.v8-pick-box` are not decoration. `src/styles.css` is a
+ * bare element rule -- `button { display: block; width: 100%; margin-top: 12px; … }` -- and a class
+ * that overrides only `display` leaves `width` and `margin-top` inherited from it, which measured
+ * 272 px of tick inside a 358 px card (76 % of the card width) and pushed the place name into a
+ * column beside it. The same trap is already written down at `src/styles.css`. Measured here
+ * with the two properties absent, and again with them present, by
+ * `review/ord0435/_check_title_squeeze.js`.
+ */
+.v8-batch-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cn-s-8); padding: 10px var(--cn-s-12); border: 1px solid var(--cn-hairline); border-radius: var(--cn-r-control); background: var(--cn-secondary); }
+.v8-batch-count { color: var(--cn-ink); font-size: var(--cn-fs-caption); font-weight: 750; }
+.v8-batch-target, .v8-batch-plan { color: var(--cn-ink-secondary); font-size: var(--cn-fs-caption); }
+.v8-batch-plan { padding: 3px 7px; border-radius: var(--cn-r-pill); background: var(--cn-surface); }
+.v8-batch-actions { display: flex; align-items: center; gap: var(--cn-s-8); margin-left: auto; }
+.v8-batch-empty, .v8-batch-note { margin: 0; color: var(--cn-ink-secondary); font-size: var(--cn-fs-caption); line-height: var(--cn-lh-body); }
+.v8-stay-card[data-picked="false"] { border-color: var(--cn-hairline); }
+.v8-stay-card[data-picked="true"] { border-color: var(--cn-accent); box-shadow: inset 3px 0 0 var(--cn-accent); }
+.v8-pick-box { display: inline-flex; flex: none; width: auto; margin-top: 0; align-items: center; gap: 5px; padding: 4px 7px; border: 1px solid var(--cn-control-border); border-radius: var(--cn-r-pill); color: var(--cn-ink-secondary); background: var(--cn-surface); font-size: 10px; font-weight: 700; cursor: pointer; transition: color var(--cn-t-state) var(--cn-ease-standard), border-color var(--cn-t-state) var(--cn-ease-standard), background var(--cn-t-state) var(--cn-ease-standard); }
+.v8-pick-box > span[aria-hidden] { display: inline-grid; place-items: center; width: 14px; height: 14px; border: 1px solid var(--cn-control-border); border-radius: var(--cn-r-4); color: transparent; font-size: 10px; line-height: 1; }
+.v8-pick-box.checked { color: var(--cn-accent-text); border-color: var(--cn-accent); }
+.v8-pick-box.checked > span[aria-hidden] { color: var(--cn-surface); border-color: var(--cn-accent); background: var(--cn-accent); }
+.v8-batch-receipt { display: grid; gap: var(--cn-s-8); padding: var(--cn-s-12); border: 1px solid var(--cn-hairline); border-radius: var(--cn-r-control); background: var(--cn-surface); }
+.v8-batch-receipt > b { color: var(--cn-ink); font-size: var(--cn-fs-caption); }
+.v8-batch-receipt-rows { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.v8-batch-receipt-rows li { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--cn-s-8); font-size: var(--cn-fs-caption); }
+.v8-batch-receipt-rows span { color: var(--cn-ink-secondary); font-variant-numeric: tabular-nums; }
+.v8-batch-receipt-rows b { color: var(--cn-ink); font-weight: 700; }
+.v8-batch-receipt-rows small { color: var(--cn-ink-tertiary); font-size: 9px; }
+.v8-batch-refused { margin: 0; color: var(--cn-warning); font-size: var(--cn-fs-caption); }
+.v8-batch-receipt-plan { color: var(--cn-ink-tertiary); font-size: 9px; word-break: break-all; }
+@media (max-width: 680px) { .v8-batch-actions { width: 100%; margin-left: 0; }.v8-batch-actions button { flex: 1; }.v8-pick-box { min-height: var(--cn-touch-min); } }

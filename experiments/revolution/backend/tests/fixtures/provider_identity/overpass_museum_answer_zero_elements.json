@@ -1,0 +1,18 @@
+{
+  "captured_at": "2026-09-22T01:01:17+0800",
+  "url": "https://overpass-api.de/api/interpreter",
+  "request_user_agent": "CityNexus/7.0 (+https://citynexus.local/discovery)",
+  "request_post_data": "[out:json][timeout:25];nwr[\"tourism\"=\"museum\"](around:5000,27.9458325,98.5251309);out center tags;",
+  "elapsed_ms": 985.0,
+  "status": 200,
+  "error": null,
+  "response_headers": {
+    "Date": "Mon, 21 Sep 2026 17:01:17 GMT",
+    "Server": "Apache/2.4.68 (Debian)",
+    "Vary": "Accept-Encoding",
+    "Connection": "close",
+    "Transfer-Encoding": "chunked",
+    "Content-Type": "application/json"
+  },
+  "body_text": "{\n  \"version\": 0.6,\n  \"generator\": \"Overpass API 0.7.62.11 87bfad18\",\n  \"osm3s\": {\n    \"timestamp_osm_base\": \"2026-09-21T16:59:20Z\",\n    \"copyright\": \"The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.\"\n  },\n  \"elements\": [\n\n\n\n  ]\n}\n"
+}

@@ -1,0 +1,314 @@
+pageName: P2_UC_Planning_Replan
+pageWidth: 42.0
+pageHeight: 29.7
+diagramType: uml-use-case-detail
+title: CityNexus — Planning & Replanning Use Cases
+subtitle: Smart City Traveler System • Proposed Model Baseline v1.0
+statusTag: PART 2 • FOCUSED DETAIL
+canvasStyle: canvas
+shapes:
+- id: UC-04
+  type: uml_use_case
+  x: 9.4
+  y: 5.0
+  width: 5.5
+  height: 1.5
+  text: 'UC-04
+
+    Generate & Select Journey Plan'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-05
+  type: uml_use_case
+  x: 20.9
+  y: 5.0
+  width: 5.5
+  height: 1.5
+  text: 'UC-05
+
+    Discover & Recommend City Services'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-10
+  type: uml_use_case
+  x: 33.2
+  y: 5.0
+  width: 5.5
+  height: 1.5
+  text: 'UC-10
+
+    Replan Disrupted Journey'
+  styleRef: useCasePlanning
+  masterRef: umlUseCase
+- id: UC-04.1
+  type: uml_use_case
+  x: 9.4
+  y: 8.5
+  width: 5.4
+  height: 1.35
+  text: 'UC-04.1
+
+    Retrieve City Data'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-04.2
+  type: uml_use_case
+  x: 9.4
+  y: 11.7
+  width: 5.4
+  height: 1.35
+  text: 'UC-04.2
+
+    Build Planning Constraints'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-04.3
+  type: uml_use_case
+  x: 9.4
+  y: 14.9
+  width: 5.4
+  height: 1.35
+  text: 'UC-04.3
+
+    Generate Candidate Plans'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-04.4
+  type: uml_use_case
+  x: 9.4
+  y: 18.1
+  width: 5.4
+  height: 1.35
+  text: 'UC-04.4
+
+    Validate & Score Plans'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-05.1
+  type: uml_use_case
+  x: 20.9
+  y: 8.5
+  width: 5.4
+  height: 1.35
+  text: 'UC-05.1
+
+    Retrieve Real Places'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-05.2
+  type: uml_use_case
+  x: 20.9
+  y: 11.7
+  width: 5.4
+  height: 1.35
+  text: 'UC-05.2
+
+    Apply Context Constraints'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-05.3
+  type: uml_use_case
+  x: 20.9
+  y: 14.9
+  width: 5.4
+  height: 1.35
+  text: 'UC-05.3
+
+    Rank Candidates'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-05.4
+  type: uml_use_case
+  x: 20.9
+  y: 18.1
+  width: 5.4
+  height: 1.35
+  text: 'UC-05.4
+
+    Explain Recommendation'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-10.1
+  type: uml_use_case
+  x: 33.2
+  y: 8.2
+  width: 5.4
+  height: 1.35
+  text: 'UC-10.1
+
+    Analyse Impact'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-10.2
+  type: uml_use_case
+  x: 33.2
+  y: 11.0
+  width: 5.4
+  height: 1.35
+  text: 'UC-10.2
+
+    Determine Replan Scope'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-10.3
+  type: uml_use_case
+  x: 33.2
+  y: 13.8
+  width: 5.4
+  height: 1.35
+  text: 'UC-10.3
+
+    Generate Legal Plans'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-10.4
+  type: uml_use_case
+  x: 33.2
+  y: 16.6
+  width: 5.4
+  height: 1.35
+  text: 'UC-10.4
+
+    Score Candidate Plans'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-10.5
+  type: uml_use_case
+  x: 33.2
+  y: 19.4
+  width: 5.4
+  height: 1.35
+  text: 'UC-10.5
+
+    Compare Plan Versions'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+- id: UC-10.6
+  type: uml_use_case
+  x: 33.2
+  y: 22.2
+  width: 5.4
+  height: 1.35
+  text: 'UC-10.6
+
+    Explain Replanning'
+  styleRef: useCaseDefault
+  masterRef: umlUseCase
+connectors:
+- id: INC-UC-04.1
+  type: include
+  source: UC-04
+  target: UC-04.1
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-04.2
+  type: include
+  source: UC-04
+  target: UC-04.2
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-04.3
+  type: include
+  source: UC-04
+  target: UC-04.3
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-04.4
+  type: include
+  source: UC-04
+  target: UC-04.4
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-05.1
+  type: include
+  source: UC-05
+  target: UC-05.1
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-05.2
+  type: include
+  source: UC-05
+  target: UC-05.2
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-05.3
+  type: include
+  source: UC-05
+  target: UC-05.3
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-05.4
+  type: include
+  source: UC-05
+  target: UC-05.4
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-10.1
+  type: include
+  source: UC-10
+  target: UC-10.1
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-10.2
+  type: include
+  source: UC-10
+  target: UC-10.2
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-10.3
+  type: include
+  source: UC-10
+  target: UC-10.3
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-10.4
+  type: include
+  source: UC-10
+  target: UC-10.4
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-10.5
+  type: include
+  source: UC-10
+  target: UC-10.5
+  styleRef: includeExtend
+  label: <<include>>
+- id: INC-UC-10.6
+  type: include
+  source: UC-10
+  target: UC-10.6
+  styleRef: includeExtend
+  label: <<include>>
+legend:
+  x: 35.5
+  y: 27.7
+  width: 5.2
+  height: 1.2
+  items:
+  - <<include>>
+  - Grouping zones are visual only
+zones:
+- id: ZONE-A
+  label: A • Initial Planning
+  xMin: 4.2
+  xMax: 14.7
+  yMin: 3.2
+  yMax: 25.5
+  style: grouping-only
+- id: ZONE-B
+  label: B • Contextual Recommendation
+  xMin: 15.7
+  xMax: 26.2
+  yMin: 3.2
+  yMax: 25.5
+  style: grouping-only
+- id: ZONE-C
+  label: C • Disruption Recovery
+  xMin: 27.2
+  xMax: 39.9
+  yMin: 3.2
+  yMax: 25.5
+  style: grouping-only
+notes:
+- Zone containers have no UML semantics.
+- Do not create UC-10.7 Accept New Plan; acceptance/rejection remain branches of UC-10.
