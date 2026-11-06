@@ -1,6 +1,6 @@
 # Visual Gallery: Actual CityNexus Development Captures
 
-These are **real screenshots captured from the project's development and test interfaces** and historical classroom assets. They were imported from the private working-tree snapshots without redrawing them. Some scenes use recorded/replayed/demo data; they **do not** imply a currently deployed production app or successful real-world travel.
+These are **real screenshots captured from the project's development and test interfaces** and historical classroom assets. They were copied from the original development snapshots (now in the publicly accessible CityNexus repository) without redrawing them. Some scenes use recorded/replayed/demo data; they **do not** imply a currently deployed production app or successful real-world travel.
 
 ## 1. City discovery and conversational Agent
 
