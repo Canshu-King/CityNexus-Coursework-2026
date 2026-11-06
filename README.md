@@ -9,6 +9,12 @@ CityNexus is an engineering project exploring an agent-assisted city journey sys
 
 **This is an implementation and coursework portfolio, not just a concept proposal.** It contains extensive source code, API and domain models, automated tests, agent experiments, diagrams, and project planning artifacts.
 
+## The fastest way to see the project
+
+**[120-second illustrated teacher walkthrough](docs/DEMO_STORYBOARD.md)** · **[What was actually verified? Evidence matrix](docs/FEATURE_VERIFICATION_MATRIX.md)** · **[English screenshot-based website (deployment instructions)](docs/SITE_DEPLOYMENT.md)**
+
+The new website files include a **nine-stage interactive visual tour** built from original development screenshots. It is not a live connected App; GitHub Pages must be enabled before its public website URL can be used. Meanwhile, the Markdown walkthrough above opens immediately on GitHub.
+
 ## Complete project portal: five public repositories, three development tracks
 
 **[OPEN THE COMPLETE CITYNEXUS PROJECT PORTAL](docs/PROJECT_PORTAL.md)** · [English reviewer walkthrough](docs/START_HERE_FOR_REVIEWER.md) · [Chinese overview / 中文导航](README.zh-CN.md)
