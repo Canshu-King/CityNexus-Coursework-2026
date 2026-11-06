@@ -1,6 +1,6 @@
 # Screenshot provenance
 
-These ten PNG files were copied **byte-for-byte** from the private CityNexus branch `coursework/part2-20261104-kickoff` into the independent public snapshot. Git blob SHA values were checked to match for each transfer.
+The 16 PNG files here were copied **byte-for-byte** from original CityNexus development branches into this separate portfolio. Git blob SHA values were checked to match during transfer. The first ten originated on `coursework/part2-20261104-kickoff`; the six later V3 captures originated on `rescue/v3-final-departure-20261022`. Both source branches are now public.
 
 | Public file | Original source within the original CityNexus source tree, now public |
 | --- | --- |
@@ -14,6 +14,22 @@ These ten PNG files were copied **byte-for-byte** from the private CityNexus bra
 | `system-overview.png` | `deliverables/SoftwareEngineering_2026/Classroom/previews/Teacher_01_System_Overview_EN.png` |
 | `agent-user-flow.png` | `deliverables/SoftwareEngineering_2026/Classroom/previews/Teacher_02_Agent_User_Flow_EN.png` |
 | `gantt-english.png` | `deliverables/SoftwareEngineering_2026/Classroom/previews/Teacher_03_Gantt_Presentation_EN.png` |
+
+
+## Human-first V3 screenshots (October)
+
+The six V3 images were copied from source branch [rescue/v3-final-departure-20261022](https://github.com/Canshu-King/CityNexus/tree/rescue/v3-final-departure-20261022).
+
+| Public file | Exact original source path |
+| --- | --- |
+| [v3-first-trip-goal-mobile.png](v3-first-trip-goal-mobile.png) | trial/results/20261026_gozero/390-go-cold.png |
+| [v3-agent-tool-timeline-mobile.png](v3-agent-tool-timeline-mobile.png) | trial/results/20261026_gozero/390-agent-timeline.png |
+| [v3-active-journey-mobile.png](v3-active-journey-mobile.png) | trial/results/20261026_gozero/390-g7-started-fallback.png |
+| [v3-real-map-mobile.png](v3-real-map-mobile.png) | trial/results/20261026_gozero/390-g8-map-loaded.png |
+| [v3-classroom-simulation-control.png](v3-classroom-simulation-control.png) | trial/results/20261022_v3_human_chrome/classroom-desktop-flow-39-2-card.png |
+| [v3-classroom-approved-change.png](v3-classroom-approved-change.png) | trial/results/20261022_v3_human_chrome/classroom-desktop-flow-39-3-after.png |
+
+**[Visit the English V3/classroom illustrated tour](../docs/CLASSROOM_AND_V3.md).**
 
 **Important:** These are original development / controlled demo captures. They may show fixture data, historical UI states and intended design decisions. They are not recent production screenshots.
 
