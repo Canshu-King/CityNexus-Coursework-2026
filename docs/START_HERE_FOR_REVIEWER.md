@@ -6,6 +6,8 @@ CityNexus explores what a travel assistant could do **after** it first suggests 
 
 This is a **source-backed explanation**, not a hosted full-product demo. Each link leads to real code or an engineering artifact in this public repository.
 
+**Start with [10 authentic UI and classroom screenshots](VISUAL_GALLERY.md) if you want to see the interfaces before reading code.**
+
 ## Step 1 — See the traveller's experience
 
 The [main React interface](../frontend/src/app/V8Experience.tsx) coordinates several real screen modules:
