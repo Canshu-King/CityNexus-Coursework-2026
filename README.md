@@ -76,7 +76,7 @@ These were different engineering investigations, not merely feature names. [Read
 | **Group recovery** | Member-by-member authenticated reports and one-time group closure were exercised in focused tests, without claiming GPS-proven presence. |
 | **Pocket Walk GO MODE** | Mobile Chromium exercised stop progression, pause, resume and undo with signed accounts and controlled provider fixtures. |
 
-The separate Revolution Lab has many dated experiment records; the public version contains its **separate code snapshot plus curated research explanations**, not the entire raw private archive.
+The private Revolution Lab branch contains **103 archived result-note files** (not 103 claims of success). Their complete [research index](docs/RESEARCH_ARCHIVE_INDEX.md) is published here, with 51 index entries linked to actual public test source. This public release provides an independent code snapshot and curated case studies rather than an unchecked raw private runtime archive.
 
 ## Formal Software Engineering deliverables
 
