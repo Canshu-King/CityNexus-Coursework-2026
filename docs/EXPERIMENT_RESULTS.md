@@ -90,6 +90,6 @@ The independent Revolution Lab was a **research and product-development track** 
 
 They show **different engineering problems addressed over successive iterations**: real-model tool use, real source acquisition, guarded changes, consent, state persistence, group isolation and mobile acceptance. They do **not** mean that every result was successfully integrated, that every private lab report is publicly reproduced, or that the entire sanitized public export has passed a new comprehensive test suite.
 
-The original private engineering notebooks and sensitive runtime receipts are intentionally not exposed as raw files. This page is a reviewed explanatory summary; the implementation and test sources linked above are the public inspection points.
+A source-derived [index of 103 archived result-note filenames](RESEARCH_ARCHIVE_INDEX.md) now shows the broader history and directly links available public tests. The original private engineering notebooks and sensitive runtime receipts are intentionally not exposed as raw files. This page is a reviewed explanatory summary; the implementation and test sources linked above are the public inspection points.
 
 For the main coursework engineering files, return to the [teacher walkthrough](START_HERE_FOR_REVIEWER.md) or [feature atlas](FEATURE_ATLAS.md).
