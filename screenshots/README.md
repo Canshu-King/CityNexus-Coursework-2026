@@ -2,7 +2,7 @@
 
 These ten PNG files were copied **byte-for-byte** from the private CityNexus branch `coursework/part2-20261104-kickoff` into the independent public snapshot. Git blob SHA values were checked to match for each transfer.
 
-| Public file | Original source within the private working-tree snapshot |
+| Public file | Original source within the original CityNexus source tree, now public |
 | --- | --- |
 | `discovery-desktop.png` | `output/playwright/v13.3-real-city-discovery.png` |
 | `copilot-mobile.png` | `output/playwright/v18-final-mobile.png` |
