@@ -7,6 +7,12 @@
 
 > **For the professor:** This portal makes the work behind our Software Engineering coursework visible and traceable. The official Part 2 submission was uploaded separately to Moodle. The repositories demonstrate planning, architecture, user-interface implementation, backend integration, agent experiments and testing. They are not a single hosted, production-ready application.
 
+## The easiest review path
+
+**[Two-minute screenshot walkthrough](DEMO_STORYBOARD.md)** · **[Feature evidence and verification matrix](FEATURE_VERIFICATION_MATRIX.md)** · **[Interactive visual site: prepared for GitHub Pages](SITE_DEPLOYMENT.md)**
+
+The interactive site presents historic development captures, not a live travel system. These alternatives let a professor inspect the actual user-facing work without installing Node.js, Python or any private API credentials.
+
 ## What were we trying to build?
 
 A conventional itinerary app may suggest where to go. **CityNexus aims to help a traveller manage an entire journey:** understand natural-language goals, find real places, propose a schedule, present a map and route, communicate with an AI agent, adapt to new information, coordinate companions and continue after human approval.
