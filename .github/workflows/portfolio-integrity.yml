@@ -1,0 +1,26 @@
+name: Portfolio integrity (documentation only)
+run-name: Check teacher portfolio links and screenshot assets
+
+on:
+  push:
+    paths:
+      - 'README*.md'
+      - 'docs/**'
+      - 'screenshots/**'
+      - 'teacher-materials/**'
+      - 'scripts/check_portfolio.py'
+      - '.github/workflows/portfolio-integrity.yml'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-showcase:
+    name: Verify local evidence links (not product E2E)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check teacher-facing pages and assets
+        run: python3 scripts/check_portfolio.py
