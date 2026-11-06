@@ -9,6 +9,40 @@ CityNexus is an engineering project exploring an agent-assisted city journey sys
 
 **This is an implementation and coursework portfolio, not just a concept proposal.** It contains extensive source code, API and domain models, automated tests, agent experiments, diagrams, and project planning artifacts.
 
+## Complete project portal: five public repositories, three development tracks
+
+**[OPEN THE COMPLETE CITYNEXUS PROJECT PORTAL](docs/PROJECT_PORTAL.md)** · [English reviewer walkthrough](docs/START_HERE_FOR_REVIEWER.md) · [Chinese overview / 中文导航](README.zh-CN.md)
+
+The project progressed through **(1) full-stack travel application and Software Engineering foundations, (2) Codex Revolution Lab autonomous Agent research, and (3) Qoder-led human-first Revolution V3 and classroom simulation**. These tracks share a goal, but should not be mistaken for one fully merged, production-validated release.
+
+| Where to begin | What the reviewer will actually find |
+| --- | --- |
+| **[Project master overview](docs/PROJECT_PORTAL.md)** | What the product is, major achievements, agent capabilities and one coherent guided tour |
+| **[Latest human-first V3 evidence](docs/CLASSROOM_AND_V3.md)** | **October 2026** real Chrome mobile captures, map, Agent tool progress, classroom time/location simulation and measured boundaries |
+| **[Real research cases](docs/EXPERIMENT_RESULTS.md)** | External Agent actions, source-grounded routes, group recovery, two-stop city walks; real provider vs fixture clearly distinguished |
+| **[Development provenance](docs/DEVELOPMENT_STREAMS.md)** | Where the original Qoder/Codex code branches, reports, Git commits and archived work live |
+| **[Coursework evidence](teacher-materials/README.md)** | Requirements, Visio, architecture/user flow, Gantt, WBS and editable Microsoft Project |
+
+### Newer V3 work: natural-language travel, visible Agent activity and a real map
+
+| Human-first goal entry | Agent activity / tool timeline | Map with source-linked plan places |
+| --- | --- | --- |
+| <img src="screenshots/v3-first-trip-goal-mobile.png" width="220" alt="Captured human-first CityNexus V3 first trip screen in Chinese" /> | <img src="screenshots/v3-agent-tool-timeline-mobile.png" width="220" alt="Captured Agent tool timeline showing real recorded task statuses" /> | <img src="screenshots/v3-real-map-mobile.png" width="220" alt="Captured CityNexus V3 map with planned POI markers" /> |
+
+These are **authentic October development/test captures**, not artificially generated preview screens. The V3 research branch was updated as recently as **29 October 2026**. The **original CityNexus default branch is older (September 26)**, so do not treat the default branch as the project's latest UI.
+
+**[See what happened in the five-minute classroom simulation](docs/CLASSROOM_AND_V3.md)** · [Open original V3 implementation](https://github.com/Canshu-King/CityNexus/tree/rescue/v3-final-departure-20261022)
+
+### Original source repositories, now all public
+
+| Repository | Role |
+| --- | --- |
+| [**CityNexus**](https://github.com/Canshu-King/CityNexus) | Full original code and history, including [Revolution Lab](https://github.com/Canshu-King/CityNexus/tree/gpt/revolution-r33-open-world-journey-adaptation), [human-first V3](https://github.com/Canshu-King/CityNexus/tree/rescue/v3-final-departure-20261022) and [Nov 4 coursework branch](https://github.com/Canshu-King/CityNexus/tree/coursework/part2-20261104-kickoff) |
+| [**CityNexus-Workspace**](https://github.com/Canshu-King/CityNexus-Workspace) | Early research, project handoffs, original assignment brief and academic workspace |
+| [**CityNexus-Lab-Archive**](https://github.com/Canshu-King/CityNexus-Lab-Archive) | Historical WorkBuddy, DSH, agent-experience and testing archives |
+| [**CityNexus-History**](https://github.com/Canshu-King/CityNexus-History) | Early V14/V15 implementation/release staging and snapshots |
+| [**This coursework portal**](https://github.com/Canshu-King/CityNexus-Coursework-2026) | Teacher-facing explanation, sanitized representative source, pictures and engineering documents |
+
 ## See the actual application screens
 
 These are **real captured CityNexus development/test screenshots**, not newly invented mockups. Some display controlled replay data.
@@ -76,7 +110,7 @@ These were different engineering investigations, not merely feature names. [Read
 | **Group recovery** | Member-by-member authenticated reports and one-time group closure were exercised in focused tests, without claiming GPS-proven presence. |
 | **Pocket Walk GO MODE** | Mobile Chromium exercised stop progression, pause, resume and undo with signed accounts and controlled provider fixtures. |
 
-The private Revolution Lab branch contains **103 archived result-note files** (not 103 claims of success). Their complete [research index](docs/RESEARCH_ARCHIVE_INDEX.md) is published here, with 51 index entries linked to actual public test source. This public release provides an independent code snapshot and curated case studies rather than an unchecked raw private runtime archive.
+The now-public original Revolution Lab development branch contains **103 archived result-note files** (not 103 claims of success). Their complete [research index](docs/RESEARCH_ARCHIVE_INDEX.md) is published here, with 51 index entries linked to actual public test source. This public release provides an independent code snapshot and curated case studies rather than an unchecked raw private runtime archive.
 
 ## Formal Software Engineering deliverables
 
@@ -109,7 +143,7 @@ flowchart TB
 
 ## Publication and evidence notes
 
-The underlying project has **dated artifacts from September through November 2026**. The public GitHub commit graph starts on 6 November because we deliberately created a separate, sanitized, history-free release instead of exposing the original private development branches.
+The underlying project has **dated artifacts from September through November 2026**. The public GitHub commit graph starts on 6 November because we deliberately created a separate, sanitized, history-free release while the original working repositories are now publicly accessible as separate archives.
 
 The **formal requirements remain candidate requirements**. Some research outcomes used live external providers; others used local browser fixtures or recorded a legitimate blocker. The full classroom demo was **not successfully presented**, and the sanitized published copy **has not been freshly tested as one integrated application**. These boundaries are explained in [Evidence and Limitations](docs/EVIDENCE_AND_LIMITATIONS.md).
 
