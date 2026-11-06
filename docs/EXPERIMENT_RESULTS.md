@@ -1,6 +1,6 @@
 # Revolution Lab: Specific Results, Not Just Feature Names
 
-The independent Revolution Lab was a **research and product-development track** that explored continuous, agent-driven journeys. The private engineering branch has an extensive collection of dated result notes across experiments R14–R108 and related work. This public page extracts **specific, representative outcomes** and links to source code or tests that remain in the sanitized public snapshot.
+The independent Revolution Lab was a **research and product-development track** that explored continuous, agent-driven journeys. The original engineering branch, now publicly accessible, has an extensive collection of dated result notes across experiments R14–R108 and related work. This public page extracts **specific, representative outcomes** and links to source code or tests that remain in the sanitized public snapshot.
 
 **Evidence grades:** a result may be **live-provider/local experiment**, **controlled-browser or fixture**, **code/test delivery**, or **blocked/no material change**. The grade matters more than how many experiments had an “R” number.
 
@@ -88,8 +88,8 @@ The independent Revolution Lab was a **research and product-development track** 
 
 ## What these results establish
 
-They show **different engineering problems addressed over successive iterations**: real-model tool use, real source acquisition, guarded changes, consent, state persistence, group isolation and mobile acceptance. They do **not** mean that every result was successfully integrated, that every private lab report is publicly reproduced, or that the entire sanitized public export has passed a new comprehensive test suite.
+They show **different engineering problems addressed over successive iterations**: real-model tool use, real source acquisition, guarded changes, consent, state persistence, group isolation and mobile acceptance. They do **not** mean that every result was successfully integrated, that every original lab result is replicated in this curated sub-repository, or that the entire sanitized public export has passed a new comprehensive test suite.
 
-A source-derived [index of 103 archived result-note filenames](RESEARCH_ARCHIVE_INDEX.md) now shows the broader history and directly links available public tests. The original private engineering notebooks and sensitive runtime receipts are intentionally not exposed as raw files. This page is a reviewed explanatory summary; the implementation and test sources linked above are the public inspection points.
+A source-derived [index of 103 archived result-note filenames](RESEARCH_ARCHIVE_INDEX.md) now shows the broader history and directly links available public tests. The original source branch is now public, so reviewers can inspect the [original reports through the full linked index](RESEARCH_ARCHIVE_INDEX.md). They may contain detailed runtime receipts; they are not copied wholesale into this curated document. This page is a reviewed explanatory summary; the implementation and test sources linked above are the public inspection points.
 
 For the main coursework engineering files, return to the [teacher walkthrough](START_HERE_FOR_REVIEWER.md) or [feature atlas](FEATURE_ATLAS.md).
